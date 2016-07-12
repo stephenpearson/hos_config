@@ -1,0 +1,62 @@
+#
+# (c) Copyright 2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+- name: eon-agent | install | Install binary dependencies
+  apt: name={{ item }} state=present
+  with_items:
+   - libxml2-dev
+   - libxslt-dev
+  delegate_to: "{{ target_host }}"
+
+- name: eon-agent | install | update venv cache
+  install_package:
+    cache: update
+  delegate_to: "{{ target_host }}"
+
+- name: eon-agent | install | install eon-agent service
+  install_package:
+    name: eon
+    service: eon-agent
+    state: present
+    activate: act_off
+  register: eon_agent_install_result
+  delegate_to: "{{ target_host }}"
+
+- name: eon-agent | install | register restart required
+  shell: echo " Restart required"
+  register: hlm_notify_eon_agent_restart_required
+  when: eon_agent_install_result.changed
+  delegate_to: "{{ target_host }}"
+
+- include: ../../eon-common/tasks/_set_directories.yml
+  vars:
+    eon_install_package_result: "{{ eon_agent_install_result }}"
+
+- name: eon-agent | install | register eon-agent service
+  setup_systemd:
+    service: eon-agent
+    cmd: eon-agent
+    user: "{{ hlm_user }}"
+    group: "{{ hlm_group }}"
+    args: "--config-file={{ eon_service_conf_dir }}/{{ eon_component }}.conf"
+  delegate_to: "{{ target_host }}"
+
+- include: ../../eon-common/tasks/install.yml
+
+- name: eon-agent | install | add deployer user to eon group
+  user: name={{ hlm_user }} groups={{ eon_group }} append=yes
+  delegate_to: "{{ target_host }}"

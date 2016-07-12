@@ -1,0 +1,100 @@
+#
+# (c) Copyright 2015,2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+# Configure Beaver
+- name: logging-producer | configure | Configure Beaver sources config
+  template: src=beaver.conf.j2 dest={{beaver_conf_dir}}/beaver.conf owner={{beaver_user}} group={{beaver_group}} mode=0600
+  register: hlm_notify_beaver_restart
+
+- name: logging-producer | configure | Remove old config files
+  shell: rm -rf {{beaver_conf_dir}}/conf.d/*
+  register: hlm_notify_beaver_restart
+  when: beaver_purge_config_files
+  ignore_errors: yes
+
+# Supply default logrotate policies for service teams based on the config files in
+# logging-common/vars folder
+- name: logging-producer | configure | Make logrotate check hourly
+  copy: src=/etc/cron.daily/logrotate dest=/etc/cron.hourly/ mode=0755
+
+- name: kronos-producer | configure | Set logrotate enabled fact
+  set_fact: logrotate_enabled={% for x in sub_service.logging_options %}{% if 'log_rotate' in x %}1{% else %}0{% endif %}{% endfor %}
+  when: sub_service is defined and sub_service.logging_options
+  no_log: yes
+
+- name: kronos-producer | configure | Setup config files for services that have subscribed for logging
+  template: src=logrotate.conf.j2 dest={{logrotate_conf_dir}}/{{sub_service.name}} mode=0644
+  when: logrotate_enabled | int > 0
+  no_log: yes
+
+- name: kronos-producer | configure | Set centralized logging enabled fact
+  set_fact: centralized_logging_enabled={% for x in sub_service.logging_options %}{% if x.centralized_logging.enabled %}1{% else %}0{% endif %}{% endfor %}
+  no_log: yes
+
+- name: logging-producer | configure | Include default log files for centralized logging
+  template: src=service-default.conf.j2 dest={{beaver_conf_dir}}/conf.d/{{sub_service.name}}.conf
+  when: centralized_logging_enabled | int > 0
+  register: hlm_notify_beaver_restart
+  no_log: yes
+
+# Configure Logrotate Check
+#------------------------------------------------------------------------------
+- name: kronos-producer | configure | Remove old logrotate check config file
+  file: path={{ logrotate_if_needed_path }} state=absent
+
+- name: kronos-producer | configure | Create /opt/kronos directory
+  file: path={{ opt_kronos_dir }} state=directory owner=root group=root
+
+- name: kronos-producer | configure | Create /var/log/kronos directory
+  file: path={{ var_log_partition }}/kronos state=directory owner=kronos group=adm
+
+- name: kronos-producer | configure | Configure Logrotate if needed script
+  template: src=logrotate_if_needed.sh.j2 dest={{ logrotate_if_needed_path }} mode=0755
+  when: logrotate_check_enable
+
+- name: kronos-producer | configure | Add cron entry for logrotate if needed script
+  cron: name="Run logrotate if high watermark hit"
+        minute=*/{{ logrotate_check_sleep_minutes }} job={{ logrotate_if_needed_path }}
+
+- name: kronos-producer | configure | Set log file permissions for SELinux RHEL environments
+  file: recurse=yes path=/var/log state=directory seuser=system_u serole=object_r setype=var_log_t
+  register: result
+  until: result|success
+  when:
+    ansible_os_family == 'RedHat'
+
+- name: kronos-producer | configure | Set openvswitch log file permissions for SELinux RHEL environments
+  file: recurse=yes path=/var/log/openvswitch state=directory seuser=system_u serole=object_r setype=openvswitch_rw_t
+  register: result
+  until: result|success
+  when:
+    ansible_os_family == 'RedHat'
+
+- name: kronos-producer | configure | Remove logrotate files for RHEL that have duplicate entries
+  file: state=absent path={{ item }}
+  with_items:
+    - /etc/logrotate.d/openvswitch
+    - /etc/logrotate.d/syslog
+
+- name: kronos-producer | configure | Add cron entry for hourly logrotate for RHEL
+  cron: name="Run hourly cron jobs"
+        minute=17 job="cd / && run-parts /etc/cron.hourly"
+  when:
+    ansible_os_family == 'RedHat'
+
+- name: kronos-producer | configure | Copy logrotate.conf file
+  file: src=logrotate.conf dest=/etc/logrotate.conf mode=0644

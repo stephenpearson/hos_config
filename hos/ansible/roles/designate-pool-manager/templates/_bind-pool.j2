@@ -1,0 +1,37 @@
+{# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP #}
+{% if DES_PMG.consumes_FND_BND.members is defined -%}
+{% set pool_nameservers=[] %}
+{% set pool_targets=[] %}
+{% set bind_members=DES_PMG.consumes_FND_BND.members.private %}
+{% set bind_rndc_members=DES_PMG.consumes_FND_BND.members.bind_rndc %}
+# Bind Pool Configuration
+{% for member in bind_members %}
+{% set rndc=bind_rndc_members[loop.index0] %}
+
+{% set pool_nameserver_uuid %}00000000-0000-0002-0001-{{ '%012d' % loop.index }}{% endset %}
+{% do pool_nameservers.append(pool_nameserver_uuid) %}
+
+{% set pool_target_uuid %}00000000-0000-0002-0002-{{ '%012d' % loop.index }}{% endset %}
+{% do pool_targets.append(pool_target_uuid) %}
+
+[pool_nameserver:{{ pool_nameserver_uuid }}]
+host = {{ member.ip_address }}
+port = {{ member.port }}
+
+# End of [pool_nameserver:{{ pool_nameserver_uuid }}] section
+
+[pool_target:{{ pool_target_uuid }}]
+type = bind9
+masters = {{ designate_pool_masters }}
+options = rndc_host: {{ rndc.ip_address }}, rndc_port: {{ rndc.port }}, rndc_key_file: {{ designate_rndc_key_file }}, host: {{ member.ip_address }}, port: {{ member.port }}
+
+# End of [pool_target:{{ pool_target_uuid }}] section
+
+{% endfor %}
+
+[pool:{{ designate_pool_id }}]
+nameservers = {{ pool_nameservers | join(', ') }}
+targets = {{ pool_targets | join(', ') }}
+
+# End of [pool:{{ designate_pool_id }}] section
+{% endif %}

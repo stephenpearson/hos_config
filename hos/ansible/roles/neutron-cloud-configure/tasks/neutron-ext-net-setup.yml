@@ -1,0 +1,40 @@
+#
+# (c) Copyright 2015,2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+# NOTE: os_network does not support creating an external network so using CLI.
+
+- name: check if ext-net exists
+  shell: neutron {{ neutron_cmd_args }} net-external-list
+  register: known_nets
+  environment:
+    OS_PASSWORD: "{{ neutron_admin_password }}"
+
+- name: Skip creation of external network
+  debug: msg="Already created"
+  when: "'ext-net' in known_nets.stdout"
+
+- name: Create an external network
+  shell: neutron {{ neutron_cmd_args }} net-create ext-net --router:external
+  when: "not 'ext-net' in known_nets.stdout"
+  environment:
+    OS_PASSWORD: "{{ neutron_admin_password }}"
+
+- name: Create the appropriate subnet
+  shell: neutron {{ neutron_cmd_args }} subnet-create ext-net {{ EXT_NET_CIDR }} --disable-dhcp{%  if EXT_NET_GWY is defined %} --gateway {{ EXT_NET_GWY }}{% endif %}
+  when: "not 'ext-net' in known_nets.stdout"
+  environment:
+    OS_PASSWORD: "{{ neutron_admin_password }}"

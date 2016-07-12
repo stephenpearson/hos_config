@@ -1,0 +1,77 @@
+#
+# (c) Copyright 2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+services:
+  - name: barbican
+    external_service_name: key-manager
+    directory: /var/log/barbican
+  - name: ceilometer
+    external_service_name: metering
+    directory: /var/log/ceilometer
+  - name: ceph
+    external_service_name: ceph-storage
+    directory: /var/log/ceph
+  - name: cinder
+    external_service_name: block-storage
+    directory: /var/log/cinder
+  - name: designate
+    external_service_name: dns
+    directory: /var/log/designate
+  - name: eon
+    external_service_name: eon
+    directory: /var/log/eon
+  - name: freezer-agent
+    external_service_name: backup
+    directory: /var/log/freezer-agent
+  - name: freezer-api
+    external_service_name: backup
+    directory: /var/log/freezer-api
+  - name: glance
+    external_service_name: image-service
+    directory: /var/log/glance
+  - name: heat
+    external_service_name: orchestration
+    directory: /var/log/heat
+  - name: horizon
+    external_service_name: web-ui
+    directory: /var/log/horizon
+  - name: ironic
+    external_service_name: baremetal
+    directory: /var/log/ironic
+  - name: keystone
+    external_service_name: identity-service
+    directory: /var/log/keystone
+  - name: monasca
+    external_service_name: monitoring
+    directory: /var/log/monasca
+  - name: neutron
+    external_service_name: networking
+    directory: /var/log/neutron
+  - name: nova
+    external_service_name: compute
+    directory: /var/log/nova
+  - name: octavia
+    external_service_name: octavia
+    directory: /var/log/octavia
+  - name: openvswitch-switch
+    external_service_name: networking
+    directory: /var/log/openvswitch
+  - name: ops-console
+    external_service_name: ops-console
+    directory: /var/log/ops-console
+  - name: swift
+    external_service_name: object-storage
+    directory: /var/log/swift

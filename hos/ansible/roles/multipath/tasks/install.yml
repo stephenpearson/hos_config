@@ -1,0 +1,118 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+- include_vars: multipath_vars.yml
+
+# Is this the first ever run
+- name: multipath | install | Check if multipath ran
+  stat: path=/etc/hos/multipath-ran
+  register: multipath_ran_result
+
+- name: multipath | install | get pvs
+  shell: pvs | grep mapper
+  register: multipath_pv_devices
+  failed_when: multipath_pv_devices.rc > 1
+
+- name: multipath | install | get mount paths
+  shell: mount | grep mpath
+  register: multipath_mount_devices
+  failed_when: multipath_mount_devices.rc > 1
+
+- name: multipath | install | get mounts
+  set_fact:
+     multipath_used: True
+  when: multipath_mount_devices.rc == 0 or multipath_pv_devices.rc == 0
+
+- name: multipath | install | check fact
+  check_wildcard: blacklist='{{ multipath_blacklist | to_json }}'
+  when: multipath_blacklist is defined and multipath_used is defined and ansible_os_family == 'RedHat'
+
+- name: multipath | install | Check if multipath ran
+  stat: path=/etc/hos/osconfig-ran
+  register: osconfig_ran_result
+
+- name: multipath | install | Set fact if first run
+  set_fact:
+      multipath_first_run: True
+  when: (multipath_ran_result.stat.exists == False) and (osconfig_ran_result.stat.exists == False)
+
+- name: multipath | install | Load multipath configuration variables
+  include_vars: "multipath_vars.yml"
+
+- name: multipath | install | Get wwids of all devices in disk model
+  get_wwid: hlm_host_info='{{ host | to_json }}'
+  register: disk_model_mappings
+
+- name: multipath | install | Set initial multipath configuration
+  template:
+    src: "multipath.conf.j2"
+    dest: "/etc/multipath.conf"
+  register: configuration_update
+
+- name: multipath | install | Install the required packages in Redhat derivatives
+  yum: name={{ item }} state=installed
+  with_items: multipath_pkgs
+  when: ansible_os_family == 'RedHat'
+
+- name: multipath | install | Install the required packages in Debian derivatives
+  apt: name={{ item }} state=installed
+  with_items: multipath_pkgs
+  when: ansible_os_family == 'Debian'
+
+- name: multipath | install | flush multipath on first run
+  command: /sbin/multipath -F
+  when: multipath_first_run is defined
+  ignore_errors: yes
+
+- name: multipath | install | Get binding on first run
+  get_dev_names:
+  when: multipath_first_run is defined and multipath_reset_binding == True
+  register: get_devs_result
+
+- name: multipath | install | remove bindings on first run
+  file: path=/etc/multipath/bindings state=absent
+  when: multipath_first_run is defined and multipath_reset_binding == True
+
+- name: multipath | install | setup binding on first run
+  lineinfile:
+      create: yes
+      dest: /etc/multipath/bindings
+      regexp: '{{ item.value }} {{ item.key }}'
+      line: '{{ item.value }} {{ item.key }}'
+      owner: root
+      group: root
+      mode: 0600
+  with_dict: "{{ get_devs_result.bindings | default({}) }}"
+  when: multipath_first_run is defined and multipath_reset_binding == True
+
+
+- name: multipath | install | Restart if there is a configuration update
+  service:
+    name: "{{ item }}"
+    state: "restarted"
+    enabled: "yes"
+  with_items: service_daemons
+  when: configuration_update.changed or multipath_first_run is defined
+
+- name: multipath | install | Update initramfs
+  command: "{{ initramfs_update_command }}"
+  when: initramfs_update_command is defined and configuration_update.changed
+
+- name: multipath | marker | create /etc/hos directory
+  file: path=/etc/hos state=directory
+
+- name: osconfig | marker | create marker
+  file: path=/etc/hos/multipath-ran state=touch

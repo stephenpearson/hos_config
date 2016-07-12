@@ -1,0 +1,31 @@
+{# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP #}
+{% if DES_PMG.consumes_FND_PDN.members is defined -%}
+{% set pool_nameservers=[] %}
+{% set pool_targets=[] %}
+{% set powerdns_members=DES_PMG.consumes_FND_PDN.members.private %}
+# PowerDNS Pool Configuration
+{% for member in powerdns_members %}
+{% set pool_nameserver_uuid %}00000000-0000-0001-0001-{{ '%012d' % loop.index }}{% endset %}
+{% do pool_nameservers.append(pool_nameserver_uuid) %}
+
+[pool_nameserver:{{ pool_nameserver_uuid }}]
+host = {{ member.ip_address }}
+port = {{ member.port }}
+
+# End of [pool_nameserver:{{ pool_nameserver_uuid }}] section
+
+{% endfor %}
+{% do pool_targets.append("00000000-0000-0001-0002-000000000001") %}
+[pool_target:00000000-0000-0001-0002-000000000001]
+type = powerdns
+masters = {{ designate_pool_masters }}
+options = connection: {{ designate_powerdns_database_connection }}, host: 127.0.0.1, port: 53
+
+# End of [pool_target:00000000-0000-0001-0002-000000000001] section
+
+[pool:{{ designate_pool_id }}]
+nameservers = {{ pool_nameservers | join(', ') }}
+targets = {{ pool_targets | join(', ') }}
+
+# End of [pool:{{ designate_pool_id }}] section
+{% endif %}

@@ -1,0 +1,104 @@
+#
+# (c) Copyright 2015,2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+# Configure RabbitMQ (this is being deprecated post HOS 3.0)
+#------------------------------------------------------------------------------
+- name: kronos-server | configure | Create /opt/kronos directory
+  file: path={{ opt_kronos_dir }} state=directory owner=root group=root
+
+- name: kronos-server | configure | Create /var/log/kronos directory
+  file: path={{ var_kronos_dir }} state=directory owner=root group=root
+
+- name: kronos-server | configure | Deploy Rabbit prime script
+  template: src=prime_rabbit.py.j2 dest={{ opt_kronos_dir}}/prime_rabbit.py mode=0600
+
+- name: kronos-server | configure | Configure Rabbit exchange/script
+  shell: python {{ opt_kronos_dir }}/prime_rabbit.py
+  run_once: true
+
+- name: kronos-server | configure | Add cron entry for priming rabbit
+  cron: name="Prime Rabbit" minute=*/5 user="root" job="python {{ opt_kronos_dir }}/prime_rabbit.py"
+
+# Configure Kafka
+#------------------------------------------------------------------------------
+- name: logging-server | configure | Check for Kafka topic
+  shell: /opt/kafka/bin/kafka-topics.sh --list --zookeeper {{ kronos_zookeeper_hosts }} | grep {{ kronos_kafka_topic }}
+  ignore_errors: yes
+  run_once: true
+  register: kafka_topic_exists
+
+- name: logging-server | configure | Configure Kafka topic
+  shell: >
+    /opt/kafka/bin/kafka-topics.sh --create --zookeeper {{ kronos_zookeeper_hosts }} --replication-factor
+    {{ kronos_kafka_replication_factor }} --partitions {{ kronos_kafka_partitions }} --topic {{ kronos_kafka_topic }}
+  run_once: true
+  when: kafka_topic_exists.rc != 0
+
+- name: kronos-server | configure | Configure per topic segment rotation
+  command: /opt/kafka/bin/kafka-topics.sh --zookeeper {{ kronos_zookeeper_hosts }} --topic {{ kronos_kafka_topic }} --alter --config segment.ms={{ kafka_segment_minutes * 60 * 1000 }}
+  run_once: true
+
+# Configure Elasticsearch
+#------------------------------------------------------------------------------
+- name: logging-server | configure | Configure Elasticsearch process options
+  template: src=elasticsearch-default.j2 dest=/etc/default/elasticsearch
+  register: hlm_notify_elasticsearch_restart
+
+- name: logging-server | configure | Configure Elasticsearch options
+  template: src=elasticsearch.yml.j2 dest=/etc/elasticsearch/elasticsearch.yml
+  register: hlm_notify_elasticsearch_restart
+
+- name: logging-server | configure | Configure Elasticsearch logging options
+  template: src=logging.yml.j2 dest=/etc/elasticsearch/logging.yml
+  register: hlm_notify_elasticsearch_restart
+
+# Configure Logstash
+#------------------------------------------------------------------------------
+- name: logging-server | configure | Configure Logstash
+  template: src=logstash-default.j2 dest=/etc/default/logstash owner={{logstash_user}} group={{logstash_group}} mode=0600
+  register: hlm_notify_logstash_restart
+
+- name: logging-server | configure | Configure Logstash sources
+  template: src=logstash.conf.j2 dest=/etc/logstash/conf.d/logstash.conf owner={{logstash_user}} group={{logstash_group}} mode=0600
+  register: hlm_notify_logstash_restart
+
+# Configure Kibana
+#------------------------------------------------------------------------------
+- name: logging-server | configure | Configure Kibana
+  template: src=kibana.yml.j2 dest={{ kibana_path }}/config/kibana.yml
+  register: hlm_notify_kibana_restart
+
+- name: logging-server | configure | Configure Kibana htpasswd
+  htpasswd: path={{ kibana_path }}/kibana.htpasswd name={{ kibana_user }} password={{ kibana_pass }} owner=root mode=0644
+  register: hlm_notify_kronos_apache_reload
+
+- name: logging-server | configure | Configure Kibana/Apache virtualhost available
+  template: src=kibana-apache2.conf.j2 dest=/etc/apache2/sites-available/kibana-apache2.conf
+  register: hlm_notify_kronos_apache_reload
+
+- name: logging-server | configure | Configure Kibana/Apache virtualhost enabled
+  file: src=/etc/apache2/sites-available/kibana-apache2.conf dest=/etc/apache2/sites-enabled/kibana-apache2.conf state=link
+  register: hlm_notify_kronos_apache_reload
+
+# Configure Curator
+#------------------------------------------------------------------------------
+- name: logging-server | configure | Remove old curator config file
+  file: path=/etc/cron.hourly/prune_es_indices state=absent
+
+- name: logging-server | configure | Configure Curator
+  template: src=prune_es_indices.sh.j2 dest=/etc/cron.hourly/prune_es_indices mode=0755
+  when: curator_enable

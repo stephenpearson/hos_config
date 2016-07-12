@@ -1,0 +1,13 @@
+{# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP #}
+{
+    "cloudsystem_bll_url": "{{ opsconsole_url_path }}",
+    "integerated_logging_url": "{{ kibana_vip_url }}",
+    "tenant_console_url": "{{ tenant_console_vip_url }}",
+    "integerated_audit_url": "#/dashboard/file/audit",
+    "activity_feed_url": "#/dashboard/file/activity",
+    "default_route": "/general/dashboard_alarms_summary",
+    "debug_mode": "false",
+    "console_logging": ["warn", "error", "log", "info", "debug"],
+    "install_version": "{{ install_env_version }}",
+    "env": "{{ opsconsole_install_env }}"
+}

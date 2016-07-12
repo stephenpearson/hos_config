@@ -1,0 +1,82 @@
+{#
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+#}
+# This configuration file includes the default values of HOS
+# Changes may be made to this file by customer
+
+[DEFAULT]
+backlog = 4096
+max_supported_clusters = 9999
+enable_v1_api = True
+vmware_cert_check = False
+auth_strategy = keystone
+log_config_append = "{{ eon_logging_conf }}"
+
+{% if enable_eon_api_auditing | bool %}
+{% if eon_component == "eon-api" %}
+# Auditing
+auditing = "{{ enable_eon_api_auditing }}"
+audit_map_file = "{{ eon_audit_conf }}"
+{% endif %}
+{% endif %}
+
+# Network driver
+network_driver = ovsvapp
+
+# RabbitMQ
+rabbit_userid = "{{ rabbit_userid }}"
+rabbit_password = "{{ rabbit_password }}"
+rabbit_hosts = "{{ rabbit_hosts }}"
+
+# Database
+esx_sql_connection = "{{ esx_sql_connection }}"
+esx_sql_idle_timeout= 3600
+
+[neutron]
+admin_auth_url = "{{ neutron_admin_auth_url }}"
+admin_password = "{{ neutron_admin_password }}"
+admin_tenant_name = "{{ neutron_admin_tenant_name }}"
+admin_username = "{{ neutron_admin_username }}"
+neutron_auth_strategy = keystone
+neutron_ca_certificates_file = /etc/ssl/certs/ca-certificates.crt
+url = "{{ neutron_url }}"
+endpoint_type = "{{ neutron_endpoint_type }}"
+timeout = 300
+
+{% if host_ip and port is defined %}
+[api]
+host_ip = "{{ host_ip }}"
+port = "{{ port }}"
+api_workers = 3
+{% endif %}
+
+[keystone_authtoken]
+admin_tenant_name = "{{ eon_admin_tenant_name }}"
+admin_password = "{{ eon_admin_password }}"
+admin_user = "{{ eon_admin_user }}"
+auth_uri = "{{ keystone_auth_uri }}"
+identity_uri = "{{ keystone_identity_uri }}"
+
+{% if enable_eon_api_auditing | bool %}
+{% if eon_component == "eon-api" %}
+[audit_middleware_notifications]
+driver = "{{ eon_notification_driver }}"
+{% endif %}
+{% endif %}
+
+### End of File  ###
+## Do NOT put anything after this line ##

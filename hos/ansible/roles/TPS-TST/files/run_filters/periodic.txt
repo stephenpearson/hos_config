@@ -1,0 +1,61 @@
+# Run all API tests (includes new ones as they pop-up via upstream merge
++tempest\.api\.*
+-tempest\.api\.compute\.test_networks*
+-tempest\.api\.compute\.test_tenant_networks*
+-tempest\.api\.compute\.admin\.test_agents*
+-tempest\.api\.compute\.admin\.test_floating_ips_bulk*
+-tempest\.api\.compute\.admin\.test_networks*
+-tempest\.api\.compute\.admin\.test_servers_negative\.ServersAdminNegativeTestJSON\.test_migrate_non_existent_server
+-tempest\.api\.compute\.certificates\.test_certificates\.*
+-tempest\.api\.compute\.floating_ips\.test_list_floating_ips\.FloatingIPDetailsTestJSON\.test_list_floating_ip_pools
+-tempest\.api\.compute\.servers\.test_servers_negative\.ServersNegativeTestJSON\.test_force_delete_nonexistent_server_id
+-tempest\.api\.compute\.servers\.test_servers_negative\.ServersNegativeTestJSON\.test_restore_nonexistent_server_id
+-tempest\.api\.compute\.servers\.test_servers_negative\.ServersNegativeTestJSON\.test_restore_server_invalid_state
+
+# API test exclusions (test specific)
+# Removing following test as the v3_endpoint_type flag is missing from the version of Tempest we're using.
+# This test can be put back when we have upstream Tempest.
+-tempest\.api\.identity\.admin\.v3\.test_default_project_id
+
+# (FIXME) Skip all identity v3 tests
+-tempest\.api\.identity\.admin\.v3
+-tempest\.api\.identity\.v3
+
+# Run all scenario tests (includes new ones as they pop-up via upstream merge
++tempest.scenario\.*
+
+# API test exclusions (test specific)
+# None so far
+# HQA-781 Disable glance test that require sharing as per GLAN-1977
+-tempest\.api\.image\.v2\.test_images_member\.ImagesMemberTest\.test_get_image_member
+-tempest\.api\.image\.v2\.test_images_member\.ImagesMemberTest\.test_image_share_accept
+-tempest\.api\.image\.v2\.test_images_member\.ImagesMemberTest\.test_image_share_reject
+-tempest\.api\.image\.v2\.test_images_member\.ImagesMemberTest\.test_remove_image_member
+-tempest\.api\.image\.v1\.test_image_members_negative\.ImageMembersNegativeTest\.test_add_member_with_non_existing_image
+-tempest\.api\.image\.v1\.test_image_members_negative\.ImageMembersNegativeTest\.test_delete_member_with_non_existing_image
+-tempest\.api\.image\.v2\.test_images_member_negative\.ImagesMemberNegativeTest\.test_image_share_invalid_status
+-tempest\.api\.image\.v2\.test_images_member_negative\.ImagesMemberNegativeTest\.test_image_share_owner_cannot_accept
+
+# HQA-774 Disable tests to get periodic passing
+-tempest\.api\.image\.v1\.test_images\.ListImagesTest
+-tempest\.api\.orchestration\.stacks\.test_neutron_resources\.NeutronResourcesTestJSON
+-tempest\.api\.volume\.admin\.test_volume_quotas_negative\.BaseVolumeQuotasNegativeV2TestJSON
+-tempest\.api\.volume\.admin\.test_volume_quotas_negative\.VolumeQuotasNegativeV1TestJSON
+-tempest\.api\.volume\.admin\.test_volume_snapshot_quotas_negative\.VolumeSnapshotNegativeV1TestJSON
+-tempest\.api\.volume\.admin\.test_volume_snapshot_quotas_negative\.VolumeSnapshotQuotasNegativeV2TestJSON
+-tempest\.api\.compute\.admin\.test_live_migration\.LiveBlockMigrationTestJSON\.test_live_block_migration
+-tempest\.api\.image\.v1\.test_images\.CreateRegisterImagesTest\.test_register_http_image
+-tempest\.api\.image\.v1\.test_images\.CreateRegisterImagesTest\.test_register_remote_image
+-tempest\.api\.object_storage\.test_container_sync_middleware\.ContainerSyncMiddlewareTest\.test_container_synchronization
+-tempest\.api\.object_storage\.test_object_expiry\.ObjectExpiryTest\.test_get_object_at_expiry_time
+-tempest\.api\.object_storage\.test_object_formpost_negative\.ObjectFormPostNegativeTest\.test_post_object_using_form_expired
+-tempest\.api\.object_storage\.test_object_temp_url_negative\.ObjectTempUrlNegativeTest\.test_get_object_after_expiration_time
+-tempest\.api\.volume\.admin\.test_volume_quotas\.BaseVolumeQuotasAdminV2TestJSON\.test_delete_quota
+-tempest\.api\.volume\.admin\.test_volume_quotas\.BaseVolumeQuotasAdminV2TestJSON\.test_update_all_quota_resources_for_tenant
+-tempest\.api\.volume\.admin\.test_volume_quotas\.VolumeQuotasAdminV1TestJSON\.test_delete_quota
+-tempest\.api\.volume\.admin\.test_volume_quotas\.VolumeQuotasAdminV1TestJSON\.test_update_all_quota_resources_for_tenant
+-tempest\.api\.volume\.v2\.test_volumes_list\.VolumesV2ListTestJSON\.test_volume_list_details_pagination
+-tempest\.api\.volume\.v2\.test_volumes_list\.VolumesV2ListTestJSON\.test_volume_list_pagination
+-tempest\.scenario\.test_encrypted_cinder_volumes\.TestEncryptedCinderVolumes\.test_encrypted_cinder_volumes_cryptsetup
+-tempest\.scenario\.test_encrypted_cinder_volumes\.TestEncryptedCinderVolumes\.test_encrypted_cinder_volumes_luks
+-tempest\.api\.network\.admin\.test_l3_agent_scheduler\.L3AgentSchedulerTestJSON\.test_add_list_remove_router_on_l3_agent
