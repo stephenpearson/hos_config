@@ -63,7 +63,7 @@
 
 
     # Compute Nodes
-    - id: compute1
+    - id: compute5
       ip-addr: 192.168.10.6
       role: COMPUTE-ROLE
       server-group: RACK1
