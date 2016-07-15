@@ -35,7 +35,7 @@
           # will use this name instead of the IP address
           #You must either set this to a name that can be resolved in your network
           # or comment out this line to use IP addresses
-          external-name:
+          external-name: helion.mgl.hpcloud.net
 
           tls-components:
             - default
