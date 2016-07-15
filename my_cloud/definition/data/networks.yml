@@ -34,31 +34,31 @@
     # Modify these values to match your environment
     #
     - name: EXTERNAL-API-NET
-      vlanid: 101
+      vlanid: 849
       tagged-vlan: true
-      cidr: 10.0.1.0/24
-      gateway-ip: 10.0.1.1
+      cidr: 10.96.61.0/24
+      gateway-ip: 10.96.61.1
       network-group: EXTERNAL-API
-      #addresses:
-      #  - 10.0.1.10-10.0.1.250
+      addresses:
+        - 10.96.61.11-10.96.60.249
 
     - name: EXTERNAL-VM-NET
-      vlanid: 102
+      vlanid: 848
       tagged-vlan: true
       network-group: EXTERNAL-VM
 
     - name: GUEST-NET
-      vlanid: 103
+      vlanid: 4080
       tagged-vlan: true
-      cidr: 10.1.1.0/24
-      gateway-ip: 10.1.1.1
+      cidr: 192.168.0.0/24
+      gateway-ip: 192.168.0.1
       network-group: GUEST
 
     - name: MANAGEMENT-NET
-      vlanid: 100
+      vlanid: 4031
       tagged-vlan: false
-      cidr: 192.168.10.0/24
-      gateway-ip: 192.168.10.1
+      cidr: 172.31.194.0/24
+      gateway-ip: 172.31.194.1
       network-group: MANAGEMENT
-      #addresses:
-      #  - 192.168.10.1-192.168.10.250
+      addresses:
+        - 172.31.194.50-172.31.194.250

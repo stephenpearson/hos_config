@@ -32,7 +32,7 @@
 
     # Controllers
     - id: controller1
-      ip-addr: 192.168.10.3
+      ip-addr: 172.31.194.50
       role: CONTROLLER-ROLE
       server-group: RACK1
       nic-mapping: HP-DL360-4PORT
@@ -42,7 +42,7 @@
       ilo-user: admin
 
     - id: controller2
-      ip-addr: 192.168.10.4
+      ip-addr: 172.31.194.51
       role: CONTROLLER-ROLE
       server-group: RACK2
       nic-mapping: HP-DL360-4PORT
@@ -52,7 +52,7 @@
       ilo-user: admin
 
     - id: controller3
-      ip-addr: 192.168.10.5
+      ip-addr: 172.31.194.52
       role: CONTROLLER-ROLE
       server-group: RACK3
       nic-mapping: HP-DL360-4PORT
@@ -62,21 +62,9 @@
       ilo-user: admin
 
 
-    # Compute Nodes
-    - id: compute5
-      ip-addr: 192.168.10.6
-      role: COMPUTE-ROLE
-      server-group: RACK1
-      nic-mapping: MY-2PORT-SERVER
-      mac-addr: "d6:70:c1:36:43:f7"
-      ilo-ip: 192.168.9.6
-      ilo-password: password
-      ilo-user: admin
-
-
     # VSA Storage Nodes
     - id: vsa1
-      ip-addr: 192.168.10.9
+      ip-addr: 172.31.194.53
       server-group: RACK1
       role: VSA-ROLE
       nic-mapping: MY-2PORT-SERVER
@@ -86,7 +74,7 @@
       ilo-user: admin
 
     - id: vsa2
-      ip-addr: 192.168.10.10
+      ip-addr: 172.31.194.54
       server-group: RACK2
       role: VSA-ROLE
       nic-mapping: MY-2PORT-SERVER
@@ -96,7 +84,7 @@
       ilo-user: admin
 
     - id: vsa3
-      ip-addr: 192.168.10.11
+      ip-addr: 172.31.194.55
       role: VSA-ROLE
       server-group: RACK3
       nic-mapping: MY-2PORT-SERVER
@@ -104,3 +92,36 @@
       ilo-ip: 192.168.9.11
       ilo-password: password
       ilo-user: admin
+
+
+    # Compute Nodes
+    - id: compute1
+      ip-addr: 172.31.194.56
+      role: COMPUTE-ROLE
+      server-group: RACK1
+      nic-mapping: MY-2PORT-SERVER
+      mac-addr: "d6:70:c1:36:43:f7"
+      ilo-ip: 192.168.9.6
+      ilo-password: password
+      ilo-user: admin
+
+    - id: compute2
+      ip-addr: 172.31.194.57
+      role: COMPUTE-ROLE
+      server-group: RACK1
+      nic-mapping: MY-2PORT-SERVER
+      mac-addr: "d6:70:c1:36:43:f7"
+      ilo-ip: 192.168.9.6
+      ilo-password: password
+      ilo-user: admin
+
+    - id: compute3
+      ip-addr: 172.31.194.58
+      role: COMPUTE-ROLE
+      server-group: RACK1
+      nic-mapping: MY-2PORT-SERVER
+      mac-addr: "d6:70:c1:36:43:f7"
+      ilo-ip: 192.168.9.6
+      ilo-password: password
+      ilo-user: admin
+
