@@ -37,7 +37,7 @@
       vlanid: 849
       tagged-vlan: true
       cidr: 10.96.61.0/24
-      gateway-ip: 10.96.61.1
+      gateway-ip: 10.96.61.250
       network-group: EXTERNAL-API
       addresses:
         - 10.96.61.11-10.96.61.249
@@ -51,14 +51,14 @@
       vlanid: 4080
       tagged-vlan: true
       cidr: 192.168.0.0/24
-      gateway-ip: 192.168.0.1
+      gateway-ip: 192.168.0.250
       network-group: GUEST
 
     - name: MANAGEMENT-NET
       vlanid: 4031
       tagged-vlan: false
       cidr: 172.31.194.0/24
-      gateway-ip: 172.31.194.1
+      gateway-ip: 172.31.194.250
       network-group: MANAGEMENT
       addresses:
-        - 172.31.194.50-172.31.194.250
+        - 172.31.194.50-172.31.194.249
