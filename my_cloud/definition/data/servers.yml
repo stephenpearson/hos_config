@@ -110,8 +110,8 @@
       role: COMPUTE-ROLE
       server-group: RACK1
       nic-mapping: MY-2PORT-SERVER
-      mac-addr: "d6:70:c1:36:43:f7"
-      ilo-ip: 192.168.9.6
+      mac-addr: "d6:70:c1:36:43:f8"
+      ilo-ip: 192.168.9.7
       ilo-password: password
       ilo-user: admin
 
@@ -120,8 +120,8 @@
       role: COMPUTE-ROLE
       server-group: RACK1
       nic-mapping: MY-2PORT-SERVER
-      mac-addr: "d6:70:c1:36:43:f7"
-      ilo-ip: 192.168.9.6
+      mac-addr: "d6:70:c1:36:43:f9"
+      ilo-ip: 192.168.9.8
       ilo-password: password
       ilo-user: admin
 
