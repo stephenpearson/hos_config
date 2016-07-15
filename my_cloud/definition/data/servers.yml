@@ -21,7 +21,7 @@
     # NOTE: These values need to be changed to match your environment.
     # Define the network range that contains the ip-addr values for
     # the individual servers listed below.
-    subnet: 192.168.10.0
+    subnet: 172.31.194.0
     netmask: 255.255.255.0
 
   servers:

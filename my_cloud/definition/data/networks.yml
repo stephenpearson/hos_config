@@ -40,7 +40,7 @@
       gateway-ip: 10.96.61.1
       network-group: EXTERNAL-API
       addresses:
-        - 10.96.61.11-10.96.60.249
+        - 10.96.61.11-10.96.61.249
 
     - name: EXTERNAL-VM-NET
       vlanid: 848
