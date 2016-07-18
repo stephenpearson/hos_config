@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -13,115 +13,233 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
+
+
 ---
   product:
     version: 2
-
   baremetal:
-    # NOTE: These values need to be changed to match your environment.
-    # Define the network range that contains the ip-addr values for
-    # the individual servers listed below.
-    subnet: 172.31.194.0
+    subnet: 10.243.140.0
     netmask: 255.255.255.0
 
   servers:
-    # NOTE: Addresses of servers need to be changed to match your environment.
-    #
-    #       Add additional servers as required
-    #
 
-    # Controllers
-    - id: controller1
-      ip-addr: 172.31.194.50
-      role: CONTROLLER-ROLE
-      server-group: RACK1
-      nic-mapping: HP-DL360-4PORT
-      mac-addr: "b2:72:8d:ac:7c:6f"
-      ilo-ip: 192.168.9.3
-      ilo-password: password
+    - id: core1
+      role: CORE-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:cc:ac"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.10
+      ilo-ip: 10.1.8.90
       ilo-user: admin
-
-    - id: controller2
-      ip-addr: 172.31.194.51
-      role: CONTROLLER-ROLE
-      server-group: RACK2
-      nic-mapping: HP-DL360-4PORT
-      mac-addr: "8a:8e:64:55:43:76"
-      ilo-ip: 192.168.9.4
       ilo-password: password
-      ilo-user: admin
 
-    - id: controller3
-      ip-addr: 172.31.194.52
-      role: CONTROLLER-ROLE
-      server-group: RACK3
-      nic-mapping: HP-DL360-4PORT
-      mac-addr: "26:67:3e:49:5a:a7"
-      ilo-ip: 192.168.9.5
+    - id: mtrmon1
+      role: MTRMON-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:ce:10"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.11
+      ilo-ip: 10.1.12.96
+      ilo-user: admin
       ilo-password: password
+
+    - id: dbmq1
+      role: DBMQ-ROLE
+      server-group: rack1
+      mac-addr: "5c:b9:01:89:b7:20"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.12
+      ilo-ip: 10.1.8.86
       ilo-user: admin
-
-
-    # VSA Storage Nodes
-    - id: vsa1
-      ip-addr: 172.31.194.53
-      server-group: RACK1
-      role: VSA-ROLE
-      nic-mapping: MY-2PORT-SERVER
-      mac-addr: "8b:f6:9e:ca:3b:78"
-      ilo-ip: 192.168.9.9
       ilo-password: password
-      ilo-user: admin
 
-    - id: vsa2
-      ip-addr: 172.31.194.54
-      server-group: RACK2
-      role: VSA-ROLE
-      nic-mapping: MY-2PORT-SERVER
-      mac-addr: "8b:f6:9e:ca:3b:79"
-      ilo-ip: 192.168.9.10
+    - id: swpac1
+      role: SWPAC-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:cb:bc"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.13
+      ilo-ip: 10.1.12.88
+      ilo-user: admin
       ilo-password: password
-      ilo-user: admin
 
-    - id: vsa3
-      ip-addr: 172.31.194.55
-      role: VSA-ROLE
-      server-group: RACK3
-      nic-mapping: MY-2PORT-SERVER
-      mac-addr: "8b:f6:9e:ca:3b:7a"
-      ilo-ip: 192.168.9.11
+    - id: neut1
+      role: NEUTRON-ROLE
+      server-group: rack1
+      mac-addr: "5c:b9:01:89:b6:18"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.14
+      ilo-ip: 10.1.12.91
+      ilo-user: admin
       ilo-password: password
+
+    - id: swobj1
+      role: SWOBJ-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:ca:e0"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.15
+      ilo-ip: 10.1.12.85
       ilo-user: admin
+      ilo-password: password
 
-
-    # Compute Nodes
     - id: compute1
-      ip-addr: 172.31.194.56
       role: COMPUTE-ROLE
-      server-group: RACK1
-      nic-mapping: MY-2PORT-SERVER
-      mac-addr: "d6:70:c1:36:43:f7"
-      ilo-ip: 192.168.9.6
-      ilo-password: password
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:78:c4"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.16
+      ilo-ip: 10.1.12.86
       ilo-user: admin
+      ilo-password: password
+
+    - id: vsa1
+      role: VSA-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:78:c4"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.17
+      ilo-ip: 10.1.12.86
+      ilo-user: admin
+      ilo-password: password
+
+    - id: core2
+      role: CORE-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:af:92:c0"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.18
+      ilo-ip: 10.1.12.94
+      ilo-user: admin
+      ilo-password: password
+
+    - id: mtrmon2
+      role: MTRMON-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:b5:ce:10"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.19
+      ilo-ip: 10.1.12.96
+      ilo-user: admin
+      ilo-password: password
+
+    - id: dbmq2
+      role: DBMQ-ROLE
+      server-group: rack2
+      mac-addr: "5c:b9:01:89:b7:20"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.20
+      ilo-ip: 10.1.8.86
+      ilo-user: admin
+      ilo-password: password
+
+    - id: swpac2
+      role: SWPAC-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:b5:7e:08"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.21
+      ilo-ip: 10.1.8.93
+      ilo-user: admin
+      ilo-password: password
+
+    - id: neut2
+      role: NEUTRON-ROLE
+      server-group: rack2
+      mac-addr: "5c:b9:01:89:b6:18"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.22
+      ilo-ip: 10.1.12.91
+      ilo-user: admin
+      ilo-password: password
+
+    - id: swobj2
+      role: SWOBJ-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:b5:cd:00"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.23
+      ilo-ip: 10.1.12.83
+      ilo-user: admin
+      ilo-password: password
 
     - id: compute2
-      ip-addr: 172.31.194.57
       role: COMPUTE-ROLE
-      server-group: RACK1
-      nic-mapping: MY-2PORT-SERVER
-      mac-addr: "d6:70:c1:36:43:f8"
-      ilo-ip: 192.168.9.7
-      ilo-password: password
+      server-group: rack2
+      mac-addr: "8c:dc:d4:b5:0f:48"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.24
+      ilo-ip: 10.1.12.90
       ilo-user: admin
+      ilo-password: password
+
+    - id: vsa2
+      role: VSA-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:b5:0f:48"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.25
+      ilo-ip: 10.1.12.90
+      ilo-user: admin
+      ilo-password: password
+
+    - id: mtrmon3
+      role: MTRMON-ROLE
+      server-group: rack3
+      mac-addr: "8c:dc:d4:b5:ce:10"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.26
+      ilo-ip: 10.1.12.96
+      ilo-user: admin
+      ilo-password: password
+
+    - id: dbmq3
+      role: DBMQ-ROLE
+      server-group: rack3
+      mac-addr: "5c:b9:01:89:b7:20"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.27
+      ilo-ip: 10.1.8.86
+      ilo-user: admin
+      ilo-password: password
+
+    - id: swpac3
+      role: SWPAC-ROLE
+      server-group: rack3
+      mac-addr: "5c:b9:01:89:b4:1c"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.28
+      ilo-ip: 10.1.12.206
+      ilo-user: admin
+      ilo-password: password
+
+    - id: swobj3
+      role: SWOBJ-ROLE
+      server-group: rack3
+      mac-addr: "8c:dc:d4:b5:f0:80"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.29
+      ilo-ip: 10.1.8.205
+      ilo-user: admin
+      ilo-password: password
 
     - id: compute3
-      ip-addr: 172.31.194.58
       role: COMPUTE-ROLE
-      server-group: RACK1
-      nic-mapping: MY-2PORT-SERVER
-      mac-addr: "d6:70:c1:36:43:f9"
-      ilo-ip: 192.168.9.8
-      ilo-password: password
+      server-group: rack3
+      mac-addr: "5c:b9:01:88:d4:3c"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.30
+      ilo-ip: 10.1.12.204
       ilo-user: admin
+      ilo-password: password
 
+    - id: vsa3
+      role: VSA-ROLE
+      server-group: rack3
+      mac-addr: "5c:b9:01:88:d0:a0"
+      nic-mapping: HP-DL360-6PORT
+      ip-addr: 10.243.140.31
+      ilo-ip: 10.1.12.212
+      ilo-user: admin
+      ilo-password: password

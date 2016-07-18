@@ -1,5 +1,5 @@
 
-(c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+(c) Copyright 2015 Hewlett Packard Enterprise Development Company LP
 
 Licensed under the Apache License, Version 2.0 (the "License"); you may
 not use this file except in compliance with the License. You may obtain
@@ -14,62 +14,95 @@ License for the specific language governing permissions and limitations
 under the License.
 
 
-## Helion Entry Scale Cloud with VSA Example ##
+##Helion Single Region Mid-Size model##
+###Introduction###
 
-The input files in this example deploy a cloud that has the following characteristics:
+The mid-size model is intended as a template for a moderate sized cloud. The Control plane is made up of multiple server clusters to provide sufficient computational, network and IOPS capacity for a mid-size production style cloud.  
+
+The Helion mid size model is architected as follows:
+
+####Control plane:
+
+  - Core cluster: Runs Core OpenStack Services, (e.g. keystone, nova api, glance api, neutron api, horizon, heat api). Default configuration is two nodes of role type CORE-ROLE
+
+  - Metering & Monitoring cluster: Runs the OpenStack Services for metering & monitoring (e.g. celiometer, monasca & logging). Default configuration is three nodes of role type MTRMON-ROLE
+
+  - Database & Message Queue Cluster: Runs clustered MySQL and RabbitMQ services to support the Helion cloud infrastructure. Default configuration is three nodes of role type DBMQ-ROLE. Three nodes are required for high availability.
+
+  - Swift PAC cluster: Runs the Swift Proxy, Account and Container services. Default configuration is three nodes or role type SWPAC-ROLE.
+  - Neutron Agent cluster: Runs Neutron VPN (L3), DHCP, Metadata and OpenVswitch agents. Default configuration is three nodes or role type NEUTRON-ROLE.
+
+####Resource nodes: Three resource pools are defined:
+
+  - Compute: Runs nova compute sand associated services. Runs on nodes of role type COMPUTE-ROLE. The example lists 3 nodes, one node is required at a minimum.
+
+  - Vsa: Runs the Store Virtual VSA appliance. Runs on nodes of role type VSA-ROLE. One node minimum is required for demo purposes, three for high availability. The example lists 1 node.
+
+  - Object: Runs the Swift object service. Runs on nodes of role type SWOBJ-ROLE. The minimum node count should match your Swift replica count. The example lists 3 nodes.
 
 
-### Control Planes ###
 
-- A single control plane consisting of three servers that co-host all of the required services.
+The minimum node count required to run the model un-modified is 20 nodes. This can be reduced by consolidating servies on the control plance clusters.
 
-### Resource Pools ###
-
-- One compute Node
-
-- Three VSA Nodes
-
-*Additional resource nodes can be added to the configuration.*
-
-*Minimal Swift Resources are provided by the control plane*
-
-### Deployer Node ###
-
-This configuration runs the lifecycle-manager (formerly referred to as the deployer) on a control plane node.
-You need to include this node address in your servers.yml definition. This function does not need a dedicated network.
-
-An example set of servers are defined in ***data/servers.yml***.   You will need to modify this file to reflect your specific environment.
-
-### Networking ###
+###Networking###
 
 The example requires the following networks:
 
-IPMI/iLO network, connected to the deployer and the IPMI/iLO ports of all servers
+IMPI/iLO network, connected to the deployer and the IPMI/iLO ports of all servers
 
-A pair of bonded NICs which are used by the following networks:
+A network connected to a dedicated NIC on each server used to install the OS and install and configure Helion. In a future Beta release this network can be subsumed into system networks (below).
 
-- External API - This is the network that users will use to make requests to the cloud
+A pair of bonded NICs which are used used by the following networks:
+
+- External API - This is the network that users will use to make requests to the cloud 
+- Internal API - This is the network that will be used within the cloud for API access between services
 - External VM - This is the network that will be used to provide access to VMs (via floating IP addresses)
 - Guest - This is the network that will carry traffic between VMs on private networks within the cloud
-- Cloud Management - This is the network that will be used for all internal traffic between the cloud services. This network is also
-used to install and configure the nodes and for iSCSI traffic as well. This network needs to be on an untagged VLAN
+- Cloud Management - This is the network that will be used for all internal traffic between the cloud services. In the example this is shown as untagged. It can be tagged if needed.
+- iSCSI - This network is used to host all iSCSI (Cinder back end) traffic between Nova compute and the VSA servers
+- SWIFT - This network is used for internal Swift comunications between the Swift servers 
 
-Note that the EXTERNAL\_API network must be reachable from the EXTERNAL\_VM network if you want VMs to be able to make API calls to the cloud.
+Note that the EXTERNAL\_API network must be reachable from the EXTERNAL\_VM network if you want VMS to be able to make  API calls to the cloud.
 
 An example set of networks are defined in ***data/networks.yml***.    You will need to modify this file to reflect your environment.
 
-The example uses the devices hed3 & hed4 as a bonded network for all services.   If you need to modify these
-for your environment they are defined in ***data/net_interfaces.yml*** The network devices eth3 & eth4 are renamed to devices hed4 & hed5 using the PCI bus mappings secified in  ***data/nic_mappings.yml***. You may need to modify the PCI bus addresses to match your system.
+The example uses eth2 for the install network and eth3 & eth4 for the bonded network.   If you need to modify these
+for your environment they are defined in ***data/net_interfaces.yml***
 
-### Local Storage ###
+###Adapting the mid-size model to fit your environment###
 
-All servers should present a single OS disk, protected by a RAID controller. This disk needs to be at least 512GB in capacity. VSA appliance deployed on a host is expected to consume ~40 GB of disk space from host root disk for ephemeral storage to run VSA VM. In addition the example configures one additional disk depending on the role of the server:
+The minimum set of changes you need to make to adapt the model for your environment are:
 
-- Controllers:  /dev/sdb is configured to be used by Swift
-- Compute Severs:  /dev/sdb is configured as an additional Volume Group to be used for VM storage
-- VSA Servers:  /dev/sdc is configured for VSA data storage and
-                /dev/sdb is configured for VSA cache (required only for adaptive-optimization)
+- Update baremetalConfig.yml to list the details of your bare metal servers. You need to perform this step if you are using the HLM supplied Cobber playbooks to install hLinux on your servers. 
 
-Note that VSA can be deployed with adaptive optimization (AO) or without AO. AO allows built-in storage tiering for VSA. It is recommended to use SSD disk for AO.
+- Update servers.yml to list the details of your bare metal servers.
 
-*Additional disks can be configured for any of these roles by editing the corresponding ***data/disks_\*.yml*** file
+- Update the networks.yml file to replace network CIDRs and VLANs with site specific values
+
+- Update the nic_mappings.yml file to ensure that network devices are mapped to the correct physical port(s)
+
+- Review the disk models (disks_*.yml) and confirm that the associated
+    servers have the number of disks required by the disk model. The device
+    names in the disk models might need to be adjusted to match the probe oder
+    of your servers. 
+The default number of disks for the Swift nodes (3 disks) is set low on purpose to facilitate deployment on generic hardware. For production scale Swift the servers should have more disks, e.g. 6 on SWPAC nodes and 12 on SWOBJ nodes. If you allocate more Swift disks then you should review the ring power in the Swift ring confguration. This is documented in the Swift section
+Disk models are provided as follows:
+
+  - DISK SET CONTROLLER: Minimum 1 disk
+  - DISK SET DBMQ: Minimum 3 disks
+  - DISK SET COMPUTE: Minimum 2 disks
+  - DISK SET SWPAC: Minimum 3 disks
+  - DISK SET SWOBJ: Minimum 3 disks
+  - DISK SET VSA: Minimum 3 disks
+
+
+
+- Update the net interfaces.yml file to match the server NICs used in your configuration. This file has a separate interface model definition for each of the following:
+
+  - INTERFACE SET CONTROLLER
+  - INTERFACE SET VSA
+  - INTERFACE SET DBMQ
+  - INTERFACE SET SWPAC
+  - INTERFACE SET SWOBJ
+  - INTERFACE SET COMPUTE
+

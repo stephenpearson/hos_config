@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2015,2016 Hewlett Packard Enterprise Development Company LP
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -34,14 +34,14 @@ ring-specifications:
       - name: account
         display-name: Account Ring
         min-part-hours: 16
-        partition-power: 12
+        partition-power: 14
         replication-policy:
           replica-count: 3
 
       - name: container
         display-name: Container Ring
         min-part-hours: 16
-        partition-power: 12
+        partition-power: 14
         replication-policy:
           replica-count: 3
 
@@ -49,6 +49,6 @@ ring-specifications:
         display-name: General
         default: yes
         min-part-hours: 16
-        partition-power: 12
+        partition-power: 14
         replication-policy:
           replica-count: 3

@@ -13,19 +13,40 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
+
 ---
   product:
     version: 2
 
   server-roles:
 
-    - name: CONTROLLER-ROLE
-      interface-model: CONTROLLER-INTERFACES
-      disk-model: CONTROLLER-1TB-DISKS
+    - name: CORE-ROLE
+      interface-model: CORE-INTERFACES
+      disk-model: COMMON-CONTROL-600GB-DISKS
+
+    - name: MTRMON-ROLE
+      interface-model: MTRMON-INTERFACES
+      disk-model: MTRMON-2TB-DISKS
+
+    - name: NEUTRON-ROLE
+      interface-model: NEUTRON-INTERFACES
+      disk-model: COMMON-CONTROL-600GB-DISKS
+
+    - name: DBMQ-ROLE
+      interface-model: DBMQ-INTERFACES
+      disk-model: DBMQ-600GB-DISKS
+
+    - name: SWPAC-ROLE
+      interface-model: SWPAC-INTERFACES
+      disk-model: SWPAC-DISKS
 
     - name: COMPUTE-ROLE
       interface-model: COMPUTE-INTERFACES
       disk-model: COMPUTE-DISKS
+
+    - name: SWOBJ-ROLE
+      interface-model: SWOBJ-INTERFACES
+      disk-model: SWOBJ-DISKS
 
     - name: VSA-ROLE
       interface-model: VSA-INTERFACES

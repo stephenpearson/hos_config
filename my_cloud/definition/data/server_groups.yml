@@ -1,5 +1,5 @@
 #
-# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
 #
 # Licensed under the Apache License, Version 2.0 (the "License"); you may
 # not use this file except in compliance with the License. You may obtain
@@ -13,6 +13,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
+
 ---
   product:
     version: 2
@@ -20,36 +21,7 @@
   server-groups:
 
     #
-    # Server Groups provide a mechanism for organizing servers
-    # into a hierarchy that reflected the physical topology.
-    #
-    # When allocating a server the configuration processor
-    # will search down the hierarchy from the list of server
-    # groups identified as the failure-zones for the control
-    # plane until it finds an available server of the requested
-    # role.   If the allocation policy is "strict" servers are
-    # allocated from different failure-zones.
-    #
-    # When determining which network from a network group to
-    # associate with a server the configuration processor will
-    # search up the hierarchy from the server group containing the
-    # server until it finds a network in the required network
-    # group.
-    #
-
-    #
-    # In this example there is only one network in each network
-    # group and so we put all networks in the top level server
-    # group.   Below this we create server groups for three
-    # failure zones, within which servers are grouped by racks.
-    #
-    # Note: the association of servers to server groups is part
-    # of the server definition (servers.yml)
-    #
-
-    #
-    # At the top of the tree we have a server groups for
-    # networks that can reach all servers
+    # Inter AZ networks
     #
     - name: CLOUD
       server-groups:
@@ -59,29 +31,44 @@
       networks:
         - EXTERNAL-API-NET
         - EXTERNAL-VM-NET
-        - GUEST-NET
-        - MANAGEMENT-NET
+        - INTERNAL-API-NET
+        - ISCSI-NET
+        - CONF-NET
 
     #
-    # Create a group for each failure zone
+    # Failure Zones
     #
     - name: AZ1
       server-groups:
-        - RACK1
+        - rack1
 
     - name: AZ2
       server-groups:
-        - RACK2
+        - rack2
 
     - name: AZ3
       server-groups:
-        - RACK3
+        - rack3
+
 
     #
-    # Create a group for each rack
+    # Racks
     #
-    - name: RACK1
+    - name: rack1
+      networks:
+        - GUEST-NET-RACK1
+        - MANAGEMENT-NET-RACK1
+        - SWIFT-NET-RACK1
 
-    - name: RACK2
+    - name: rack2
+      networks:
+        - GUEST-NET-RACK2
+        - MANAGEMENT-NET-RACK2
+        - SWIFT-NET-RACK2
 
-    - name: RACK3
+    - name: rack3
+      networks:
+        - GUEST-NET-RACK3
+        - MANAGEMENT-NET-RACK3
+        - SWIFT-NET-RACK3
+

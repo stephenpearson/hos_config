@@ -13,6 +13,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
+
 ---
   product:
     version: 2
@@ -35,8 +36,7 @@
           # will use this name instead of the IP address
           #You must either set this to a name that can be resolved in your network
           # or comment out this line to use IP addresses
-          external-name: helion.mgl.hpcloud.net
-
+          external-name:
           tls-components:
             - default
           roles:
@@ -78,8 +78,9 @@
           # "config/cacerts/".
           # Note that the file extension should be .crt or it will not
           # be processed by HOS.
-          #
 
+
+    #
     # External VM
     #
     # This is the network group that will be used to provide
@@ -109,36 +110,21 @@
       # underlying packet fragmentation.
       # Note: this requires setting a 1550 mtu (or higher) on any
       # untagged network group on the same interface as GUEST so
-      # the MANAGEMENT network group must also have the mtu set to 1550.
+      # the MANAGEMENT network group must also have the mtu set to at
+      # least 1550. But this example also sets the ISCSI network
+      # group to 9000 so in this case the MANAGEMENT network group mtu
+      # must be set to 9000 to accommodate the large ISCSI mtu setting.
       #
       #mtu: 1550
 
-
     #
-    # Management
+    # Internal API
     #
-    # This is the network group that will be used to for
-    # management traffic within the cloud.
+    # This is the network group that users will use to
+    # access the internal API endpoints of your cloud
     #
-    # The interface used by this group will be presented
-    # to Neutron as physnet1, and used by provider VLANS
-    #
-    # In this example this group is also used for ISCSI
-    # traffic between VMs and the VSA block storage
-    #
-    - name: MANAGEMENT
-      hostname-suffix: mgmt
-      hostname: true
-
-      tls-component-endpoints:
-      # The following service endpoint is behind TLS
-        - barbican-api
-      component-endpoints:
-        - default
-
-      routes:
-        - default
-        - OCTAVIA-MGMT-NET
+    - name: INTERNAL-API
+      hostname-suffix: intapi
 
       load-balancers:
         - provider: ip-cluster
@@ -165,9 +151,85 @@
           # are more Subject Alt-name entries for the internal
           # certificate than the external certificate.
 
+    #
+    # Management
+    #
+    # This is the network group that will be used to for
+    # management traffic within the cloud.
+    #
+    # The interface used by this group will be presented
+    # to Neutron as physnet1, and used by provider VLANS
+    #
+    #
+    - name: MANAGEMENT
+      hostname-suffix: mgmt
+      hostname: true
+
+      tls-component-endpoints:
+      # The following service endpoint is behind TLS
+        - barbican-api
+      component-endpoints:
+        - default
+
+      routes:
+        - INTERNAL-API
+        - OCTAVIA-MGMT-NET
+        - default
+
       tags:
         - neutron.networks.vlan:
             provider-physical-network: physnet1
 
-      # Uncomment the following line to accommodate a 1550 MTU for the GUEST network group
-      #mtu: 1550
+      # Uncomment the following line to accommodate both a 1550 MTU for the GUEST network group
+      # and a 9000 MTU for the ISCSI network group. Set it to 1550 if only needed for the GUEST
+      # network group.
+      #mtu: 9000
+
+    #
+    # iSCSI
+    #
+    # This is the network group that will be used to for
+    # iSCSI traffic between VMs and the VSA block storage
+    #
+    - name: ISCSI
+      hostname-suffix: iscsi
+
+      # Uncomment the following line to enable a 9000 MTU for ISCSI traffic.
+      # Note: this requires setting a 9000 mtu on any untagged network group
+      # on the same interface as ISCSI so the MANAGEMENT network group must also
+      # have the mtu set to 9000.
+      #mtu: 9000
+
+      component-endpoints:
+        - vsa
+
+    #
+    # SWIFT
+    #
+    # This is the network group that will be used to for
+    # Swift back-end traffic bewtween proxy, container, account
+    # and object servers
+    #
+    - name: SWIFT
+      hostname-suffix: swift
+
+      component-endpoints:
+        - swift-container
+        - swift-account
+        - swift-object
+        - swift-rsync
+
+    #
+    # CONF
+    #
+    # This is the network group that will be used to
+    # provision the OS onto the ndoes and to perform
+    # the inital OS configuration
+    #
+    - name: CONF
+      hostname-suffix: conf
+
+      component-endpoints:
+        - lifecycle-manager
+        - lifecycle-manager-target
+

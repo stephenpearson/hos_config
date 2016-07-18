@@ -13,6 +13,7 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
+
 ---
   product:
     version: 2
@@ -35,29 +36,34 @@
         - stunnel
         - lifecycle-manager-target
       clusters:
-        - name: cluster1
-          cluster-prefix: c1
-          server-role: CONTROLLER-ROLE
-          member-count: 3
+        - name: core
+          cluster-prefix: core
+          server-role: CORE-ROLE
+          member-count: 2
           allocation-policy: strict
           service-components:
             - lifecycle-manager
-            - ntp-server
-            - swift-ring-builder
-            - mysql
-            - ip-cluster
             - apache2
             - keystone-api
-            - keystone-client
-            - rabbitmq
-            - glance-api
-            - glance-registry
-            - glance-client
             - cinder-api
             - cinder-scheduler
             - cinder-volume
             - cinder-backup
             - cinder-client
+            - cmc-service
+            - keystone-client
+            - glance-api
+            - glance-registry
+            - glance-client
+            - horizon
+            - heat-api
+            - heat-api-cfn
+            - heat-api-cloudwatch
+            - heat-engine
+            - heat-client
+            - ip-cluster
+            - memcached
+            - openstack-client
             - nova-api
             - nova-scheduler
             - nova-conductor
@@ -66,45 +72,12 @@
             - nova-client
             - neutron-server
             - neutron-ml2-plugin
-            - neutron-vpn-agent
-            - neutron-dhcp-agent
-            - neutron-metadata-agent
-            - neutron-openvswitch-agent
             - neutron-client
             - octavia-api
             - octavia-health-manager
-            - horizon
-            - swift-proxy
-            - memcached
-            - swift-account
-            - swift-container
-            - swift-object
-            - swift-client
-            - heat-api
-            - heat-api-cfn
-            - heat-api-cloudwatch
-            - heat-engine
-            - heat-client
-            - openstack-client
-            - ceilometer-api
-            - ceilometer-polling
-            - ceilometer-agent-notification
-            - ceilometer-common
-            - ceilometer-client
-            - zookeeper
-            - kafka
-            - vertica
-            - storm
-            - monasca-api
-            - monasca-persister
-            - monasca-notifier
-            - monasca-threshold
-            - monasca-client
-            - logging-server
+            - ntp-server
             - ops-console-web
             - ops-console-monitor
-            - cmc-service
-            - freezer-api
             - barbican-api
             - barbican-client
             - barbican-worker
@@ -116,16 +89,77 @@
             - designate-client
             - powerdns
 
+        - name: mtrmon
+          cluster-prefix: mtrmon
+          server-role: MTRMON-ROLE
+          member-count: 3
+          allocation-policy: strict
+          service-components:
+            - ntp-client
+            - ceilometer-api
+            - ceilometer-polling
+            - ceilometer-agent-notification
+            - ceilometer-common
+            - ceilometer-client
+            - vertica
+            - kafka
+            - logging-server
+            # logging needs apache
+            - apache2
+            - storm
+            - monasca-api
+            - monasca-persister
+            - monasca-notifier
+            - monasca-threshold
+            - monasca-client
+            - zookeeper
+            - freezer-api
+
+        - name: dbmq
+          cluster-prefix: dbmq
+          server-role: DBMQ-ROLE
+          member-count: 3
+          allocation-policy: strict
+          service-components:
+            - ntp-client
+            - mysql
+            - rabbitmq
+
+        - name: swpac
+          cluster-prefix: swpac
+          server-role: SWPAC-ROLE
+          member-count: 3
+          allocation-policy: strict
+          service-components:
+            - ntp-client
+            - swift-proxy
+            - swift-account
+            - swift-container
+            - swift-ring-builder
+            - swift-client
+
+        - name: neut
+          cluster-prefix: neut
+          server-role: NEUTRON-ROLE
+          member-count: 2
+          allocation-policy: strict
+          service-components:
+            - ntp-client
+            - neutron-vpn-agent
+            - neutron-dhcp-agent
+            - neutron-metadata-agent
+            - neutron-openvswitch-agent
+
       resources:
         - name: compute
           resource-prefix: comp
           server-role: COMPUTE-ROLE
-          allocation-policy: any
+          allocation-policy: strict
           min-count: 0
           service-components:
             - ntp-client
-            - nova-compute
             - nova-compute-kvm
+            - nova-compute
             - neutron-l3-agent
             - neutron-metadata-agent
             - neutron-openvswitch-agent
@@ -135,8 +169,16 @@
           resource-prefix: vsa
           server-role: VSA-ROLE
           allocation-policy: strict
-          min-count: 0
+          min-count: 3
           service-components:
             - ntp-client
             - vsa
 
+        - name: swobj
+          resource-prefix: swobj
+          server-role: SWOBJ-ROLE
+          allocation-policy: strict
+          min-count: 3
+          service-components:
+            - ntp-client
+            - swift-object

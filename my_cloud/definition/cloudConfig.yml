@@ -13,21 +13,25 @@
 # License for the specific language governing permissions and limitations
 # under the License.
 #
+
 ---
   product:
     version: 2
 
   cloud:
-    name: entry-scale-kvm-vsa
+    name: mid-scale-kvm-vsa
 
     # The following values are used when
     # building hostnames
     hostname-data:
-        host-prefix: helion
+        host-prefix: auh01
         member-prefix: -m
 
     # List of ntp servers for your site
     ntp-servers:
+       - ntp1.mqg.hpe
+       - ntp2.mqg.hpe
+
     #    - "ntp-server1"
     #    - "ntp-server2"
 
