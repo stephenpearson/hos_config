@@ -1,0 +1,17 @@
+{# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP #}
+# This file has the HOS values that apply only to the Designate MDNS service.
+# You may make changes to this file by adding sections/options below.
+
+[DEFAULT]
+# Logging
+log_config_append = "{{ designate_service_conf_dir }}/mdns-logging.conf"
+
+# End of [DEFAULT] section
+
+[service:mdns]
+listen = {{ designate_mdns_listen }}
+
+# End of [service:mdns] section
+
+### End of File ###
+## Do NOT put anything after this line ##

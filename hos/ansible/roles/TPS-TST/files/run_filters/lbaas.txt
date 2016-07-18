@@ -1,0 +1,11 @@
+# Neutron LBaaS api tempest tests
++neutron_lbaas\.tests\.tempest\.v2\.api\.test_load_balancers*
++neutron_lbaas\.tests\.tempest\.v2\.api\.test_listeners*
++neutron_lbaas\.tests\.tempest\.v2\.api\.test_members*
++neutron_lbaas\.tests\.tempest\.v2\.api\.test_pools*
++neutron_lbaas\.tests\.tempest\.v2\.api\.test_health_monitor*
+
+# Neutron LBaaS scenario tempest tests
++neutron_lbaas\.tests\.tempest\.v2\.scenario\.test_load_balancer_basic
++neutron_lbaas\.tests\.tempest\.v2\.scenario\.test_listener_basic
++neutron_lbaas\.tests\.tempest\.v2\.scenario\.test_healthmonitor_basic

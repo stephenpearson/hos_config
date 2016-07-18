@@ -1,0 +1,62 @@
+{#
+#
+# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+#}
+# defaults for logstash
+
+# Start logstash on boot?
+START=yes
+
+# pulled in from the init script; makes things easier.
+NAME=logstash
+
+# location of java
+JAVA=/usr/bin/java
+
+PIDFILE=/var/run/logstash.pid
+
+# user id to be invoked as
+LS_USER=logstash
+
+# location of the logstas jar file
+LS_JAR=/opt/logstash/logstash.jar
+
+# logstash home location
+LS_HOME=/var/lib/logstash
+
+# logstash heap size
+LS_HEAP_SIZE="{{ logstash_heap_size }}"
+
+# logstash log directory
+LOG_DIR=/var/log/logstash
+
+# logstash log file
+LOG_FILE=$LOG_DIR/$NAME.log
+
+# logstash configuration directory
+CONF_DIR=/etc/logstash/conf.d
+
+# Open file limit
+OPEN_FILES=2048
+
+# Nice level
+NICE=19
+
+# Set LogStash options
+LS_OPTS="-w {{ logstash_num_workers }} --log ${LOG_FILE}"
+
+# Set a home directory
+HOME=/var/lib/logstash

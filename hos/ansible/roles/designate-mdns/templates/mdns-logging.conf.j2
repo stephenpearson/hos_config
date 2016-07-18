@@ -1,0 +1,42 @@
+{# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP #}
+[loggers]
+keys: root
+
+[handlers]
+keys: watchedfile, logstash
+
+[formatters]
+keys: context, logstash
+
+
+[logger_root]
+qualname: root
+handlers: watchedfile, logstash
+level: NOTSET
+
+
+# Writes to disk
+[handler_watchedfile]
+class: handlers.WatchedFileHandler
+args: ('{{ designate_log_file_location }}/designate-mdns.log',)
+formatter: context
+
+# Writes JSON to disk, beaver will ship to logstash
+[handler_logstash]
+class: handlers.WatchedFileHandler
+args: ('{{ designate_log_file_location }}/designate-mdns-json.log',)
+formatter: logstash
+level: INFO
+
+# datefmt must be set otherwise you end up with too many (msecs) fields
+[formatter_context]
+class: oslo_log.formatters.ContextFormatter
+args: (datefmt=datefmt)
+format: %(asctime)s.%(msecs)03d %(process)d %(levelname)s %(name)s [%(request_id)s %(user)s %(tenant)s] %(instance)s%(message)s
+datefmt: %Y-%m-%d %H:%M:%S
+
+# the "format" and "datefmt" actually set the "type" and "tags"
+[formatter_logstash]
+class: logstash.LogstashFormatterVersion1
+format: designate
+datefmt: designate-mdns

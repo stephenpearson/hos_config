@@ -1,0 +1,182 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+- name: KEYMGR-API | keystone_conf | Get a domain scoped token
+  keystone_v3:
+    endpoint: "{{ keystone.admin_url }}/v3"
+    login_username: "{{ keystone.admin_user }}"
+    login_password: "{{ keystone.admin_password }}"
+    login_user_domain_name: "{{ keystone.default_domain_name }}"
+    login_domain_name: "{{ keystone.default_domain_name }}"
+    action: "token_get"
+  register: domain_scoped_token
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create Barbican Service User
+  keystone_v3:
+    login_token: "{{ domain_scoped_token.result }}"
+    endpoint: "{{ keystone.admin_url }}/v3"
+    action: "create_user"
+    user_name: "{{ barbican_service_user }}"
+    user_password: "{{ barbican_service_password }}"
+    description: "Bootstrap Account: Service User used by Barbican for token validation (created via barbican deploy)"
+    user_domain_name: "{{ barbican_admin_domain_name }}"
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create Barbican Admin User
+  keystone_v3:
+    login_token: "{{ domain_scoped_token.result }}"
+    endpoint: "{{ keystone.admin_url }}/v3"
+    action: "create_user"
+    user_name: "{{ barbican_admin_user }}"
+    user_password: "{{ barbican_admin_user_password }}"
+    description: "Bootstrap Account: Barbican Service Admin user (created via barbican deploy)"
+    user_domain_name: "{{ barbican_admin_domain_name }}"
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create Barbican specific roles
+  keystone_v3:
+    login_token: "{{ domain_scoped_token.result }}"
+    endpoint: "{{ keystone.admin_url }}/v3"
+    action: "create_role"
+    role_name: "{{ item.role_name }}"
+    description: "{{ item.description }}"
+  with_items:
+    - { role_name: "{{ barbican_creator_role }}", description: "Bootstrap Role: creator role (created via barbican deploy)" }
+    - { role_name: "{{ barbican_observer_role }}", description: "Bootstrap Role: observer role (created via barbican deploy)" }
+    - { role_name: "{{ barbican_auditor_role }}", description: "Bootstrap Role: auditor role (created via barbican deploy)" }
+    - { role_name: "{{ barbican_admin_role }}", description: "Bootstrap Role: admin role (created via barbican deploy)" }
+    - { role_name: "{{ barbican_service_admin_role }}", description: "Bootstrap Role: service admin role (created via barbican deploy)" }
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create role assignment for Barbican service user with keystone service role in service project
+  keystone_v3: >
+    action="grant_project_role"
+    login_token={{ domain_scoped_token.result }}
+    endpoint="{{ keystone.admin_url }}/v3"
+    user_name={{ barbican_service_user }}
+    project_name={{ keystone.service_tenant_name }}
+    user_domain_name={{ barbican_admin_domain_name }}
+    project_domain_name={{ barbican_admin_domain_name }}
+    role_name={{ keystone_service_role }}
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create role assignment for Barbican admin user with Keystone admin role in admin project
+  keystone_v3: >
+    action="grant_project_role"
+    login_token={{ domain_scoped_token.result }}
+    endpoint="{{ keystone.admin_url }}/v3"
+    user_name={{ barbican_admin_user }}
+    project_name={{ keystone.admin_tenant_name }}
+    user_domain_name={{ barbican_admin_domain_name }}
+    project_domain_name={{ barbican_admin_domain_name }}
+    role_name={{ keystone.admin_role }}
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create role assignment for Barbican admin user with Barbican admin role in admin project
+  keystone_v3: >
+    action="grant_project_role"
+    login_token={{ domain_scoped_token.result }}
+    endpoint="{{ keystone.admin_url }}/v3"
+    user_name={{ barbican_admin_user }}
+    project_name={{ keystone.admin_tenant_name }}
+    user_domain_name={{ barbican_admin_domain_name }}
+    project_domain_name={{ barbican_admin_domain_name }}
+    role_name={{ barbican_admin_role }}
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create role assignment for Barbican admin user with Barbican service admin role in admin project
+  keystone_v3: >
+    action="grant_project_role"
+    login_token={{ domain_scoped_token.result }}
+    endpoint="{{ keystone.admin_url }}/v3"
+    user_name={{ barbican_admin_user }}
+    project_name={{ keystone.admin_tenant_name }}
+    user_domain_name={{ barbican_admin_domain_name }}
+    project_domain_name={{ barbican_admin_domain_name }}
+    role_name={{ barbican_service_admin_role }}
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create role assignment for Keystone admin user with Barbican admin role in admin project
+  keystone_v3: >
+    action="grant_project_role"
+    login_token={{ domain_scoped_token.result }}
+    endpoint="{{ keystone.admin_url }}/v3"
+    user_name={{ keystone.admin_user }}
+    project_name={{ keystone.admin_tenant_name }}
+    user_domain_name={{ barbican_admin_domain_name }}
+    project_domain_name={{ barbican_admin_domain_name }}
+    role_name={{ barbican_admin_role }}
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create role assignment for Keystone admin user with Barbican service admin role in admin project
+  keystone_v3: >
+    action="grant_project_role"
+    login_token={{ domain_scoped_token.result }}
+    endpoint="{{ keystone.admin_url }}/v3"
+    user_name={{ keystone.admin_user }}
+    project_name={{ keystone.admin_tenant_name }}
+    user_domain_name={{ barbican_admin_domain_name }}
+    project_domain_name={{ barbican_admin_domain_name }}
+    role_name={{ barbican_service_admin_role }}
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create Barbican v1 Keystone Service entry
+  keystone_v3: >
+   action="create_service"
+   endpoint="{{ keystone.admin_url }}/v3"
+   login_token={{ domain_scoped_token.result }}
+   service_type={{ barbican_service_type }}
+   service_name={{ barbican_service_name }}
+   description='Barbican as a Key Manager Service (created via barbican deploy)'
+  run_once: true
+  tags:
+    - barbican
+
+- name: KEYMGR-API | keystone_conf | Create Unversioned Endpoint for Barbican v1 Service in Keystone
+  keystone_v3: >
+    action="create_endpoint"
+    service_name={{ barbican_service_name }}
+    login_token={{ domain_scoped_token.result }}
+    endpoint="{{ keystone.admin_url }}/v3"
+    region={{ barbican_region_name }}
+    admin_url="{{ barbican_admin_endpoint }}"
+    internal_url="{{ barbican_internal_endpoint }}"
+    public_url="{{ barbican_public_endpoint }}"
+  run_once: true
+  tags:
+    - barbican

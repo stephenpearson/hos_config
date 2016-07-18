@@ -1,0 +1,5 @@
+# Run all API tests (includes new ones as they pop-up via upstream merge
++tempest\.api\.*
+
+# Run all scenario tests (includes new ones as they pop-up via upstream merge
++tempest.scenario\.*

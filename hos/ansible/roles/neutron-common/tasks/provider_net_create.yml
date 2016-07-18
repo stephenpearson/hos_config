@@ -1,0 +1,104 @@
+#
+# (c) Copyright 2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+# NOTE: os_network does not support creating an external network so using CLI.
+
+- name: Neutron Common | provider_net_create | Include play specific variables
+  include_vars: "provider.yml"
+
+- name: Neutron Common | provider_net_create | Get tenant id
+  command: openstack {{ openstack_cmd_args }} \
+    project show -f value -c id {{ neutron_admin_tenant_name }}
+  register: tenant_id_results
+  changed_when: False
+  environment:
+    OS_PASSWORD: "{{ neutron_admin_password }}"
+
+- name: Neutron Common | provider_net_create | Set neutron_admin_tenant_id
+  set_fact:
+    neutron_admin_tenant_id: "{{ tenant_id_results.stdout }}"
+  when: tenant_id_results | success
+
+- name: Neutron Common | provider_net_create | List networks owned by neutron
+  command: neutron {{ neutron_cmd_args }} \
+    net-list -f csv -c name \
+             --tenant-id {{ neutron_admin_tenant_id }}
+  register: existing_nets_results
+  environment:
+    OS_PASSWORD: "{{ neutron_admin_password }}"
+
+- name: Neutron Common | provider_net_create | List subnets owned by neutron
+  command: neutron {{ neutron_cmd_args }} \
+    subnet-list -f csv -c name \
+                --tenant-id {{ neutron_admin_tenant_id }}
+  register: existing_subnets_results
+  environment:
+    OS_PASSWORD: "{{ neutron_admin_password }}"
+
+- name: Neutron Common | provider_net_create | Create networks
+  command: neutron {{ neutron_cmd_args }} \
+    net-create \
+      --provider:network_type {{ item.provider[0].network_type }} \
+      --provider:physical_network {{ item.provider[0].physical_network }} \
+    {% if item.provider[0].segmentation_id is defined %}
+      --provider:segmentation_id {{ item.provider[0].segmentation_id }} \
+    {% endif %}
+    {% if item.shared is defined %}
+      --shared \
+    {% endif %}
+      {{ item.name }}
+  when: item.name not in existing_nets_results.stdout
+  with_items: "{{ provider_data }}"
+  environment:
+    OS_PASSWORD: "{{ neutron_admin_password }}"
+
+- name: Neutron Common | provider_net_create | Create subnets
+  command: neutron {{ neutron_cmd_args }} \
+    subnet-create \
+    {% if item.allocation_pools is defined %}
+    {% for pool in item.allocation_pools %}
+      --allocation-pool start={{ pool.start }},end={{ pool.end }} \
+    {% endfor %}
+    {% endif %}
+    {% if item.host_routes is defined %}
+    {% for route in item.host_routes %}
+      --host-route destination={{ route.destination }},nexthop={{ route.nexthop }} \
+    {% endfor %}
+    {% endif %}
+    {% if item.gateway_ip is defined %}
+      --gateway {{ item.gateway_ip }} \
+    {% endif %}
+    {% if item.enable_dhcp is defined and item.enable_dhcp %}
+      --enable-dhcp \
+    {% else %}
+      --disable-dhcp \
+    {% endif %}
+      --ip_version 4
+      --name {{ item.name }} \
+      {{ item.name }} \
+      {{ item.cidr }}
+  when: item.name not in existing_subnets_results.stdout
+  with_items: "{{ provider_data }}"
+  environment:
+    OS_PASSWORD: "{{ neutron_admin_password }}"
+
+- name: Neutron Common | provider_net_create | Update subnet to no-gateway
+  command: neutron {{ neutron_cmd_args }} subnet-update {{ item.name }} --no-gateway
+  when: item.name not in existing_subnets_results.stdout and item.no_gateway is defined and item.no_gateway
+  with_items: "{{ provider_data }}"
+  environment:
+    OS_PASSWORD: "{{ neutron_admin_password }}"

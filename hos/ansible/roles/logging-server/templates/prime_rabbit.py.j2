@@ -1,0 +1,129 @@
+{#
+#
+# (c) Copyright 2015,2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+#}
+import sys
+import pika
+import logging
+from datetime import datetime
+
+class log_redirect(object):
+    """Redirect stdout/stderr to log files
+    """
+    def __init__(self, logger, level=logging.INFO):
+        """Instantiate class
+        """
+        self._level = level
+        self._logger = logger
+
+    def write(self, msg):
+        """Write out the given message
+        :msg: message to write to log file
+        """
+        for line in msg.rstrip().splitlines():
+            self._logger.log(self._level, line.rstrip())
+
+def exchange_exists(connect, exchange):
+    """Check if the given exchange exists
+    :connect: connection to use for command
+    :exchange: exchange to check for
+    :result: True if exists else False
+    """
+    result = True
+
+    try:
+        connect.channel().exchange_declare(passive=True, exchange=exchange, exchange_type='direct', durable=True)
+    except Exception as e:
+        result = False
+        print("Exchange '{}' doesn't exist".format(exchange))
+        print(e)
+    else:
+        print("Exchange '{}' exists".format(exchange))
+
+    return result
+
+def queue_exists(connect, queue):
+    """Check if the given queue exists
+    :connect: connection to use for command
+    :queue: queue to check for
+    :result: True if exists else False
+    """
+    result = True
+
+    try:
+        connect.channel().queue_declare(passive=True, queue=queue, durable=True)
+    except Exception as e:
+        result = False
+        print("Queue '{}' doesn't exist".format(queue))
+        if str(e): print(e)
+    else:
+        print("Queue '{}' exists".format(queue))
+
+    return result
+
+# Main entry point
+if __name__ == '__main__':
+
+    # Configure logging
+    logging.basicConfig(
+        filename="/var/log/kronos/prime_rabbit.log",
+        level=logging.DEBUG,
+        format='%(asctime)s[%(levelname)s:%(name)s] %(message)s',
+        datefmt='[%m/%d/%Y][%H:%M:%S]')
+    sys.stdout = log_redirect(logging.getLogger('STDOUT'), logging.INFO)
+    sys.stderr = log_redirect(logging.getLogger('STDERR'), logging.ERROR)
+
+    # Configure Rabbit
+    print("Kronos configure called")
+    bind = False
+    queue = "{{ kronos_rabbit_queue }}"
+    exchange = "{{ kronos_rabbit_exchange }}"
+
+    try:
+        # Connect to RabbitMQ
+        print("Connecting to RabbitMQ...")
+        credentials = pika.PlainCredentials('{{ kronos_rabbit_user }}', '{{ kronos_rabbit_pass }}')
+        connect_params = pika.ConnectionParameters('{{ kronos_rabbit_host }}', credentials=credentials)
+        connect = pika.BlockingConnection(connect_params)
+        print("Connecting to RabbitMQ...success")
+
+        # Create exchange if necessary
+        if not exchange_exists(connect, exchange):
+            bind = True
+            print("Creating new exchange ['{}']".format(exchange))
+            connect.channel().exchange_declare(exchange=exchange, exchange_type='direct', durable=True)
+
+        # Create queue if necessary
+        qobj = None
+        if not queue_exists(connect, queue):
+            bind = True
+            print("Creating new queue ['{}']".format(queue))
+            qobj = connect.channel().queue_declare(queue=queue, durable=True)
+
+        # Bind queue to exchange if necessary and log
+        if bind:
+            print("Binding queue ['{}'] to exchange ['{}']".format(queue, exchange))
+            if not qobj: qobj = connect.channel().queue_declare(queue=queue, durable=True)
+            connect.channel().queue_bind(exchange=exchange, queue=qobj.method.queue, routing_key="{{ kronos_rabbit_key }}")
+            exchange_exists(connect, exchange)
+            queue_exists(connect, queue)
+
+    except Exception:
+        print("Something bad happened")
+        raise
+    else:
+        print("Closing connection to RabbitMQ")
+        if connect.is_open: connect.close()

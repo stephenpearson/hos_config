@@ -1,0 +1,17 @@
+{# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP #}
+# This file has the HOS values that apply only to the Designate Central service.
+# You may make changes to this file by adding sections/options below.
+
+[DEFAULT]
+# Logging
+log_config_append = "{{ designate_service_conf_dir }}/central-logging.conf"
+
+# End of [DEFAULT] section
+
+[network_api:neutron]
+endpoint_type = internalURL
+
+# End of [network_api:neutron] section
+
+### End of File ###
+## Do NOT put anything after this line ##

@@ -1,0 +1,45 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+- name: eon-common | configure | check for presence of eon group
+  command: "grep -q {{ eon_group }} /etc/group"
+  ignore_errors: True
+  register: group_chk_result
+  delegate_to: "{{ target_host }}"
+
+- name: eon-common | configure | create eon group
+  group: name={{ eon_group }} state=present system=yes
+  when: group_chk_result|failed
+  delegate_to: "{{ target_host }}"
+
+- name:  eon-common | configure | check for presence of eon user
+  command: "id {{ eon_user }}"
+  ignore_errors: True
+  register: user_chk_result
+  delegate_to: "{{ target_host }}"
+
+- name: eon-common | configure | create eon user
+  user: name={{ eon_user }} group={{ eon_group }} createhome=no home=/tmp shell=/bin/true
+  when: user_chk_result|failed
+  delegate_to: "{{ target_host }}"
+
+- name: eon-common | configure | create eon directories
+  file: path={{ item.path }} state=directory  owner={{ item.owner }} group={{ item.group }} mode={{ item.mode }}
+  with_items:
+    - { path: "{{ eon_service_conf_dir }}", mode: "0775", owner: "{{ eon_user }}", group: "{{ eon_group }}" }
+    - { path: "{{ eon_logs_dir }}", mode: "0775", owner: "{{ eon_user }}", group: "{{ eon_group }}" }
+  delegate_to: "{{ target_host }}"
