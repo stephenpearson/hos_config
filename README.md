@@ -1,1 +1,1 @@
-# mgl_hos
+# Working copy of HOS Input model
