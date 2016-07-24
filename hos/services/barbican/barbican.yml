@@ -1,0 +1,71 @@
+#
+# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP
+#
+# Confidential computer software. Valid license from HPE required for
+# possession, use or copying. Consistent with FAR 12.211 and 12.212,
+# Commercial Computer Software, Computer Software Documentation, and
+# Technical Data for Commercial Items are licensed to the U.S.
+# Government under vendor's standard commercial license.
+#
+---
+product:
+    version: 2
+
+services:
+-   name: barbican
+    mnemonic: KEYMGR
+
+    components:
+        control_plane:
+            barbican-api:
+               min: 1
+            barbican-worker:
+               min: 1
+
+    consumes-services:
+    -   service-name: FND-RMQ
+        relationship-vars:
+        -   name: accounts
+            vars:
+                barbican:
+                -   name: username
+                    value: rmq_barbican_user
+                -   name: password
+                    value: '%random-password%'
+                    properties:
+                        max-length: 12
+                        min-length: 8
+                        key-name: rmq_barbican_password
+                    is-private: 'true'
+
+    -   service-name: FND-MDB
+        relationship-vars:
+        -   name: accounts
+            vars:
+                barbican:
+                -   name: username
+                    alias: mysql_barbican_user
+                    value: barbican
+                -   name: password
+                    alias: mysql_barbican_password
+                    value: '%random-password%'
+                    properties:
+                        max-length: 12
+                        min-length: 8
+                        key-name: mysql_barbican_password
+                    is-private: 'true'
+                -   name: grants
+                    value:
+                        - priv: .*:ALL,GRANT
+                          dbname: barbican
+        -   name: databases
+            vars:
+                barbican:
+                -   name: dbname
+                    value: barbican
+
+    commands:
+        configure: barbican-configure.yml
+        deploy: barbican-deploy.yml
+        start: barbican-start.yml
+        stop: barbican-stop.yml

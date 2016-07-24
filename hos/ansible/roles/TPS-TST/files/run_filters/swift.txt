@@ -1,0 +1,15 @@
+# Run nearly all Swift tests, note there are some exclusions below
++tempest\.api\.object_storage.*
+
+# Container sync is currently support but unconfigured in default installs
+-tempest\.api\.object_storage\.test_container_sync_middleware\.ContainerSyncMiddlewareTest\.test_container_synchronization
+
+# HQA-781 Disable glance test that require sharing as per GLAN-1977
+-tempest\.api\.image\.v2\.test_images_member\.ImagesMemberTest\.test_get_image_member
+-tempest\.api\.image\.v2\.test_images_member\.ImagesMemberTest\.test_image_share_accept
+-tempest\.api\.image\.v2\.test_images_member\.ImagesMemberTest\.test_image_share_reject
+-tempest\.api\.image\.v2\.test_images_member\.ImagesMemberTest\.test_remove_image_member
+-tempest\.api\.image\.v1\.test_image_members_negative\.ImageMembersNegativeTest\.test_add_member_with_non_existing_image
+-tempest\.api\.image\.v1\.test_image_members_negative\.ImageMembersNegativeTest\.test_delete_member_with_non_existing_image
+-tempest\.api\.image\.v2\.test_images_member_negative\.ImagesMemberNegativeTest\.test_image_share_invalid_status
+-tempest\.api\.image\.v2\.test_images_member_negative\.ImagesMemberNegativeTest\.test_image_share_owner_cannot_accept

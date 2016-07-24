@@ -1,0 +1,125 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+- include: ../../barbican-common/tasks/_set_directories.yml
+  vars:
+    install_package_result: "{{ barbican_worker_install_result }}"
+
+- name: KEYMGR-WKR | configure  | Touch the log file
+  file:
+    path: "{{ item }}"
+    owner: "{{ barbican_user }}"
+    group: "{{ barbican_group }}"
+    mode: 0644
+    state: touch
+  become: yes
+  become_user: "{{ barbican_user }}"
+  with_items:
+    - "/var/log/barbican/barbican-worker.log"
+    - "/var/log/barbican/barbican-worker-json.log"
+  tags:
+    - barbican
+
+- name: KEYMGR-WKR | configure | Copy API conf file to worker conf location as temporary file
+  shell: cp "{{ barbican_api_config_dir }}/barbican.conf" "{{ barbican_conf_dir }}/barbican-worker-temp.conf"
+  become: yes
+  become_user: "{{ barbican_user }}"
+  tags:
+    - barbican
+
+- name: KEYMGR-WKR | configure | Update worker variables in worker temporary conf file
+  command: crudini --set {{ barbican_conf_dir }}/barbican-worker-temp.conf DEFAULT {{ item }}
+  become: yes
+  become_user: "{{ barbican_user }}"
+  with_items:
+    - 'log_config_append "{{ barbican_conf_dir }}/{{ logging_conf_file_name }}"'
+    - 'db_auto_create "{{ barbican_db_auto_create_enabled }}"'
+  tags:
+    - barbican
+
+- name: KEYMGR-WKR | configure | Get file stat for barbican worker and temporary worker conf
+  stat:
+    path="{{ item }}"
+  become: yes
+  become_user: "{{ barbican_user }}"
+  with_items:
+    - "{{ barbican_conf_dir }}/barbican-worker-temp.conf"
+    - "{{ barbican_conf_dir }}/barbican-worker.conf"
+  register: barbican_worker_conf_stats
+  tags:
+    - barbican
+
+# Notify to restart when temporary and existing worker conf file md5 is different indicating its changed.
+# In case of fresh install barbican-worker.conf would not exist so copy of temp file is needed in that case.
+- name: KEYMGR-WKR | configure | Copy worker temporary conf file to worker conf file location if changed
+  command: "rsync -v -c --ignore-times {{ barbican_conf_dir }}/barbican-worker-temp.conf {{ barbican_conf_dir }}/barbican-worker.conf"
+  become: yes
+  become_user: "{{ barbican_user }}"
+  when: barbican_worker_conf_stats.results[1].stat.exists == False or ( barbican_worker_conf_stats.results[0].stat.md5 is defined
+        and barbican_worker_conf_stats.results[0].stat.md5 != barbican_worker_conf_stats.results[1].stat.md5)
+  notify:
+    - barbican_worker_config_change
+  register: hlm_notify_barbican_worker_restart_required
+  tags:
+    - barbican
+
+- name: KEYMGR-WKR | configure | notify worker restart if conf file changed
+  debug: msg="barbican worker conf file(s) have changed so barbican-worker restart needed"
+  when: hlm_notify_barbican_worker_restart_required.changed
+
+- name: KEYMGR-WKR | configure | Remove temporary worker config file
+  file:
+    path="{{ barbican_conf_dir }}/barbican-worker-temp.conf"
+    state=absent
+  become: yes
+  become_user: "{{ barbican_user }}"
+  tags:
+    - barbican
+
+- name: KEYMGR-WKR | configure  | Configure the barbican worker logging conf
+  template:
+    src: "worker-logging.conf.j2"
+    dest: "{{ barbican_conf_dir }}/worker-logging.conf"
+  become: yes
+  become_user: "{{ barbican_user }}"
+  register: hlm_notify_barbican_worker_restart_required
+  tags:
+    - barbican
+
+- name: KEYMGR-WKR | configure | Create barbican-worker symlinks
+  become: yes
+  file:
+    src="{{ barbican_conf_dir }}/{{ item }}"
+    dest=/etc/barbican/{{ item }}
+    owner={{ barbican_user }}
+    group={{ barbican_group }}
+    state=link
+  with_items:
+    - worker-logging.conf
+    - barbican-worker.conf
+  tags:
+    - barbican
+
+- name: KEYMGR-WKR | configure  | Configure the barbican_worker script
+  become: yes
+  template:
+    src: "barbican_worker"
+    dest: "{{ barbican_bin_dir }}/barbican_worker"
+    mode: "0755"
+  register: hlm_notify_barbican_worker_restart_required
+  tags:
+    - barbican

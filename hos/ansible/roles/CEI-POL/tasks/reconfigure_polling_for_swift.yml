@@ -1,0 +1,39 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+---
+
+## Had to use hostvars because ansible doesn't support persisting of
+## register variables and facts across plays and hosts and since
+## in mid size config Keystone and Ceilometer are on different hosts
+## we need to access the facts using host vars
+
+- name: ceilometer-post-configure |Set if Swift is Configured
+  set_fact:
+      is_swift_configured: "False"
+
+- name: ceilometer-post-configure |Checking if Swift configured
+  set_fact:
+      is_swift_configured: "{{ hostvars[ item ].is_swift_installed }}"
+  when: hostvars[ item ].is_swift_installed is defined
+  with_items: "{{groups['KEY-CLI']}}"
+
+- name: remove swift polling meters if swift is not installed
+  replace:
+    dest: "{{ ceilometer_polling_conf_dir }}/pipeline-polling.yaml"
+    regexp: '\s+\- \"storage\.objects.*'
+  when:  is_swift_configured == "False"
+  register: hlm_notify_ceilometer_polling_restart_required

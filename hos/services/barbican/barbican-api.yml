@@ -1,0 +1,92 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Confidential computer software. Valid license from HPE required for
+# possession, use or copying. Consistent with FAR 12.211 and 12.212,
+# Commercial Computer Software, Computer Software Documentation, and
+# Technical Data for Commercial Items are licensed to the U.S.
+# Government under vendor's standard commercial license.
+#
+---
+product:
+    version: 2
+
+service-components:
+-   name: barbican-api
+    mnemonic: KEYMGR-API
+
+    advertises-to-services:
+    -   service-name: KEY-API
+
+    keystone-service-name: barbican
+    keystone-service-type: key-manager
+
+    config-set:
+    -   name: barbican.conf
+        file: /etc/barbican/barbican.conf
+        affected-service: barbican-api
+        ansible-vars:
+        -   name: barbican_admin_tenant
+            value: service
+            is-private: 'false'
+            target: group-tier
+
+        -   name: barbican_admin_user
+            value: barbican
+            is-private: 'false'
+            target: group-tier
+
+        -   name: barbican_admin_password
+            value: '%random-password%'
+            is-private: 'true'
+            properties:
+                max-length: 12
+                min-length: 8
+            target: group-tier
+
+        -   name: barbican_service_user
+            value: barbican_service
+            is-private: 'false'
+            target: group-tier
+
+        -   name: barbican_service_password
+            value: '%random-password%'
+            is-private: 'true'
+            properties:
+                max-length: 12
+                min-length: 8
+            target: group-tier
+
+        -   name: barbican_admin_role
+            value: key-manager:admin
+            is-private: 'false'
+            target: group-tier
+
+        -   name: barbican_service_admin_role
+            value: key-manager:service-admin
+            is-private: 'false'
+            target: group-tier
+
+
+    consumes-services:
+    -   service-name: FND-MDB
+
+    -   service-name: FND-RMQ
+
+    -   service-name: KEY-API
+
+    endpoints:
+    -   port: '9311'
+        has-vip: true
+        vip-options:
+        - "balance leastconn"
+        - "mode http"
+        - "option httpchk GET /"
+        - "option redispatch"
+        - "option http-server-close"
+        - "option forwardfor"
+        - "reqadd X-Forwarded-Proto:\\ https if { ssl_fc }"
+        roles:
+        - public
+        - internal
+        - admin

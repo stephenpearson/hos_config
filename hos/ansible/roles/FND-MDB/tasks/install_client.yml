@@ -1,0 +1,12 @@
+- name: FND-MDB | install_client| include required variables
+  include_vars: roles/FND-MDB/defaults/main.yml
+
+- name: FND-MDB | install_client| check install
+  include: check_install.yml
+
+- name: FND-MDB | install_client| Install the percona client
+  apt:
+    pkg: "{{ item }}"
+    force: yes
+  with_items:
+    - percona-xtradb-cluster-client-{{ percona_latest_avail_version }}

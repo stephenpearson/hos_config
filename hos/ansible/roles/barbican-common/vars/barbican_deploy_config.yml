@@ -1,0 +1,65 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+# Possible log levels are INFO/DEBUG/WARN/ERROR
+barbican_loglevel: "{{ helion_loglevel | default('INFO') }}"
+barbican_logstash_loglevel: "{{ helion_loglevel | default('INFO') }}"
+
+#########################################################################################
+# Using uwsgi adaptive process spawning to dynamically scale workers.
+# See http://uwsgi-docs.readthedocs.org/en/latest/Cheaper.html
+# cheaper-algo = spare, cheaper = 4 (min count), cheaper-initial = 6
+
+# Set maximum number of workers that can be spawned. Max value is dynamically
+# calculated based on underlying hardware capability.
+# If dynamically calculated value is less than 8, then 8 is used.
+# Max count needs to be greater than min count (below). If its set to lower or equal
+# value, then max count is updated to be 4 higher than min count.
+barbican_api_max_worker_count:  "{{ ansible_processor_count * ansible_processor_cores * 2| default('8') }}"
+
+# Minimum number of idle workers to be kept running.
+barbican_api_min_worker_count: 4
+
+# Number of workers to create at barbican api server startup
+#barbican_api_initial_worker_count: 6
+barbican_api_initial_worker_count: 4
+
+# Multi-processing is used instead of threading. Threads are kept 1
+# Python threading is useful in high IO load interactions.
+barbican_api_threads_count:  1
+#########################################################################################
+
+
+# Customer provided master key during first time barbican initial deployment.
+# The key should be a 32-byte value which is base64 encoded.
+# This value must be set before cloud deployment (with site.yml) starts.
+# Note: Master key should not be changed as there can be existing entries using
+# this key for encrypting barbican project kek and secrets.
+# barbican_customer_master_key: "3Z8QOImQyi2PAZUHjcqfxkcvZhPlHyXlH2wqjgwRpDI="
+barbican_customer_master_key:
+
+#######################################################################
+#################### KMIP Plugin Configuration Section #################
+#######################################################################
+# Flag to reflect whether KMIP plugin is to be used as backedn for storing secrets
+use_kmip_secretstore_plugin: False
+
+# Note: Connection username needs to match with 'Common Name' provided
+# in client cert request (CSR).
+barbican_kmip_username:
+barbican_kmip_password:
+barbican_kmip_host:
+barbican_kmip_port:

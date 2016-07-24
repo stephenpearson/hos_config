@@ -1,0 +1,76 @@
+#
+# (c) Copyright 2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+- name: CEI-API | configure auditing | echo ceilometer auditing enable flag
+  debug: msg="ceilometer_enable_auditing = {{ ceilometer_enable_auditing }}"
+  tags:
+    - ceilometer
+    - ceilometer_debug
+  when: ceilometer_debug is defined
+
+- name: CEI-API | configure auditing  | Enable auditing via setting notification_driver
+  command: crudini --set {{ ceilometer_api_conf_dir }}/ceilometer.conf DEFAULT notification_driver {{ notification_driver_name }}
+  become: yes
+  become_user: "{{ ceilometer_user }}"
+  when: ceilometer_enable_auditing
+  register: ceilometer_audit_enable_driver
+  tags:
+    - ceilometer
+
+- name: CEI-API | configure auditing | Create auditing logging directory if not there
+  file:
+    path: "{{ ceilometer_audit_log_base_location }}/ceilometer"
+    owner: "{{ ceilometer_user }}"
+    group: "{{ ceilometer_group }}"
+    mode: 0755
+    state: directory
+  become: yes
+  when: ceilometer_enable_auditing | bool
+  tags:
+    - ceilometer
+
+- name: CEI-API | configure | create ceilometer-audit log
+  file:
+     path={{ ceilometer_audit_log_base_location }}/ceilometer/{{ item }}
+     state=touch
+     owner={{ ceilometer_user }}
+     group={{ ceilometer_group }}
+     mode=0644
+  with_items:
+    - ceilometer-audit.log
+  become: yes
+  when: ceilometer_enable_auditing | bool
+  tags:
+    - ceilometer
+
+- name: CEI-API | configure auditing  | Disable auditing via setting noop notification_driver
+  command: crudini --set {{ ceilometer_api_conf_dir }}/ceilometer.conf DEFAULT notification_driver noop
+  become: yes
+  become_user: "{{ ceilometer_user }}"
+  when: ceilometer_enable_auditing == false
+  register: ceilometer_audit_disable_driver
+  tags:
+    - ceilometer
+
+- name: CEI-API | configure auditing | echo ceilometer ceilometer_audit_disable_driver
+  debug: msg="ceilometer_audit_disable_driver = {{ ceilometer_audit_disable_driver }}"
+
+- name: CEI-API | configure auditing | notify api reload if changed
+  debug: msg="ceilometer audit setting is modified so reload needed"
+  register: hlm_notify_ceilometer_api_restart_required
+  when: ceilometer_audit_enable_driver.changed or ceilometer_audit_disable_driver.changed
+

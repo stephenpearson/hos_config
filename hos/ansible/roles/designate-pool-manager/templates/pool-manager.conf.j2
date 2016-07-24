@@ -1,0 +1,67 @@
+{# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP #}
+# This file has the HOS values that apply only to the Designate Pool
+# Manager service. You may make changes to this file by adding
+# sections/options below.
+[DEFAULT]
+# Logging
+log_config_append = "{{ designate_service_conf_dir }}/pool-manager-logging.conf"
+
+# End of [DEFAULT] section
+
+[service:pool_manager]
+pool_id = {{ designate_pool_id }}
+cache_driver = memcache
+
+# End of [service:pool_manager] section
+
+[pool_manager_cache:memcache]
+memcached_servers = {{ designate_pool_manager_memcached_servers }}
+
+# End of [pool_manager_cache:memcache] section
+
+[coordination]
+backend_url = {{ designate_backend_url }}
+
+# End of [coordination] section
+
+{# Start Pool Auto Configuration #}
+
+{% include '_powerdns-pool.j2' with context %}
+{% include '_bind-pool.j2' with context %}
+
+{# End Pool Auto Configuration #}
+
+{# Start Pool Assisted Configuration
+
+   If you wish to manually configure a pool, for example to use
+   DynECT, Akamai or InfoBlox, please uncomment an include below,
+   filling out the variables as approperiate.
+#}
+
+{% import '_backend-macros.j2' as backends with context %}
+
+{# backends.dynect(customer_name="mycustomer",
+                   username="myuser",
+                   password="mypassword",
+                   nameservers=["ns1.p13.dynect.net", "ns2.p13.dynect.net", "ns3.p13.dynect.net", "ns4.p13.dynect.net"],
+                   also_notifies=["204.13.249.65", "208.78.68.65"],
+                   masters=designate_pool_masters) #}
+
+{# backends.akamai(username="myuser",
+                   password="mypassword",
+                   nameservers=["a5-64.akam.net","a11-65.akam.net","a13-66.akam.net","a14-64.akam.net","a20-65.akam.net","a22-66.akam.net"],
+                   also_notifies=["193.108.155.34", "23.73.134.141", "80.67.64.148", "23.73.134.237", "23.73.133.141", "23.73.133.237", "80.67.64.10", "72.246.0.10", "72.247.45.157", "72.246.192.168", "193.108.152.143", "60.254.128.45", "72.247.45.110", "72.247.45.65", "72.247.45.25"],
+                   masters=designate_pool_masters) #}
+
+{# backends.infoblox(wapi_url="https://.../",
+                     username="myuser",
+                     password="mypassword",
+                     ns_group="designate",
+                     nameservers=[],
+                     also_notifies=[],
+                     masters=designate_pool_masters) #}
+
+{# End Pool Assisted Configuration #}
+
+### End of File ###
+## Do NOT put anything after this line ##
