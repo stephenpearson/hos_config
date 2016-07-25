@@ -1,0 +1,19 @@
+service_ips:
+    vsa:
+    -   cluster: vsa
+        cluster_ip:
+            hostname: auh01-cp1-vsa-VSA-BLK-iscsi
+            ip_address: 10.3.0.6
+        control_plane: control-plane-1
+        hosts:
+        -   hostname: auh01-cp1-vsa0001-VSA-BLK-iscsi
+            ip_address: 10.3.0.5
+        -   hostname: auh01-cp1-vsa0002-VSA-BLK-iscsi
+            ip_address: 10.3.0.8
+        -   hostname: auh01-cp1-vsa0003-VSA-BLK-iscsi
+            ip_address: 10.3.0.10
+        -   hostname: auh01-cp1-vsa0004-VSA-BLK-iscsi
+            ip_address: 10.3.0.12
+        -   hostname: auh01-cp1-vsa0005-VSA-BLK-iscsi
+            ip_address: 10.3.0.14
+        network: ISCSI-NET

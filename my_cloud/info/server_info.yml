@@ -1,0 +1,426 @@
+compute1:
+    failure-zone: AZ1
+    hostname: auh01-cp1-comp0001-mgmt
+    net_data:
+        BOND0:
+            EXTERNAL-VM-NET:
+                addr: null
+                tagged-vlan: true
+                vlan-id: 100
+            GUEST-NET:
+                addr: 10.4.0.4
+                tagged-vlan: true
+                vlan-id: 105
+            ISCSI-NET:
+                addr: 10.3.0.15
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.3.16
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+compute2:
+    failure-zone: AZ2
+    hostname: auh01-cp1-comp0004-mgmt
+    net_data:
+        BOND0:
+            EXTERNAL-VM-NET:
+                addr: null
+                tagged-vlan: true
+                vlan-id: 100
+            GUEST-NET:
+                addr: 10.4.0.7
+                tagged-vlan: true
+                vlan-id: 105
+            ISCSI-NET:
+                addr: 10.3.0.18
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.3.17
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+compute3:
+    failure-zone: AZ1
+    hostname: auh01-cp1-comp0002-mgmt
+    net_data:
+        BOND0:
+            EXTERNAL-VM-NET:
+                addr: null
+                tagged-vlan: true
+                vlan-id: 100
+            GUEST-NET:
+                addr: 10.4.0.5
+                tagged-vlan: true
+                vlan-id: 105
+            ISCSI-NET:
+                addr: 10.3.0.16
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.3.18
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+compute4:
+    failure-zone: AZ2
+    hostname: auh01-cp1-comp0005-mgmt
+    net_data:
+        BOND0:
+            EXTERNAL-VM-NET:
+                addr: null
+                tagged-vlan: true
+                vlan-id: 100
+            GUEST-NET:
+                addr: 10.4.0.8
+                tagged-vlan: true
+                vlan-id: 105
+            ISCSI-NET:
+                addr: 10.3.0.19
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.3.19
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+compute5:
+    failure-zone: AZ1
+    hostname: auh01-cp1-comp0003-mgmt
+    net_data:
+        BOND0:
+            EXTERNAL-VM-NET:
+                addr: null
+                tagged-vlan: true
+                vlan-id: 100
+            GUEST-NET:
+                addr: 10.4.0.6
+                tagged-vlan: true
+                vlan-id: 105
+            ISCSI-NET:
+                addr: 10.3.0.17
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.3.20
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+compute6:
+    failure-zone: AZ2
+    hostname: auh01-cp1-comp0006-mgmt
+    net_data:
+        BOND0:
+            EXTERNAL-VM-NET:
+                addr: null
+                tagged-vlan: true
+                vlan-id: 100
+            GUEST-NET:
+                addr: 10.4.0.9
+                tagged-vlan: true
+                vlan-id: 105
+            ISCSI-NET:
+                addr: 10.3.0.20
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.3.21
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+core1:
+    failure-zone: AZ1
+    hostname: auh01-cp1-core-m1-mgmt
+    net_data:
+        BOND0:
+            EXTERNAL-API-NET:
+                addr: 192.168.2.2
+                tagged-vlan: true
+                vlan-id: 101
+            INTERNAL-API-NET:
+                addr: 10.1.0.2
+                tagged-vlan: true
+                vlan-id: 102
+            ISCSI-NET:
+                addr: 10.3.0.2
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.0.16
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+core2:
+    failure-zone: AZ2
+    hostname: auh01-cp1-core-m2-mgmt
+    net_data:
+        BOND0:
+            EXTERNAL-API-NET:
+                addr: 192.168.2.3
+                tagged-vlan: true
+                vlan-id: 101
+            INTERNAL-API-NET:
+                addr: 10.1.0.3
+                tagged-vlan: true
+                vlan-id: 102
+            ISCSI-NET:
+                addr: 10.3.0.3
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.0.17
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+dbmq1:
+    failure-zone: AZ1
+    hostname: auh01-cp1-dbmq-m1-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.0.21
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+dbmq2:
+    failure-zone: AZ2
+    hostname: auh01-cp1-dbmq-m2-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.0.22
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+dbmq3:
+    failure-zone: AZ3
+    hostname: auh01-cp1-dbmq-m3-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.0.23
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+mtrmon1:
+    failure-zone: AZ1
+    hostname: auh01-cp1-mtrmon-m1-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.0.18
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+mtrmon2:
+    failure-zone: AZ2
+    hostname: auh01-cp1-mtrmon-m2-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.0.19
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+mtrmon3:
+    failure-zone: AZ3
+    hostname: auh01-cp1-mtrmon-m3-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.0.20
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+neut1:
+    failure-zone: AZ1
+    hostname: auh01-cp1-neut-m1-mgmt
+    net_data:
+        BOND0:
+            EXTERNAL-VM-NET:
+                addr: null
+                tagged-vlan: true
+                vlan-id: 100
+            GUEST-NET:
+                addr: 10.4.0.2
+                tagged-vlan: true
+                vlan-id: 105
+            MANAGEMENT-NET:
+                addr: 10.6.0.26
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+neut2:
+    failure-zone: AZ2
+    hostname: auh01-cp1-neut-m2-mgmt
+    net_data:
+        BOND0:
+            EXTERNAL-VM-NET:
+                addr: null
+                tagged-vlan: true
+                vlan-id: 100
+            GUEST-NET:
+                addr: 10.4.0.3
+                tagged-vlan: true
+                vlan-id: 105
+            MANAGEMENT-NET:
+                addr: 10.6.0.27
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+swobj1:
+    failure-zone: AZ1
+    hostname: auh01-cp1-swobj0001-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.1.16
+                tagged-vlan: false
+                vlan-id: 106
+            SWIFT-NET:
+                addr: 10.2.0.4
+                tagged-vlan: true
+                vlan-id: 103
+    state: allocated
+swobj2:
+    failure-zone: AZ2
+    hostname: auh01-cp1-swobj0003-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.1.17
+                tagged-vlan: false
+                vlan-id: 106
+            SWIFT-NET:
+                addr: 10.2.0.6
+                tagged-vlan: true
+                vlan-id: 103
+    state: allocated
+swobj3:
+    failure-zone: AZ1
+    hostname: auh01-cp1-swobj0002-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.1.18
+                tagged-vlan: false
+                vlan-id: 106
+            SWIFT-NET:
+                addr: 10.2.0.5
+                tagged-vlan: true
+                vlan-id: 103
+    state: allocated
+swobj4:
+    failure-zone: AZ2
+    hostname: auh01-cp1-swobj0004-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.1.19
+                tagged-vlan: false
+                vlan-id: 106
+            SWIFT-NET:
+                addr: 10.2.0.7
+                tagged-vlan: true
+                vlan-id: 103
+    state: allocated
+swpac1:
+    failure-zone: AZ1
+    hostname: auh01-cp1-swpac-m1-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.0.24
+                tagged-vlan: false
+                vlan-id: 106
+            SWIFT-NET:
+                addr: 10.2.0.2
+                tagged-vlan: true
+                vlan-id: 103
+    state: allocated
+swpac2:
+    failure-zone: AZ2
+    hostname: auh01-cp1-swpac-m2-mgmt
+    net_data:
+        BOND0:
+            MANAGEMENT-NET:
+                addr: 10.6.0.25
+                tagged-vlan: false
+                vlan-id: 106
+            SWIFT-NET:
+                addr: 10.2.0.3
+                tagged-vlan: true
+                vlan-id: 103
+    state: allocated
+vsa1:
+    failure-zone: AZ1
+    hostname: auh01-cp1-vsa0001-mgmt
+    net_data:
+        BOND0:
+            ISCSI-NET:
+                addr: 10.3.0.4
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.2.16
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+vsa2:
+    failure-zone: AZ2
+    hostname: auh01-cp1-vsa0002-mgmt
+    net_data:
+        BOND0:
+            ISCSI-NET:
+                addr: 10.3.0.7
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.2.17
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+vsa3:
+    failure-zone: AZ3
+    hostname: auh01-cp1-vsa0003-mgmt
+    net_data:
+        BOND0:
+            ISCSI-NET:
+                addr: 10.3.0.9
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.2.18
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+vsa4:
+    failure-zone: AZ1
+    hostname: auh01-cp1-vsa0004-mgmt
+    net_data:
+        BOND0:
+            ISCSI-NET:
+                addr: 10.3.0.11
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.2.19
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated
+vsa5:
+    failure-zone: AZ2
+    hostname: auh01-cp1-vsa0005-mgmt
+    net_data:
+        BOND0:
+            ISCSI-NET:
+                addr: 10.3.0.13
+                tagged-vlan: true
+                vlan-id: 104
+            MANAGEMENT-NET:
+                addr: 10.6.2.20
+                tagged-vlan: false
+                vlan-id: 106
+    state: allocated

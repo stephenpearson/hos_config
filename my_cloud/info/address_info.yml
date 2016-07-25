@@ -1,0 +1,206 @@
+EXTERNAL-API:
+    EXTERNAL-API-NET:
+        192.168.2.2:
+        - auh01-cp1-core-m1-extapi
+        192.168.2.3:
+        - auh01-cp1-core-m2-extapi
+        192.168.2.4:
+        - auh01-cp1-vip-public-CEI-API-extapi
+        - auh01-cp1-vip-public-CND-API-extapi
+        - auh01-cp1-vip-public-DES-API-extapi
+        - auh01-cp1-vip-public-FRE-API-extapi
+        - auh01-cp1-vip-public-GLA-API-extapi
+        - auh01-cp1-vip-public-HEA-ACF-extapi
+        - auh01-cp1-vip-public-HEA-ACW-extapi
+        - auh01-cp1-vip-public-HEA-API-extapi
+        - auh01-cp1-vip-public-HUX-SVC-extapi
+        - auh01-cp1-vip-public-HZN-WEB-extapi
+        - auh01-cp1-vip-public-KEY-API-extapi
+        - auh01-cp1-vip-public-KEYMGR-API-extapi
+        - auh01-cp1-vip-public-MON-API-extapi
+        - auh01-cp1-vip-public-NEU-SVR-extapi
+        - auh01-cp1-vip-public-NOV-API-extapi
+        - auh01-cp1-vip-public-NOV-VNC-extapi
+        - auh01-cp1-vip-public-OPS-WEB-extapi
+        - auh01-cp1-vip-public-SWF-PRX-extapi
+EXTERNAL-VM:
+    EXTERNAL-VM-NET: {}
+GUEST:
+    GUEST-NET:
+        10.4.0.2:
+        - auh01-cp1-neut-m1-guest
+        10.4.0.3:
+        - auh01-cp1-neut-m2-guest
+        10.4.0.4:
+        - auh01-cp1-comp0001-guest
+        10.4.0.5:
+        - auh01-cp1-comp0002-guest
+        10.4.0.6:
+        - auh01-cp1-comp0003-guest
+        10.4.0.7:
+        - auh01-cp1-comp0004-guest
+        10.4.0.8:
+        - auh01-cp1-comp0005-guest
+        10.4.0.9:
+        - auh01-cp1-comp0006-guest
+INTERNAL-API:
+    INTERNAL-API-NET:
+        10.1.0.2:
+        - auh01-cp1-core-m1-intapi
+        10.1.0.3:
+        - auh01-cp1-core-m2-intapi
+        10.1.0.4:
+        - auh01-cp1-vip-CEI-API-intapi
+        - auh01-cp1-vip-CND-API-intapi
+        - auh01-cp1-vip-DES-API-intapi
+        - auh01-cp1-vip-FND-MDB-intapi
+        - auh01-cp1-vip-FND-RMQ-intapi
+        - auh01-cp1-vip-FND-VDB-intapi
+        - auh01-cp1-vip-FRE-API-intapi
+        - auh01-cp1-vip-GLA-API-intapi
+        - auh01-cp1-vip-GLA-REG-intapi
+        - auh01-cp1-vip-HEA-ACF-intapi
+        - auh01-cp1-vip-HEA-ACW-intapi
+        - auh01-cp1-vip-HEA-API-intapi
+        - auh01-cp1-vip-HUX-SVC-intapi
+        - auh01-cp1-vip-HZN-WEB-intapi
+        - auh01-cp1-vip-KEY-API-intapi
+        - auh01-cp1-vip-KEYMGR-API-intapi
+        - auh01-cp1-vip-LOG-SVR-intapi
+        - auh01-cp1-vip-MON-API-intapi
+        - auh01-cp1-vip-NEU-SVR-intapi
+        - auh01-cp1-vip-NOV-API-intapi
+        - auh01-cp1-vip-NOV-MTD-intapi
+        - auh01-cp1-vip-OCT-API-intapi
+        - auh01-cp1-vip-OPS-WEB-intapi
+        - auh01-cp1-vip-SWF-PRX-intapi
+        - auh01-cp1-vip-admin-CEI-API-intapi
+        - auh01-cp1-vip-admin-CND-API-intapi
+        - auh01-cp1-vip-admin-DES-API-intapi
+        - auh01-cp1-vip-admin-FND-MDB-intapi
+        - auh01-cp1-vip-admin-FRE-API-intapi
+        - auh01-cp1-vip-admin-GLA-API-intapi
+        - auh01-cp1-vip-admin-HEA-ACF-intapi
+        - auh01-cp1-vip-admin-HEA-ACW-intapi
+        - auh01-cp1-vip-admin-HEA-API-intapi
+        - auh01-cp1-vip-admin-HUX-SVC-intapi
+        - auh01-cp1-vip-admin-HZN-WEB-intapi
+        - auh01-cp1-vip-admin-KEY-API-intapi
+        - auh01-cp1-vip-admin-KEYMGR-API-intapi
+        - auh01-cp1-vip-admin-MON-API-intapi
+        - auh01-cp1-vip-admin-NEU-SVR-intapi
+        - auh01-cp1-vip-admin-NOV-API-intapi
+        - auh01-cp1-vip-admin-OPS-WEB-intapi
+        - auh01-cp1-vip-admin-SWF-PRX-intapi
+ISCSI:
+    ISCSI-NET:
+        10.3.0.10:
+        - auh01-cp1-vsa0003-VSA-BLK-iscsi
+        10.3.0.11:
+        - auh01-cp1-vsa0004-iscsi
+        10.3.0.12:
+        - auh01-cp1-vsa0004-VSA-BLK-iscsi
+        10.3.0.13:
+        - auh01-cp1-vsa0005-iscsi
+        10.3.0.14:
+        - auh01-cp1-vsa0005-VSA-BLK-iscsi
+        10.3.0.15:
+        - auh01-cp1-comp0001-iscsi
+        10.3.0.16:
+        - auh01-cp1-comp0002-iscsi
+        10.3.0.17:
+        - auh01-cp1-comp0003-iscsi
+        10.3.0.18:
+        - auh01-cp1-comp0004-iscsi
+        10.3.0.19:
+        - auh01-cp1-comp0005-iscsi
+        10.3.0.2:
+        - auh01-cp1-core-m1-iscsi
+        10.3.0.20:
+        - auh01-cp1-comp0006-iscsi
+        10.3.0.3:
+        - auh01-cp1-core-m2-iscsi
+        10.3.0.4:
+        - auh01-cp1-vsa0001-iscsi
+        10.3.0.5:
+        - auh01-cp1-vsa0001-VSA-BLK-iscsi
+        10.3.0.6:
+        - auh01-cp1-vsa-VSA-BLK-iscsi
+        10.3.0.7:
+        - auh01-cp1-vsa0002-iscsi
+        10.3.0.8:
+        - auh01-cp1-vsa0002-VSA-BLK-iscsi
+        10.3.0.9:
+        - auh01-cp1-vsa0003-iscsi
+MANAGEMENT:
+    MANAGEMENT-NET:
+        10.6.0.16:
+        - auh01-cp1-core-m1-mgmt
+        10.6.0.17:
+        - auh01-cp1-core-m2-mgmt
+        10.6.0.18:
+        - auh01-cp1-mtrmon-m1-mgmt
+        10.6.0.19:
+        - auh01-cp1-mtrmon-m2-mgmt
+        10.6.0.20:
+        - auh01-cp1-mtrmon-m3-mgmt
+        10.6.0.21:
+        - auh01-cp1-dbmq-m1-mgmt
+        10.6.0.22:
+        - auh01-cp1-dbmq-m2-mgmt
+        10.6.0.23:
+        - auh01-cp1-dbmq-m3-mgmt
+        10.6.0.24:
+        - auh01-cp1-swpac-m1-mgmt
+        10.6.0.25:
+        - auh01-cp1-swpac-m2-mgmt
+        10.6.0.26:
+        - auh01-cp1-neut-m1-mgmt
+        10.6.0.27:
+        - auh01-cp1-neut-m2-mgmt
+        10.6.1.16:
+        - auh01-cp1-swobj0001-mgmt
+        10.6.1.17:
+        - auh01-cp1-swobj0003-mgmt
+        10.6.1.18:
+        - auh01-cp1-swobj0002-mgmt
+        10.6.1.19:
+        - auh01-cp1-swobj0004-mgmt
+        10.6.2.16:
+        - auh01-cp1-vsa0001-mgmt
+        10.6.2.17:
+        - auh01-cp1-vsa0002-mgmt
+        10.6.2.18:
+        - auh01-cp1-vsa0003-mgmt
+        10.6.2.19:
+        - auh01-cp1-vsa0004-mgmt
+        10.6.2.20:
+        - auh01-cp1-vsa0005-mgmt
+        10.6.3.16:
+        - auh01-cp1-comp0001-mgmt
+        10.6.3.17:
+        - auh01-cp1-comp0004-mgmt
+        10.6.3.18:
+        - auh01-cp1-comp0002-mgmt
+        10.6.3.19:
+        - auh01-cp1-comp0005-mgmt
+        10.6.3.20:
+        - auh01-cp1-comp0003-mgmt
+        10.6.3.21:
+        - auh01-cp1-comp0006-mgmt
+OCTAVIA-MGMT-NET:
+    OCTAVIA-MGMT-NET: {}
+SWIFT:
+    SWIFT-NET:
+        10.2.0.2:
+        - auh01-cp1-swpac-m1-swift
+        10.2.0.3:
+        - auh01-cp1-swpac-m2-swift
+        10.2.0.4:
+        - auh01-cp1-swobj0001-swift
+        10.2.0.5:
+        - auh01-cp1-swobj0002-swift
+        10.2.0.6:
+        - auh01-cp1-swobj0003-swift
+        10.2.0.7:
+        - auh01-cp1-swobj0004-swift

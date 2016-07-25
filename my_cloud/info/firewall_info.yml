@@ -1,0 +1,1060 @@
+EXTERNAL-API:
+-   addresses:
+    - 192.168.2.2
+    - 192.168.2.4
+    - 192.168.2.3
+    components:
+    - user-PING
+    port: '8:0'
+    protocol: icmp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - horizon
+    port: '443'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - keystone-api
+    port: '5000'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - nova-novncproxy
+    port: '6080'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - heat-api-cfn
+    port: '8000'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - heat-api-cloudwatch
+    port: '8003'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - heat-api
+    port: '8004'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - monasca-api
+    port: '8070'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - swift-proxy
+    port: '8080'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - nova-api
+    port: '8774'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - cinder-api
+    port: '8776'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - ceilometer-api
+    port: '8777'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - designate-api
+    port: '9001'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - hlm-ux-services
+    port: '9085'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - freezer-api
+    port: '9090'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - ops-console-web
+    port: '9095'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - glance-api
+    port: '9292'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - barbican-api
+    port: '9311'
+    protocol: tcp
+-   addresses:
+    - 192.168.2.4
+    components:
+    - neutron-server
+    port: '9696'
+    protocol: tcp
+GUEST:
+-   addresses:
+    - 10.4.0.7
+    - 10.4.0.8
+    - 10.4.0.9
+    - 10.4.0.4
+    - 10.4.0.5
+    - 10.4.0.6
+    - 10.4.0.3
+    - 10.4.0.2
+    components:
+    - user-PING
+    port: '8:0'
+    protocol: icmp
+-   addresses:
+    - 10.4.0.7
+    - 10.4.0.8
+    - 10.4.0.9
+    - 10.4.0.4
+    - 10.4.0.5
+    - 10.4.0.6
+    - 10.4.0.3
+    - 10.4.0.2
+    components:
+    - neutron-openvswitch-agent
+    port: '4789'
+    protocol: udp
+INTERNAL-API:
+-   addresses:
+    - 10.1.0.4
+    - 10.1.0.2
+    - 10.1.0.3
+    components:
+    - user-PING
+    port: '8:0'
+    protocol: icmp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - horizon
+    port: '443'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - mysql
+    port: '3306'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - keystone-api
+    port: '5000'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - logging-server
+    port: '5601'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - rabbitmq
+    port: '5672'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - heat-api-cfn
+    port: '8000'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - heat-api-cloudwatch
+    port: '8003'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - heat-api
+    port: '8004'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - monasca-api
+    port: '8070'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - swift-proxy
+    port: '8080'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - nova-api
+    port: '8774'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - nova-metadata
+    port: '8775'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - cinder-api
+    port: '8776'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - ceilometer-api
+    port: '8777'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - designate-api
+    port: '9001'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - hlm-ux-services
+    port: '9085'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - freezer-api
+    port: '9090'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - ops-console-web
+    port: '9095'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - glance-registry
+    port: '9191'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - glance-api
+    port: '9292'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - barbican-api
+    port: '9311'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - neutron-server
+    port: '9696'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - octavia-api
+    port: '9876'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - vertica
+    port: '15433'
+    protocol: tcp
+-   addresses:
+    - 10.1.0.4
+    components:
+    - keystone-api
+    port: '35357'
+    protocol: tcp
+ISCSI:
+-   addresses:
+    - 10.3.0.2
+    - 10.3.0.3
+    - 10.3.0.11
+    - 10.3.0.13
+    - 10.3.0.7
+    - 10.3.0.9
+    - 10.3.0.4
+    - 10.3.0.18
+    - 10.3.0.19
+    - 10.3.0.20
+    - 10.3.0.15
+    - 10.3.0.16
+    - 10.3.0.17
+    components:
+    - user-PING
+    port: '8:0'
+    protocol: icmp
+-   addresses:
+    - 10.3.0.6
+    - 10.3.0.12
+    - 10.3.0.14
+    - 10.3.0.8
+    - 10.3.0.10
+    - 10.3.0.5
+    components:
+    - vsa
+    port: '8081'
+    protocol: tcp
+-   addresses:
+    - 10.3.0.6
+    - 10.3.0.12
+    - 10.3.0.14
+    - 10.3.0.8
+    - 10.3.0.10
+    - 10.3.0.5
+    components:
+    - vsa
+    port: '16022'
+    protocol: tcp
+MANAGEMENT:
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    - 10.6.1.19
+    - 10.6.1.17
+    - 10.6.1.18
+    - 10.6.1.16
+    - 10.6.0.25
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    - 10.6.0.24
+    - 10.6.2.19
+    - 10.6.2.20
+    - 10.6.2.17
+    - 10.6.2.18
+    - 10.6.2.16
+    - 10.6.3.17
+    - 10.6.3.19
+    - 10.6.3.21
+    - 10.6.3.16
+    - 10.6.3.18
+    - 10.6.3.20
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    - 10.6.0.27
+    - 10.6.0.26
+    components:
+    - monasca-agent
+    - user-PING
+    port: '8:0'
+    protocol: icmp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    - 10.6.1.19
+    - 10.6.1.17
+    - 10.6.1.18
+    - 10.6.1.16
+    - 10.6.0.25
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    - 10.6.0.24
+    - 10.6.2.19
+    - 10.6.2.20
+    - 10.6.2.17
+    - 10.6.2.18
+    - 10.6.2.16
+    - 10.6.3.17
+    - 10.6.3.19
+    - 10.6.3.21
+    - 10.6.3.16
+    - 10.6.3.18
+    - 10.6.3.20
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    - 10.6.0.27
+    - 10.6.0.26
+    components:
+    - ssh
+    - lifecycle-manager
+    - lifecycle-manager-target
+    - vertica
+    port: '22'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - powerdns
+    port: '53'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - lifecycle-manager
+    port: '67'
+    protocol: udp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - lifecycle-manager
+    port: '68'
+    protocol: udp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - lifecycle-manager
+    port: '69'
+    protocol: udp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - lifecycle-manager
+    port: '79'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - horizon
+    port: '80'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - ntp-server
+    port: '123'
+    protocol: udp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - ip-cluster
+    port: '1993'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - zookeeper
+    port: '2181'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - zookeeper
+    port: '2888'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - cinder-volume
+    port: '3260'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    components:
+    - mysql
+    port: '3306'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - zookeeper
+    port: '3888'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    components:
+    - rabbitmq
+    port: '4369'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    components:
+    - mysql
+    port: '4444'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    components:
+    - mysql
+    port: '4567'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    components:
+    - mysql
+    port: '4568'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - vertica
+    port: '4803'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - vertica
+    port: '4804'
+    protocol: udp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - keystone-api
+    port: '5000'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    - 10.6.1.19
+    - 10.6.1.17
+    - 10.6.1.18
+    - 10.6.1.16
+    - 10.6.0.25
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    - 10.6.0.24
+    - 10.6.2.19
+    - 10.6.2.20
+    - 10.6.2.17
+    - 10.6.2.18
+    - 10.6.2.16
+    - 10.6.3.17
+    - 10.6.3.19
+    - 10.6.3.21
+    - 10.6.3.16
+    - 10.6.3.18
+    - 10.6.3.20
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    - 10.6.0.27
+    - 10.6.0.26
+    components:
+    - lifecycle-manager-target
+    port: '5099'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - designate-mdns
+    port: '5354'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - vertica
+    port: '5433'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - vertica
+    port: '5434'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - octavia-health-manager
+    port: '5555'
+    protocol: udp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - logging-server
+    port: '5601'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    components:
+    - rabbitmq
+    port: '5672'
+    protocol: tcp
+-   addresses:
+    - 10.6.3.17
+    - 10.6.3.19
+    - 10.6.3.21
+    - 10.6.3.16
+    - 10.6.3.18
+    - 10.6.3.20
+    components:
+    - nova-compute
+    port: 5900:6100
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - cmc-service
+    port: 5900:5905
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - nova-novncproxy
+    port: '6080'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - storm
+    port: '6627'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - monasca-threshold
+    port: '6701'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - monasca-threshold
+    port: '6702'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - monasca-threshold
+    port: '6703'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - monasca-threshold
+    port: '6704'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - heat-api-cfn
+    port: '8000'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - heat-api-cloudwatch
+    port: '8003'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - heat-api
+    port: '8004'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - monasca-api
+    port: '8070'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.25
+    - 10.6.0.24
+    components:
+    - swift-proxy
+    port: '8080'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - monasca-api
+    port: '8081'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - monasca-persister
+    port: '8090'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - monasca-persister
+    port: '8091'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    - 10.6.1.19
+    - 10.6.1.17
+    - 10.6.1.18
+    - 10.6.1.16
+    - 10.6.0.25
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    - 10.6.0.24
+    - 10.6.2.19
+    - 10.6.2.20
+    - 10.6.2.17
+    - 10.6.2.18
+    - 10.6.2.16
+    - 10.6.3.17
+    - 10.6.3.19
+    - 10.6.3.21
+    - 10.6.3.16
+    - 10.6.3.18
+    - 10.6.3.20
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    - 10.6.0.27
+    - 10.6.0.26
+    components:
+    - monasca-agent
+    port: '8125'
+    protocol: udp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - nova-api
+    port: '8774'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - nova-metadata
+    port: '8775'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - cinder-api
+    port: '8776'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - ceilometer-api
+    port: '8777'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - designate-api
+    port: '9001'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - hlm-ux-services
+    port: '9085'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - freezer-api
+    port: '9090'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - kafka
+    port: '9092'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - ops-console-web
+    port: '9095'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - glance-registry
+    port: '9191'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - logging-server
+    port: '9200'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - glance-api
+    port: '9292'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    components:
+    - logging-server
+    port: '9300'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - barbican-api
+    port: '9311'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    components:
+    - mysql
+    port: '9500'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - neutron-server
+    port: '9696'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - octavia-api
+    port: '9876'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - memcached
+    port: '11211'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - cmc-service
+    port: 13990:13999
+    protocol: tcp
+-   addresses:
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    components:
+    - rabbitmq
+    port: '15672'
+    protocol: tcp
+-   addresses:
+    - 10.6.3.17
+    - 10.6.3.19
+    - 10.6.3.21
+    - 10.6.3.16
+    - 10.6.3.18
+    - 10.6.3.20
+    components:
+    - nova-compute-kvm
+    port: '16509'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    - 10.6.1.19
+    - 10.6.1.17
+    - 10.6.1.18
+    - 10.6.1.16
+    - 10.6.0.25
+    - 10.6.0.18
+    - 10.6.0.20
+    - 10.6.0.19
+    - 10.6.0.24
+    - 10.6.2.19
+    - 10.6.2.20
+    - 10.6.2.17
+    - 10.6.2.18
+    - 10.6.2.16
+    - 10.6.3.17
+    - 10.6.3.19
+    - 10.6.3.21
+    - 10.6.3.16
+    - 10.6.3.18
+    - 10.6.3.20
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    - 10.6.0.27
+    - 10.6.0.26
+    components:
+    - monasca-agent
+    port: '17123'
+    protocol: tcp
+-   addresses:
+    - 10.6.0.16
+    - 10.6.0.17
+    components:
+    - keystone-api
+    port: '35357'
+    protocol: tcp
+-   addresses:
+    - 10.6.3.17
+    - 10.6.3.19
+    - 10.6.3.21
+    - 10.6.3.16
+    - 10.6.3.18
+    - 10.6.3.20
+    components:
+    - nova-compute-kvm
+    port: 49152:49215
+    protocol: tcp
+-   addresses:
+    - 10.6.0.22
+    - 10.6.0.23
+    - 10.6.0.21
+    components:
+    - rabbitmq
+    port: '61000'
+    protocol: tcp
+SWIFT:
+-   addresses:
+    - 10.2.0.7
+    - 10.2.0.6
+    - 10.2.0.5
+    - 10.2.0.4
+    - 10.2.0.3
+    - 10.2.0.2
+    components:
+    - user-PING
+    port: '8:0'
+    protocol: icmp
+-   addresses:
+    - 10.2.0.7
+    - 10.2.0.6
+    - 10.2.0.5
+    - 10.2.0.4
+    - 10.2.0.3
+    - 10.2.0.2
+    components:
+    - swift-rsync
+    port: '873'
+    protocol: tcp
+-   addresses:
+    - 10.2.0.7
+    - 10.2.0.6
+    - 10.2.0.5
+    - 10.2.0.4
+    components:
+    - swift-object
+    port: '6000'
+    protocol: tcp
+-   addresses:
+    - 10.2.0.3
+    - 10.2.0.2
+    components:
+    - swift-container
+    port: '6001'
+    protocol: tcp
+-   addresses:
+    - 10.2.0.3
+    - 10.2.0.2
+    components:
+    - swift-account
+    port: '6002'
+    protocol: tcp

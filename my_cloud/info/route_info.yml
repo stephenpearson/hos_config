@@ -1,0 +1,322 @@
+MANAGEMENT-NET:
+    INTERNAL-API-NET:
+        default: false
+        used_by:
+            ceilometer-agent-notification:
+                rabbitmq:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+            ceilometer-client:
+                ceilometer-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                keystone-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+            ceilometer-common:
+                keystone-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                monasca-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                mysql:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                rabbitmq:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+            freezer-agent:
+                keystone-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                - auh01-cp1-dbmq-m1
+                - auh01-cp1-dbmq-m2
+                - auh01-cp1-dbmq-m3
+                - auh01-cp1-swpac-m1
+                - auh01-cp1-swpac-m2
+                - auh01-cp1-neut-m1
+                - auh01-cp1-neut-m2
+                - auh01-cp1-swobj0001
+                - auh01-cp1-swobj0002
+                - auh01-cp1-swobj0003
+                - auh01-cp1-swobj0004
+                - auh01-cp1-vsa0001
+                - auh01-cp1-vsa0002
+                - auh01-cp1-vsa0003
+                - auh01-cp1-vsa0004
+                - auh01-cp1-vsa0005
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+                mysql:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                - auh01-cp1-dbmq-m1
+                - auh01-cp1-dbmq-m2
+                - auh01-cp1-dbmq-m3
+                - auh01-cp1-swpac-m1
+                - auh01-cp1-swpac-m2
+                - auh01-cp1-neut-m1
+                - auh01-cp1-neut-m2
+                - auh01-cp1-swobj0001
+                - auh01-cp1-swobj0002
+                - auh01-cp1-swobj0003
+                - auh01-cp1-swobj0004
+                - auh01-cp1-vsa0001
+                - auh01-cp1-vsa0002
+                - auh01-cp1-vsa0003
+                - auh01-cp1-vsa0004
+                - auh01-cp1-vsa0005
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+            freezer-api:
+                keystone-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                logging-server:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+            logging-server:
+                keystone-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                rabbitmq:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+            monasca-agent:
+                keystone-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                - auh01-cp1-dbmq-m1
+                - auh01-cp1-dbmq-m2
+                - auh01-cp1-dbmq-m3
+                - auh01-cp1-swpac-m1
+                - auh01-cp1-swpac-m2
+                - auh01-cp1-neut-m1
+                - auh01-cp1-neut-m2
+                - auh01-cp1-swobj0001
+                - auh01-cp1-swobj0002
+                - auh01-cp1-swobj0003
+                - auh01-cp1-swobj0004
+                - auh01-cp1-vsa0001
+                - auh01-cp1-vsa0002
+                - auh01-cp1-vsa0003
+                - auh01-cp1-vsa0004
+                - auh01-cp1-vsa0005
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+                monasca-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                - auh01-cp1-dbmq-m1
+                - auh01-cp1-dbmq-m2
+                - auh01-cp1-dbmq-m3
+                - auh01-cp1-swpac-m1
+                - auh01-cp1-swpac-m2
+                - auh01-cp1-neut-m1
+                - auh01-cp1-neut-m2
+                - auh01-cp1-swobj0001
+                - auh01-cp1-swobj0002
+                - auh01-cp1-swobj0003
+                - auh01-cp1-swobj0004
+                - auh01-cp1-vsa0001
+                - auh01-cp1-vsa0002
+                - auh01-cp1-vsa0003
+                - auh01-cp1-vsa0004
+                - auh01-cp1-vsa0005
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+                rabbitmq:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                - auh01-cp1-dbmq-m1
+                - auh01-cp1-dbmq-m2
+                - auh01-cp1-dbmq-m3
+                - auh01-cp1-swpac-m1
+                - auh01-cp1-swpac-m2
+                - auh01-cp1-neut-m1
+                - auh01-cp1-neut-m2
+                - auh01-cp1-swobj0001
+                - auh01-cp1-swobj0002
+                - auh01-cp1-swobj0003
+                - auh01-cp1-swobj0004
+                - auh01-cp1-vsa0001
+                - auh01-cp1-vsa0002
+                - auh01-cp1-vsa0003
+                - auh01-cp1-vsa0004
+                - auh01-cp1-vsa0005
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+            monasca-api:
+                keystone-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                mysql:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                vertica:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+            monasca-client:
+                keystone-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+                monasca-api:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+            monasca-notifier:
+                mysql:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+            monasca-persister:
+                vertica:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+            monasca-threshold:
+                mysql:
+                - auh01-cp1-mtrmon-m1
+                - auh01-cp1-mtrmon-m2
+                - auh01-cp1-mtrmon-m3
+            neutron-dhcp-agent:
+                rabbitmq:
+                - auh01-cp1-neut-m1
+                - auh01-cp1-neut-m2
+            neutron-l3-agent:
+                rabbitmq:
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+            neutron-lbaasv2-agent:
+                rabbitmq:
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+            neutron-metadata-agent:
+                nova-metadata:
+                - auh01-cp1-neut-m1
+                - auh01-cp1-neut-m2
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+                rabbitmq:
+                - auh01-cp1-neut-m1
+                - auh01-cp1-neut-m2
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+            neutron-openvswitch-agent:
+                rabbitmq:
+                - auh01-cp1-neut-m1
+                - auh01-cp1-neut-m2
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+            neutron-vpn-agent:
+                rabbitmq:
+                - auh01-cp1-neut-m1
+                - auh01-cp1-neut-m2
+            nova-compute:
+                cinder-api:
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+                glance-api:
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+                keystone-api:
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+                neutron-server:
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+                rabbitmq:
+                - auh01-cp1-comp0001
+                - auh01-cp1-comp0002
+                - auh01-cp1-comp0003
+                - auh01-cp1-comp0004
+                - auh01-cp1-comp0005
+                - auh01-cp1-comp0006
+            swift-client:
+                keystone-api:
+                - auh01-cp1-swpac-m1
+                - auh01-cp1-swpac-m2
+                swift-proxy:
+                - auh01-cp1-swpac-m1
+                - auh01-cp1-swpac-m2
+            swift-proxy:
+                keystone-api:
+                - auh01-cp1-swpac-m1
+                - auh01-cp1-swpac-m2

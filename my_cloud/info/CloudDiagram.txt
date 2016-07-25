@@ -1,0 +1,324 @@
++-ControlPlane: region1 (control-plane-1)----------------------------------------------------------------------------------------------------------------------+
+|                                                                                                                                                              |
+| +-Cluster core ()--------------------------------------------------------------------------------------+                                                     |
+| |                                                                                                      |                                                     |
+| | +-auh01-cp1-core-m1 (10.6.0.16)----------------+    +-auh01-cp1-core-m2 (10.6.0.17)----------------+ |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | barbican                                     |    | barbican                                     | |                                                     |
+| | |   barbican-api                               |    |   barbican-api                               | |                                                     |
+| | |   barbican-worker                            |    |   barbican-worker                            | |                                                     |
+| | | cinder                                       |    | cinder                                       | |                                                     |
+| | |   cinder-api                                 |    |   cinder-api                                 | |                                                     |
+| | |   cinder-backup                              |    |   cinder-backup                              | |                                                     |
+| | |   cinder-client                              |    |   cinder-client                              | |                                                     |
+| | |   cinder-scheduler                           |    |   cinder-scheduler                           | |                                                     |
+| | |   cinder-volume                              |    |   cinder-volume                              | |                                                     |
+| | | designate                                    |    | designate                                    | |                                                     |
+| | |   designate-api                              |    |   designate-api                              | |                                                     |
+| | |   designate-central                          |    |   designate-central                          | |                                                     |
+| | |   designate-mdns                             |    |   designate-mdns                             | |                                                     |
+| | |   designate-pool-manager                     |    |   designate-pool-manager                     | |                                                     |
+| | |   designate-zone-manager                     |    |   designate-zone-manager                     | |                                                     |
+| | | foundation                                   |    | foundation                                   | |                                                     |
+| | |   apache2                                    |    |   apache2                                    | |                                                     |
+| | |   barbican-client                            |    |   barbican-client                            | |                                                     |
+| | |   designate-client                           |    |   designate-client                           | |                                                     |
+| | |   hlm-ux-services                            |    |   hlm-ux-services                            | |                                                     |
+| | |   ip-cluster                                 |    |   ip-cluster                                 | |                                                     |
+| | |   memcached                                  |    |   memcached                                  | |                                                     |
+| | |   ntp-server                                 |    |   ntp-server                                 | |                                                     |
+| | |   openstack-client                           |    |   openstack-client                           | |                                                     |
+| | |   powerdns                                   |    |   powerdns                                   | |                                                     |
+| | |   stunnel                                    |    |   stunnel                                    | |                                                     |
+| | | freezer                                      |    | freezer                                      | |                                                     |
+| | |   freezer-agent                              |    |   freezer-agent                              | |                                                     |
+| | | glance                                       |    | glance                                       | |                                                     |
+| | |   glance-api                                 |    |   glance-api                                 | |                                                     |
+| | |   glance-client                              |    |   glance-client                              | |                                                     |
+| | |   glance-registry                            |    |   glance-registry                            | |                                                     |
+| | | heat                                         |    | heat                                         | |                                                     |
+| | |   heat-api                                   |    |   heat-api                                   | |                                                     |
+| | |   heat-api-cfn                               |    |   heat-api-cfn                               | |                                                     |
+| | |   heat-api-cloudwatch                        |    |   heat-api-cloudwatch                        | |                                                     |
+| | |   heat-client                                |    |   heat-client                                | |                                                     |
+| | |   heat-engine                                |    |   heat-engine                                | |                                                     |
+| | | horizon                                      |    | horizon                                      | |                                                     |
+| | |   horizon                                    |    |   horizon                                    | |                                                     |
+| | | keystone                                     |    | keystone                                     | |                                                     |
+| | |   keystone-api                               |    |   keystone-api                               | |                                                     |
+| | |   keystone-client                            |    |   keystone-client                            | |                                                     |
+| | | logging                                      |    | logging                                      | |                                                     |
+| | |   logging-producer                           |    |   logging-producer                           | |                                                     |
+| | | monasca                                      |    | monasca                                      | |                                                     |
+| | |   monasca-agent                              |    |   monasca-agent                              | |                                                     |
+| | | neutron                                      |    | neutron                                      | |                                                     |
+| | |   neutron-client                             |    |   neutron-client                             | |                                                     |
+| | |   neutron-ml2-plugin                         |    |   neutron-ml2-plugin                         | |                                                     |
+| | |   neutron-server                             |    |   neutron-server                             | |                                                     |
+| | | nova                                         |    | nova                                         | |                                                     |
+| | |   nova-api                                   |    |   nova-api                                   | |                                                     |
+| | |   nova-client                                |    |   nova-client                                | |                                                     |
+| | |   nova-conductor                             |    |   nova-conductor                             | |                                                     |
+| | |   nova-console-auth                          |    |   nova-console-auth                          | |                                                     |
+| | |   nova-metadata                              |    |   nova-metadata                              | |                                                     |
+| | |   nova-novncproxy                            |    |   nova-novncproxy                            | |                                                     |
+| | |   nova-scheduler                             |    |   nova-scheduler                             | |                                                     |
+| | | octavia                                      |    | octavia                                      | |                                                     |
+| | |   octavia-api                                |    |   octavia-api                                | |                                                     |
+| | |   octavia-health-manager                     |    |   octavia-health-manager                     | |                                                     |
+| | | operations                                   |    | operations                                   | |                                                     |
+| | |   lifecycle-manager                          |    |   lifecycle-manager                          | |                                                     |
+| | |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   | |                                                     |
+| | |   ops-console-monitor                        |    |   ops-console-monitor                        | |                                                     |
+| | |   ops-console-web                            |    |   ops-console-web                            | |                                                     |
+| | | vsa-storage                                  |    | vsa-storage                                  | |                                                     |
+| | |   cmc-service                                |    |   cmc-service                                | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | -------------------------------------------- |    | -------------------------------------------- | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           | |                                                     |
+| | |   EXTERNAL-API-NET (192.168.2.2)             |    |   EXTERNAL-API-NET (192.168.2.3)             | |                                                     |
+| | |   INTERNAL-API-NET (10.1.0.2)                |    |   INTERNAL-API-NET (10.1.0.3)                | |                                                     |
+| | |   ISCSI-NET (10.3.0.2)                       |    |   ISCSI-NET (10.3.0.3)                       | |                                                     |
+| | |   MANAGEMENT-NET (10.6.0.16)                 |    |   MANAGEMENT-NET (10.6.0.17)                 | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | +----------------------------------------------+    +----------------------------------------------+ |                                                     |
+| |                                                                                                      |                                                     |
+| +------------------------------------------------------------------------------------------------------+                                                     |
+|                                                                                                                                                              |
+| +-Cluster mtrmon ()----------------------------------------------------------------------------------------------------------------------------------------+ |
+| |                                                                                                                                                          | |
+| | +-auh01-cp1-mtrmon-m1 (10.6.0.18)--------------+    +-auh01-cp1-mtrmon-m2 (10.6.0.19)--------------+    +-auh01-cp1-mtrmon-m3 (10.6.0.20)--------------+ | |
+| | |                                              |    |                                              |    |                                              | | |
+| | | ceilometer                                   |    | ceilometer                                   |    | ceilometer                                   | | |
+| | |   ceilometer-agent-notification              |    |   ceilometer-agent-notification              |    |   ceilometer-agent-notification              | | |
+| | |   ceilometer-api                             |    |   ceilometer-api                             |    |   ceilometer-api                             | | |
+| | |   ceilometer-client                          |    |   ceilometer-client                          |    |   ceilometer-client                          | | |
+| | |   ceilometer-common                          |    |   ceilometer-common                          |    |   ceilometer-common                          | | |
+| | |   ceilometer-polling                         |    |   ceilometer-polling                         |    |   ceilometer-polling                         | | |
+| | | foundation                                   |    | foundation                                   |    | foundation                                   | | |
+| | |   apache2                                    |    |   apache2                                    |    |   apache2                                    | | |
+| | |   kafka                                      |    |   kafka                                      |    |   kafka                                      | | |
+| | |   ntp-client                                 |    |   ntp-client                                 |    |   ntp-client                                 | | |
+| | |   storm                                      |    |   storm                                      |    |   storm                                      | | |
+| | |   stunnel                                    |    |   stunnel                                    |    |   stunnel                                    | | |
+| | |   vertica                                    |    |   vertica                                    |    |   vertica                                    | | |
+| | |   zookeeper                                  |    |   zookeeper                                  |    |   zookeeper                                  | | |
+| | | freezer                                      |    | freezer                                      |    | freezer                                      | | |
+| | |   freezer-agent                              |    |   freezer-agent                              |    |   freezer-agent                              | | |
+| | |   freezer-api                                |    |   freezer-api                                |    |   freezer-api                                | | |
+| | | logging                                      |    | logging                                      |    | logging                                      | | |
+| | |   logging-producer                           |    |   logging-producer                           |    |   logging-producer                           | | |
+| | |   logging-server                             |    |   logging-server                             |    |   logging-server                             | | |
+| | | monasca                                      |    | monasca                                      |    | monasca                                      | | |
+| | |   monasca-agent                              |    |   monasca-agent                              |    |   monasca-agent                              | | |
+| | |   monasca-api                                |    |   monasca-api                                |    |   monasca-api                                | | |
+| | |   monasca-client                             |    |   monasca-client                             |    |   monasca-client                             | | |
+| | |   monasca-notifier                           |    |   monasca-notifier                           |    |   monasca-notifier                           | | |
+| | |   monasca-persister                          |    |   monasca-persister                          |    |   monasca-persister                          | | |
+| | |   monasca-threshold                          |    |   monasca-threshold                          |    |   monasca-threshold                          | | |
+| | | operations                                   |    | operations                                   |    | operations                                   | | |
+| | |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   | | |
+| | |                                              |    |                                              |    |                                              | | |
+| | | -------------------------------------------- |    | -------------------------------------------- |    | -------------------------------------------- | | |
+| | |                                              |    |                                              |    |                                              | | |
+| | | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           | | |
+| | |   MANAGEMENT-NET (10.6.0.18)                 |    |   MANAGEMENT-NET (10.6.0.19)                 |    |   MANAGEMENT-NET (10.6.0.20)                 | | |
+| | |     -> INTERNAL-API-NET                      |    |     -> INTERNAL-API-NET                      |    |     -> INTERNAL-API-NET                      | | |
+| | |                                              |    |                                              |    |                                              | | |
+| | +----------------------------------------------+    +----------------------------------------------+    +----------------------------------------------+ | |
+| |                                                                                                                                                          | |
+| +----------------------------------------------------------------------------------------------------------------------------------------------------------+ |
+|                                                                                                                                                              |
+| +-Cluster dbmq ()------------------------------------------------------------------------------------------------------------------------------------------+ |
+| |                                                                                                                                                          | |
+| | +-auh01-cp1-dbmq-m1 (10.6.0.21)----------------+    +-auh01-cp1-dbmq-m2 (10.6.0.22)----------------+    +-auh01-cp1-dbmq-m3 (10.6.0.23)----------------+ | |
+| | |                                              |    |                                              |    |                                              | | |
+| | | foundation                                   |    | foundation                                   |    | foundation                                   | | |
+| | |   mysql                                      |    |   mysql                                      |    |   mysql                                      | | |
+| | |   ntp-client                                 |    |   ntp-client                                 |    |   ntp-client                                 | | |
+| | |   rabbitmq                                   |    |   rabbitmq                                   |    |   rabbitmq                                   | | |
+| | |   stunnel                                    |    |   stunnel                                    |    |   stunnel                                    | | |
+| | | freezer                                      |    | freezer                                      |    | freezer                                      | | |
+| | |   freezer-agent                              |    |   freezer-agent                              |    |   freezer-agent                              | | |
+| | | logging                                      |    | logging                                      |    | logging                                      | | |
+| | |   logging-producer                           |    |   logging-producer                           |    |   logging-producer                           | | |
+| | | monasca                                      |    | monasca                                      |    | monasca                                      | | |
+| | |   monasca-agent                              |    |   monasca-agent                              |    |   monasca-agent                              | | |
+| | | operations                                   |    | operations                                   |    | operations                                   | | |
+| | |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   | | |
+| | |                                              |    |                                              |    |                                              | | |
+| | | -------------------------------------------- |    | -------------------------------------------- |    | -------------------------------------------- | | |
+| | |                                              |    |                                              |    |                                              | | |
+| | | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           | | |
+| | |   MANAGEMENT-NET (10.6.0.21)                 |    |   MANAGEMENT-NET (10.6.0.22)                 |    |   MANAGEMENT-NET (10.6.0.23)                 | | |
+| | |     -> INTERNAL-API-NET                      |    |     -> INTERNAL-API-NET                      |    |     -> INTERNAL-API-NET                      | | |
+| | |                                              |    |                                              |    |                                              | | |
+| | +----------------------------------------------+    +----------------------------------------------+    +----------------------------------------------+ | |
+| |                                                                                                                                                          | |
+| +----------------------------------------------------------------------------------------------------------------------------------------------------------+ |
+|                                                                                                                                                              |
+| +-Cluster swpac ()-------------------------------------------------------------------------------------+                                                     |
+| |                                                                                                      |                                                     |
+| | +-auh01-cp1-swpac-m1 (10.6.0.24)---------------+    +-auh01-cp1-swpac-m2 (10.6.0.25)---------------+ |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | foundation                                   |    | foundation                                   | |                                                     |
+| | |   ntp-client                                 |    |   ntp-client                                 | |                                                     |
+| | |   stunnel                                    |    |   stunnel                                    | |                                                     |
+| | |   swift-common                               |    |   swift-common                               | |                                                     |
+| | |   swift-rsync                                |    |   swift-rsync                                | |                                                     |
+| | | freezer                                      |    | freezer                                      | |                                                     |
+| | |   freezer-agent                              |    |   freezer-agent                              | |                                                     |
+| | | logging                                      |    | logging                                      | |                                                     |
+| | |   logging-producer                           |    |   logging-producer                           | |                                                     |
+| | | monasca                                      |    | monasca                                      | |                                                     |
+| | |   monasca-agent                              |    |   monasca-agent                              | |                                                     |
+| | | operations                                   |    | operations                                   | |                                                     |
+| | |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   | |                                                     |
+| | | swift                                        |    | swift                                        | |                                                     |
+| | |   swift-account                              |    |   swift-account                              | |                                                     |
+| | |   swift-client                               |    |   swift-client                               | |                                                     |
+| | |   swift-container                            |    |   swift-container                            | |                                                     |
+| | |   swift-proxy                                |    |   swift-proxy                                | |                                                     |
+| | |   swift-ring-builder                         |    |   swift-ring-builder                         | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | -------------------------------------------- |    | -------------------------------------------- | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           | |                                                     |
+| | |   MANAGEMENT-NET (10.6.0.24)                 |    |   MANAGEMENT-NET (10.6.0.25)                 | |                                                     |
+| | |     -> INTERNAL-API-NET                      |    |     -> INTERNAL-API-NET                      | |                                                     |
+| | |   SWIFT-NET (10.2.0.2)                       |    |   SWIFT-NET (10.2.0.3)                       | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | +----------------------------------------------+    +----------------------------------------------+ |                                                     |
+| |                                                                                                      |                                                     |
+| +------------------------------------------------------------------------------------------------------+                                                     |
+|                                                                                                                                                              |
+| +-Cluster neut ()--------------------------------------------------------------------------------------+                                                     |
+| |                                                                                                      |                                                     |
+| | +-auh01-cp1-neut-m1 (10.6.0.26)----------------+    +-auh01-cp1-neut-m2 (10.6.0.27)----------------+ |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | foundation                                   |    | foundation                                   | |                                                     |
+| | |   ntp-client                                 |    |   ntp-client                                 | |                                                     |
+| | |   stunnel                                    |    |   stunnel                                    | |                                                     |
+| | | freezer                                      |    | freezer                                      | |                                                     |
+| | |   freezer-agent                              |    |   freezer-agent                              | |                                                     |
+| | | logging                                      |    | logging                                      | |                                                     |
+| | |   logging-producer                           |    |   logging-producer                           | |                                                     |
+| | | monasca                                      |    | monasca                                      | |                                                     |
+| | |   monasca-agent                              |    |   monasca-agent                              | |                                                     |
+| | | neutron                                      |    | neutron                                      | |                                                     |
+| | |   neutron-dhcp-agent                         |    |   neutron-dhcp-agent                         | |                                                     |
+| | |   neutron-metadata-agent                     |    |   neutron-metadata-agent                     | |                                                     |
+| | |   neutron-openvswitch-agent                  |    |   neutron-openvswitch-agent                  | |                                                     |
+| | |   neutron-vpn-agent                          |    |   neutron-vpn-agent                          | |                                                     |
+| | | operations                                   |    | operations                                   | |                                                     |
+| | |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | -------------------------------------------- |    | -------------------------------------------- | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           | |                                                     |
+| | |   EXTERNAL-VM-NET                            |    |   EXTERNAL-VM-NET                            | |                                                     |
+| | |   GUEST-NET (10.4.0.2)                       |    |   GUEST-NET (10.4.0.3)                       | |                                                     |
+| | |   MANAGEMENT-NET (10.6.0.26)                 |    |   MANAGEMENT-NET (10.6.0.27)                 | |                                                     |
+| | |     -> INTERNAL-API-NET                      |    |     -> INTERNAL-API-NET                      | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | +----------------------------------------------+    +----------------------------------------------+ |                                                     |
+| |                                                                                                      |                                                     |
+| +------------------------------------------------------------------------------------------------------+                                                     |
+|                                                                                                                                                              |
+| +-compute----------------------------------------------------------------------------------------------+                                                     |
+| |                                                                                                      |                                                     |
+| | +-COMPUTE-ROLE (AZ1) (3 servers)---------------+    +-COMPUTE-ROLE (AZ2) (3 servers)---------------+ |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | foundation                                   |    | foundation                                   | |                                                     |
+| | |   ntp-client                                 |    |   ntp-client                                 | |                                                     |
+| | |   stunnel                                    |    |   stunnel                                    | |                                                     |
+| | | freezer                                      |    | freezer                                      | |                                                     |
+| | |   freezer-agent                              |    |   freezer-agent                              | |                                                     |
+| | | logging                                      |    | logging                                      | |                                                     |
+| | |   logging-producer                           |    |   logging-producer                           | |                                                     |
+| | | monasca                                      |    | monasca                                      | |                                                     |
+| | |   monasca-agent                              |    |   monasca-agent                              | |                                                     |
+| | | neutron                                      |    | neutron                                      | |                                                     |
+| | |   neutron-l3-agent                           |    |   neutron-l3-agent                           | |                                                     |
+| | |   neutron-lbaasv2-agent                      |    |   neutron-lbaasv2-agent                      | |                                                     |
+| | |   neutron-metadata-agent                     |    |   neutron-metadata-agent                     | |                                                     |
+| | |   neutron-openvswitch-agent                  |    |   neutron-openvswitch-agent                  | |                                                     |
+| | | nova                                         |    | nova                                         | |                                                     |
+| | |   nova-compute                               |    |   nova-compute                               | |                                                     |
+| | |   nova-compute-kvm                           |    |   nova-compute-kvm                           | |                                                     |
+| | | operations                                   |    | operations                                   | |                                                     |
+| | |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | -------------------------------------------- |    | -------------------------------------------- | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           | |                                                     |
+| | |   EXTERNAL-VM-NET                            |    |   EXTERNAL-VM-NET                            | |                                                     |
+| | |   GUEST-NET (10.4.0.0/22)                    |    |   GUEST-NET (10.4.0.0/22)                    | |                                                     |
+| | |   ISCSI-NET (10.3.0.0/22)                    |    |   ISCSI-NET (10.3.0.0/22)                    | |                                                     |
+| | |   MANAGEMENT-NET (10.6.0.0/22)               |    |   MANAGEMENT-NET (10.6.0.0/22)               | |                                                     |
+| | |     -> INTERNAL-API-NET                      |    |     -> INTERNAL-API-NET                      | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | +----------------------------------------------+    +----------------------------------------------+ |                                                     |
+| +------------------------------------------------------------------------------------------------------+                                                     |
+|                                                                                                                                                              |
+| +-vsa------------------------------------------------------------------------------------------------------------------------------------------------------+ |
+| |                                                                                                                                                          | |
+| | +-VSA-ROLE (AZ1) (2 servers)-------------------+    +-VSA-ROLE (AZ2) (2 servers)-------------------+    +-VSA-ROLE (AZ3) (1 servers)-------------------+ | |
+| | |                                              |    |                                              |    |                                              | | |
+| | | foundation                                   |    | foundation                                   |    | foundation                                   | | |
+| | |   ntp-client                                 |    |   ntp-client                                 |    |   ntp-client                                 | | |
+| | |   stunnel                                    |    |   stunnel                                    |    |   stunnel                                    | | |
+| | | freezer                                      |    | freezer                                      |    | freezer                                      | | |
+| | |   freezer-agent                              |    |   freezer-agent                              |    |   freezer-agent                              | | |
+| | | logging                                      |    | logging                                      |    | logging                                      | | |
+| | |   logging-producer                           |    |   logging-producer                           |    |   logging-producer                           | | |
+| | | monasca                                      |    | monasca                                      |    | monasca                                      | | |
+| | |   monasca-agent                              |    |   monasca-agent                              |    |   monasca-agent                              | | |
+| | | operations                                   |    | operations                                   |    | operations                                   | | |
+| | |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   | | |
+| | | vsa-storage                                  |    | vsa-storage                                  |    | vsa-storage                                  | | |
+| | |   vsa                                        |    |   vsa                                        |    |   vsa                                        | | |
+| | |                                              |    |                                              |    |                                              | | |
+| | | -------------------------------------------- |    | -------------------------------------------- |    | -------------------------------------------- | | |
+| | |                                              |    |                                              |    |                                              | | |
+| | | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           | | |
+| | |   ISCSI-NET (10.3.0.0/22)                    |    |   ISCSI-NET (10.3.0.0/22)                    |    |   ISCSI-NET (10.3.0.0/22)                    | | |
+| | |   MANAGEMENT-NET (10.6.0.0/22)               |    |   MANAGEMENT-NET (10.6.0.0/22)               |    |   MANAGEMENT-NET (10.6.0.0/22)               | | |
+| | |     -> INTERNAL-API-NET                      |    |     -> INTERNAL-API-NET                      |    |     -> INTERNAL-API-NET                      | | |
+| | |                                              |    |                                              |    |                                              | | |
+| | +----------------------------------------------+    +----------------------------------------------+    +----------------------------------------------+ | |
+| +----------------------------------------------------------------------------------------------------------------------------------------------------------+ |
+|                                                                                                                                                              |
+| +-swobj------------------------------------------------------------------------------------------------+                                                     |
+| |                                                                                                      |                                                     |
+| | +-SWOBJ-ROLE (AZ1) (2 servers)-----------------+    +-SWOBJ-ROLE (AZ2) (2 servers)-----------------+ |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | foundation                                   |    | foundation                                   | |                                                     |
+| | |   ntp-client                                 |    |   ntp-client                                 | |                                                     |
+| | |   stunnel                                    |    |   stunnel                                    | |                                                     |
+| | |   swift-common                               |    |   swift-common                               | |                                                     |
+| | |   swift-rsync                                |    |   swift-rsync                                | |                                                     |
+| | | freezer                                      |    | freezer                                      | |                                                     |
+| | |   freezer-agent                              |    |   freezer-agent                              | |                                                     |
+| | | logging                                      |    | logging                                      | |                                                     |
+| | |   logging-producer                           |    |   logging-producer                           | |                                                     |
+| | | monasca                                      |    | monasca                                      | |                                                     |
+| | |   monasca-agent                              |    |   monasca-agent                              | |                                                     |
+| | | operations                                   |    | operations                                   | |                                                     |
+| | |   lifecycle-manager-target                   |    |   lifecycle-manager-target                   | |                                                     |
+| | | swift                                        |    | swift                                        | |                                                     |
+| | |   swift-object                               |    |   swift-object                               | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | -------------------------------------------- |    | -------------------------------------------- | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | | bond0 (hed3, hed4)                           |    | bond0 (hed3, hed4)                           | |                                                     |
+| | |   MANAGEMENT-NET (10.6.0.0/22)               |    |   MANAGEMENT-NET (10.6.0.0/22)               | |                                                     |
+| | |     -> INTERNAL-API-NET                      |    |     -> INTERNAL-API-NET                      | |                                                     |
+| | |   SWIFT-NET (10.2.0.0/22)                    |    |   SWIFT-NET (10.2.0.0/22)                    | |                                                     |
+| | |                                              |    |                                              | |                                                     |
+| | +----------------------------------------------+    +----------------------------------------------+ |                                                     |
+| +------------------------------------------------------------------------------------------------------+                                                     |
+|                                                                                                                                                              |
++--------------------------------------------------------------------------------------------------------------------------------------------------------------+
+

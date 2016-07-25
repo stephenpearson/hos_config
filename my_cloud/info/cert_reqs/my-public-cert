@@ -1,0 +1,41 @@
+[req]
+distinguished_name = req_distinguished_name
+req_extensions = v3_req
+prompt = no
+
+[ req_distinguished_name ]
+CN = "helion-vip"
+
+[ v3_req ]
+basicConstraints = CA:FALSE
+keyUsage = nonRepudiation, digitalSignature, keyEncipherment
+subjectAltName = @alt_names
+
+[ alt_names ]
+DNS.1 = "auh01-cp1-core-m1-mgmt"
+DNS.2 = "auh01-cp1-core-m2-mgmt"
+DNS.3 = "auh01-cp1-mtrmon-m1-mgmt"
+DNS.4 = "auh01-cp1-mtrmon-m2-mgmt"
+DNS.5 = "auh01-cp1-mtrmon-m3-mgmt"
+DNS.6 = "auh01-cp1-swpac-m1-mgmt"
+DNS.7 = "auh01-cp1-swpac-m2-mgmt"
+DNS.8 = "auh01-cp1-vip-public-CEI-API-extapi"
+DNS.9 = "auh01-cp1-vip-public-CND-API-extapi"
+DNS.10 = "auh01-cp1-vip-public-DES-API-extapi"
+DNS.11 = "auh01-cp1-vip-public-FRE-API-extapi"
+DNS.12 = "auh01-cp1-vip-public-GLA-API-extapi"
+DNS.13 = "auh01-cp1-vip-public-HEA-ACF-extapi"
+DNS.14 = "auh01-cp1-vip-public-HEA-ACW-extapi"
+DNS.15 = "auh01-cp1-vip-public-HEA-API-extapi"
+DNS.16 = "auh01-cp1-vip-public-HUX-SVC-extapi"
+DNS.17 = "auh01-cp1-vip-public-HZN-WEB-extapi"
+DNS.18 = "auh01-cp1-vip-public-KEY-API-extapi"
+DNS.19 = "auh01-cp1-vip-public-KEYMGR-API-extapi"
+DNS.20 = "auh01-cp1-vip-public-MON-API-extapi"
+DNS.21 = "auh01-cp1-vip-public-NEU-SVR-extapi"
+DNS.22 = "auh01-cp1-vip-public-NOV-API-extapi"
+DNS.23 = "auh01-cp1-vip-public-NOV-VNC-extapi"
+DNS.24 = "auh01-cp1-vip-public-OPS-WEB-extapi"
+DNS.25 = "auh01-cp1-vip-public-SWF-PRX-extapi"
+DNS.26 = "192.168.2.4"
+IP.1 = "192.168.2.4"

@@ -1,0 +1,496 @@
+control-plane-1:
+    barbican:
+        barbican-api:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        barbican-worker:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+    ceilometer:
+        ceilometer-agent-notification:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        ceilometer-api:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        ceilometer-client:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        ceilometer-common:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        ceilometer-polling:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+    cinder:
+        cinder-api:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        cinder-backup:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        cinder-client:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        cinder-scheduler:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        cinder-volume:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+    designate:
+        designate-api:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        designate-central:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        designate-mdns:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        designate-pool-manager:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        designate-zone-manager:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+    foundation:
+        apache2:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        barbican-client:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        designate-client:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        hlm-ux-services:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        ip-cluster:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        kafka:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        memcached:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        mysql:
+        - auh01-cp1-dbmq-m1-mgmt
+        - auh01-cp1-dbmq-m2-mgmt
+        - auh01-cp1-dbmq-m3-mgmt
+        ntp-client:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        - auh01-cp1-dbmq-m1-mgmt
+        - auh01-cp1-dbmq-m2-mgmt
+        - auh01-cp1-dbmq-m3-mgmt
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        - auh01-cp1-neut-m1-mgmt
+        - auh01-cp1-neut-m2-mgmt
+        - auh01-cp1-swobj0001-mgmt
+        - auh01-cp1-swobj0002-mgmt
+        - auh01-cp1-swobj0003-mgmt
+        - auh01-cp1-swobj0004-mgmt
+        - auh01-cp1-vsa0001-mgmt
+        - auh01-cp1-vsa0002-mgmt
+        - auh01-cp1-vsa0003-mgmt
+        - auh01-cp1-vsa0004-mgmt
+        - auh01-cp1-vsa0005-mgmt
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        ntp-server:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        openstack-client:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        powerdns:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        rabbitmq:
+        - auh01-cp1-dbmq-m1-mgmt
+        - auh01-cp1-dbmq-m2-mgmt
+        - auh01-cp1-dbmq-m3-mgmt
+        storm:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        stunnel:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        - auh01-cp1-dbmq-m1-mgmt
+        - auh01-cp1-dbmq-m2-mgmt
+        - auh01-cp1-dbmq-m3-mgmt
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        - auh01-cp1-neut-m1-mgmt
+        - auh01-cp1-neut-m2-mgmt
+        - auh01-cp1-swobj0001-mgmt
+        - auh01-cp1-swobj0002-mgmt
+        - auh01-cp1-swobj0003-mgmt
+        - auh01-cp1-swobj0004-mgmt
+        - auh01-cp1-vsa0001-mgmt
+        - auh01-cp1-vsa0002-mgmt
+        - auh01-cp1-vsa0003-mgmt
+        - auh01-cp1-vsa0004-mgmt
+        - auh01-cp1-vsa0005-mgmt
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        swift-common:
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        - auh01-cp1-swobj0001-mgmt
+        - auh01-cp1-swobj0002-mgmt
+        - auh01-cp1-swobj0003-mgmt
+        - auh01-cp1-swobj0004-mgmt
+        swift-rsync:
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        - auh01-cp1-swobj0001-mgmt
+        - auh01-cp1-swobj0002-mgmt
+        - auh01-cp1-swobj0003-mgmt
+        - auh01-cp1-swobj0004-mgmt
+        vertica:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        zookeeper:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+    freezer:
+        freezer-agent:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        - auh01-cp1-dbmq-m1-mgmt
+        - auh01-cp1-dbmq-m2-mgmt
+        - auh01-cp1-dbmq-m3-mgmt
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        - auh01-cp1-neut-m1-mgmt
+        - auh01-cp1-neut-m2-mgmt
+        - auh01-cp1-swobj0001-mgmt
+        - auh01-cp1-swobj0002-mgmt
+        - auh01-cp1-swobj0003-mgmt
+        - auh01-cp1-swobj0004-mgmt
+        - auh01-cp1-vsa0001-mgmt
+        - auh01-cp1-vsa0002-mgmt
+        - auh01-cp1-vsa0003-mgmt
+        - auh01-cp1-vsa0004-mgmt
+        - auh01-cp1-vsa0005-mgmt
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        freezer-api:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+    glance:
+        glance-api:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        glance-client:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        glance-registry:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+    heat:
+        heat-api:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        heat-api-cfn:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        heat-api-cloudwatch:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        heat-client:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        heat-engine:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+    horizon:
+        horizon:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+    keystone:
+        keystone-api:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        keystone-client:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+    logging:
+        logging-producer:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        - auh01-cp1-dbmq-m1-mgmt
+        - auh01-cp1-dbmq-m2-mgmt
+        - auh01-cp1-dbmq-m3-mgmt
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        - auh01-cp1-neut-m1-mgmt
+        - auh01-cp1-neut-m2-mgmt
+        - auh01-cp1-swobj0001-mgmt
+        - auh01-cp1-swobj0002-mgmt
+        - auh01-cp1-swobj0003-mgmt
+        - auh01-cp1-swobj0004-mgmt
+        - auh01-cp1-vsa0001-mgmt
+        - auh01-cp1-vsa0002-mgmt
+        - auh01-cp1-vsa0003-mgmt
+        - auh01-cp1-vsa0004-mgmt
+        - auh01-cp1-vsa0005-mgmt
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        logging-server:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+    monasca:
+        monasca-agent:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        - auh01-cp1-dbmq-m1-mgmt
+        - auh01-cp1-dbmq-m2-mgmt
+        - auh01-cp1-dbmq-m3-mgmt
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        - auh01-cp1-neut-m1-mgmt
+        - auh01-cp1-neut-m2-mgmt
+        - auh01-cp1-swobj0001-mgmt
+        - auh01-cp1-swobj0002-mgmt
+        - auh01-cp1-swobj0003-mgmt
+        - auh01-cp1-swobj0004-mgmt
+        - auh01-cp1-vsa0001-mgmt
+        - auh01-cp1-vsa0002-mgmt
+        - auh01-cp1-vsa0003-mgmt
+        - auh01-cp1-vsa0004-mgmt
+        - auh01-cp1-vsa0005-mgmt
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        monasca-api:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        monasca-client:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        monasca-notifier:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        monasca-persister:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        monasca-threshold:
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+    neutron:
+        neutron-client:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        neutron-dhcp-agent:
+        - auh01-cp1-neut-m1-mgmt
+        - auh01-cp1-neut-m2-mgmt
+        neutron-l3-agent:
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        neutron-lbaasv2-agent:
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        neutron-metadata-agent:
+        - auh01-cp1-neut-m1-mgmt
+        - auh01-cp1-neut-m2-mgmt
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        neutron-ml2-plugin:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        neutron-openvswitch-agent:
+        - auh01-cp1-neut-m1-mgmt
+        - auh01-cp1-neut-m2-mgmt
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        neutron-server:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        neutron-vpn-agent:
+        - auh01-cp1-neut-m1-mgmt
+        - auh01-cp1-neut-m2-mgmt
+    nova:
+        nova-api:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        nova-client:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        nova-compute:
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        nova-compute-kvm:
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        nova-conductor:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        nova-console-auth:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        nova-metadata:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        nova-novncproxy:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        nova-scheduler:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+    octavia:
+        octavia-api:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        octavia-health-manager:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+    operations:
+        lifecycle-manager:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        lifecycle-manager-target:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        - auh01-cp1-mtrmon-m1-mgmt
+        - auh01-cp1-mtrmon-m2-mgmt
+        - auh01-cp1-mtrmon-m3-mgmt
+        - auh01-cp1-dbmq-m1-mgmt
+        - auh01-cp1-dbmq-m2-mgmt
+        - auh01-cp1-dbmq-m3-mgmt
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        - auh01-cp1-neut-m1-mgmt
+        - auh01-cp1-neut-m2-mgmt
+        - auh01-cp1-swobj0001-mgmt
+        - auh01-cp1-swobj0002-mgmt
+        - auh01-cp1-swobj0003-mgmt
+        - auh01-cp1-swobj0004-mgmt
+        - auh01-cp1-vsa0001-mgmt
+        - auh01-cp1-vsa0002-mgmt
+        - auh01-cp1-vsa0003-mgmt
+        - auh01-cp1-vsa0004-mgmt
+        - auh01-cp1-vsa0005-mgmt
+        - auh01-cp1-comp0001-mgmt
+        - auh01-cp1-comp0002-mgmt
+        - auh01-cp1-comp0003-mgmt
+        - auh01-cp1-comp0004-mgmt
+        - auh01-cp1-comp0005-mgmt
+        - auh01-cp1-comp0006-mgmt
+        ops-console-monitor:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        ops-console-web:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+    swift:
+        swift-account:
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        swift-client:
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        swift-container:
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        swift-object:
+        - auh01-cp1-swobj0001-mgmt
+        - auh01-cp1-swobj0002-mgmt
+        - auh01-cp1-swobj0003-mgmt
+        - auh01-cp1-swobj0004-mgmt
+        swift-proxy:
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+        swift-ring-builder:
+        - auh01-cp1-swpac-m1-mgmt
+        - auh01-cp1-swpac-m2-mgmt
+    vsa-storage:
+        cmc-service:
+        - auh01-cp1-core-m1-mgmt
+        - auh01-cp1-core-m2-mgmt
+        vsa:
+        - auh01-cp1-vsa0001-mgmt
+        - auh01-cp1-vsa0002-mgmt
+        - auh01-cp1-vsa0003-mgmt
+        - auh01-cp1-vsa0004-mgmt
+        - auh01-cp1-vsa0005-mgmt
