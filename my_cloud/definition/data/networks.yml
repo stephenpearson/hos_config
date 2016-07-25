@@ -1,0 +1,98 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+  product:
+    version: 2
+
+  networks:
+    #
+    # This example uses the following networks
+    #
+    # Network       CIDR                     VLAN
+    # -------       ----                     ----
+    # External API  10.243.125.0/24          3365      (tagged)
+    # Internal API  10.243.126.0/24          3366      (tagged)
+    # External VM   see note 1               3367      (tagged)
+    # ISCSI         10.243.0.0/24            3374      (tagged)
+    # Conf          10.243.140.0/24          3380      (untagged)
+    # Guest         10.243.[127-129].0/24    3368-70   (tagged)
+    # Management    10.243.[130-132].0/24    3371-73   (untagged)
+    # Swift         10.243.[136-138].0/24    3377-79   (tagged)
+    #
+    # Notes:
+    # 1. Defined as part of Neutron configuration
+    # 2. Guest, Swift  and Management networks defined per rack
+    #
+    # Modify these values to match your environment
+    #
+    - name: EXTERNAL-API-NET
+      vlanid: 101
+      tagged-vlan: true
+      cidr: 192.168.2.0/24
+      gateway-ip: 192.168.2.1
+      network-group: EXTERNAL-API
+
+    - name: INTERNAL-API-NET
+      vlanid: 102
+      tagged-vlan: true
+      cidr: 10.1.0.0/24
+      gateway-ip: 10.1.0.1
+      network-group: INTERNAL-API
+
+    - name: EXTERNAL-VM-NET
+      vlanid: 100
+      tagged-vlan: true
+      network-group: EXTERNAL-VM
+
+    - name: ISCSI-NET
+      vlanid: 104
+      tagged-vlan: true
+      cidr: 10.3.0.0/22
+      gateway-ip: 10.3.0.1
+      network-group: ISCSI
+
+
+   #
+   # Guest Network
+   #
+    - name: GUEST-NET
+      vlanid: 105
+      tagged-vlan: true
+      cidr: 10.4.0.0/22
+      gateway-ip: 10.4.0.1
+      network-group: GUEST
+
+
+    #
+    # SWIFT Network
+    #
+
+    - name: SWIFT-NET
+      vlanid: 103
+      tagged-vlan: true
+      cidr: 10.2.0.0/22
+      gateway-ip: 10.2.0.1
+      network-group: SWIFT
+
+    #
+    # Management Network
+    #
+    - name: MANAGEMENT-NET
+      vlanid: 106
+      tagged-vlan: false
+      cidr: 10.6.0.0/22
+      gateway-ip: 10.6.0.1
+      network-group: MANAGEMENT

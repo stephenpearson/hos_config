@@ -1,0 +1,322 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+
+---
+  product:
+    version: 2
+  baremetal:
+    subnet: 10.6.0.0
+    netmask: 255.255.252.0
+
+  servers:
+
+    # DL360 Gen9
+    - id: core1
+      role: CORE-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:cc:ac"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.16
+      ilo-ip: 10.32.0.16
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: mtrmon1
+      role: MTRMON-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:ce:10"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.18
+      ilo-ip: 10.32.0.17
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: dbmq1
+      role: DBMQ-ROLE
+      server-group: rack1
+      mac-addr: "5c:b9:01:89:b7:20"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.21
+      ilo-ip: 10.32.0.18
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: swpac1
+      role: SWPAC-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:cb:bc"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.24
+      ilo-ip: 10.32.0.19
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: neut1
+      role: NEUTRON-ROLE
+      server-group: rack1
+      mac-addr: "5c:b9:01:89:b6:18"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.26
+      ilo-ip: 10.32.0.20
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: swobj1
+      role: SWOBJ-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:ca:e0"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.1.16
+      ilo-ip: 10.32.0.21
+      ilo-user: admin
+      ilo-password: password
+
+    # BL460 Gen9 - Blade
+    - id: compute1
+      role: COMPUTE-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:78:c4"
+      nic-mapping: HP-BL460-2PORT
+      ip-addr: 10.6.3.16
+      ilo-ip: 10.32.0.22
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: vsa1
+      role: VSA-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:b5:78:c4"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.2.16
+      ilo-ip: 10.32.0.23
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: core2
+      role: CORE-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:af:92:c0"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.17
+      ilo-ip: 10.32.0.24
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: mtrmon2
+      role: MTRMON-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:b5:ce:10"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.19
+      ilo-ip: 10.32.0.25
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: dbmq2
+      role: DBMQ-ROLE
+      server-group: rack2
+      mac-addr: "5c:b9:01:89:b7:20"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.22
+      ilo-ip: 10.32.0.26
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: swpac2
+      role: SWPAC-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:b5:7e:08"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.25
+      ilo-ip: 10.32.0.27
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: neut2
+      role: NEUTRON-ROLE
+      server-group: rack2
+      mac-addr: "5c:b9:01:89:b6:18"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.27
+      ilo-ip: 10.32.0.28
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: swobj2
+      role: SWOBJ-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:b5:cd:00"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.1.17
+      ilo-ip: 10.32.0.29
+      ilo-user: admin
+      ilo-password: password
+
+    # BL460 Gen9 - Blade
+    - id: compute2
+      role: COMPUTE-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:b5:0f:48"
+      nic-mapping: HP-BL460-2PORT
+      ip-addr: 10.6.3.17
+      ilo-ip: 10.32.0.30
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: vsa2
+      role: VSA-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:b5:0f:48"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.2.17
+      ilo-ip: 10.32.0.31
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: mtrmon3
+      role: MTRMON-ROLE
+      server-group: rack3
+      mac-addr: "8c:dc:d4:b5:ce:10"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.20
+      ilo-ip: 10.32.0.32
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: dbmq3
+      role: DBMQ-ROLE
+      server-group: rack3
+      mac-addr: "5c:b9:01:89:b7:20"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.0.23
+      ilo-ip: 10.32.0.33
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: vsa3
+      role: VSA-ROLE
+      server-group: rack3
+      mac-addr: "8c:dc:d4:b6:0f:87"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.2.18
+      ilo-ip: 10.32.0.34
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: swobj3
+      role: SWOBJ-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d8:e2:dc:09"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.1.18
+      ilo-ip: 10.32.0.35
+      ilo-user: admin
+      ilo-password: password
+
+    # BL460 Gen9 - Blade
+    - id: compute3
+      role: COMPUTE-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:bb:b3:1f:71"
+      nic-mapping: HP-BL460-2PORT
+      ip-addr: 10.6.3.18
+      ilo-ip: 10.32.0.36
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: vsa4
+      role: VSA-ROLE
+      server-group: rack1
+      mac-addr: "8c:dc:d4:a9:cc:88"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.2.19
+      ilo-ip: 10.32.0.37
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: swobj4
+      role: SWOBJ-ROLE
+      server-group: rack2
+      mac-addr: "8c:dd:01:e2:dc:10"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.1.19
+      ilo-ip: 10.32.0.38
+      ilo-user: admin
+      ilo-password: password
+
+    # BL460 Gen9 - Blade
+    - id: compute4
+      role: COMPUTE-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:86:b3:1f:72"
+      nic-mapping: HP-BL460-2PORT
+      ip-addr: 10.6.3.19
+      ilo-ip: 10.32.0.39
+      ilo-user: admin
+      ilo-password: password
+
+    # DL360 Gen9
+    - id: vsa5
+      role: VSA-ROLE
+      server-group: rack2
+      mac-addr: "8c:dc:d4:a8:cf:89"
+      nic-mapping: HP-DL360-2PORT
+      ip-addr: 10.6.2.20
+      ilo-ip: 10.32.0.40
+      ilo-user: admin
+      ilo-password: password
+
+    # BL460 Gen9 - Blade
+    - id: compute5
+      role: COMPUTE-ROLE
+      server-group: rack1
+      mac-addr: "8c:df:86:b4:1f:73"
+      nic-mapping: HP-BL460-2PORT
+      ip-addr: 10.6.3.20
+      ilo-ip: 10.32.0.41
+      ilo-user: admin
+      ilo-password: password
+
+    # BL460 Gen9 - Blade
+    - id: compute6
+      role: COMPUTE-ROLE
+      server-group: rack2
+      mac-addr: "8c:df:86:b4:1f:74"
+      nic-mapping: HP-BL460-2PORT
+      ip-addr: 10.6.3.21
+      ilo-ip: 10.32.0.42
+      ilo-user: admin
+      ilo-password: password
