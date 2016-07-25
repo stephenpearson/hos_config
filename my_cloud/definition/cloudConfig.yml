@@ -38,15 +38,15 @@
     # dns resolving configuration for your site
     # refer to resolv.conf for details on each option
     dns-settings:
-    #  nameservers:
-    #    - name-server1
-    #    - name-server2
+      nameservers:
+        - 10.10.0.1
+        - 10.10.0.2
     #    - name-server3
     #
-    #  domain: sub1.example.net
+      domain: mqg.hpe
     #
-    #  search:
-    #    - sub1.example.net
+      search:
+        - mqg.hpe
     #    - sub2.example.net
     #
     #  sortlist:
@@ -65,7 +65,7 @@
     #    no-check-names:
     #    inet6:
     smtp-settings:
-    #  server: mailserver.examplecloud.com
+      server: smtp1.hqg.hpe
     #  port: 25
     #  timeout: 15
     # These are only needed if your server requires authentication
