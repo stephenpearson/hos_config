@@ -22,7 +22,7 @@
 
     - name: CORE-ROLE
       interface-model: CORE-INTERFACES
-      disk-model: COMMON-CONTROL-600GB-DISKS
+      disk-model: COMMON-CONTROL-2TB-DISKS
 
     - name: MTRMON-ROLE
       interface-model: MTRMON-INTERFACES
@@ -30,11 +30,11 @@
 
     - name: NEUTRON-ROLE
       interface-model: NEUTRON-INTERFACES
-      disk-model: COMMON-CONTROL-600GB-DISKS
+      disk-model: COMMON-CONTROL-2TB-DISKS
 
     - name: DBMQ-ROLE
       interface-model: DBMQ-INTERFACES
-      disk-model: DBMQ-600GB-DISKS
+      disk-model: DBMQ-2TB-DISKS
 
     - name: SWPAC-ROLE
       interface-model: SWPAC-INTERFACES
