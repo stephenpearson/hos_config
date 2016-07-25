@@ -29,10 +29,12 @@ haproxy_globals:
         - "maxconn 100000"
         - "stats socket /run/haproxy/admin.sock mode 660 level admin"
         - "stats timeout 30s"
-        - "ssl-default-bind-options no-sslv3"
-        - "ssl-default-server-options no-sslv3"
-        - "ssl-default-bind-ciphers HIGH:!aNULL:!eNULL:!DES:!3DES"
-        - "ssl-default-server-ciphers HIGH:!aNULL:!eNULL:!DES:!3DES"
+        - "ssl-default-bind-options no-sslv3 no-tls-tickets force-tlsv12"
+        - "ssl-default-server-options no-sslv3 no-tls-tickets force-tlsv12"
+        - "ssl-default-bind-ciphers HIGH:!aNULL:!eNULL:!DES:!3DES:!SSLv3:!TLSv1:!TLSv1.1:!CAMELLIA"
+        - "ssl-default-server-ciphers HIGH:!aNULL:!eNULL:!DES:!3DES:!SSLv3:!TLSv1:!TLSv1.1:!CAMELLIA"
+#        - "ssl-default-server-ciphers ECDHE-ECDSA-AES256-GCM-SHA384"
+#        - "ssl-default-bind-ciphers ECDHE-ECDSA-AES256-GCM-SHA384"
 haproxy_processes: 3
 haproxy_is_baremetal: "{{ True if ansible_virtualization_role == 'host' else False  }}"
 haproxy_defaults:
