@@ -74,6 +74,10 @@
         devices:
           - name: /dev/sdb
           - name: /dev/sdc
+          - name: /dev/sdd
+          - name: /dev/sde
+          - name: /dev/sdf
+          - name: /dev/sdg
         consumer:
           name: swift
           attrs:
