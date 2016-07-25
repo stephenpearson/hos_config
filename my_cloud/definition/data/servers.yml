@@ -14,7 +14,6 @@
 # under the License.
 #
 
-
 ---
   product:
     version: 2
@@ -29,7 +28,7 @@
       role: CORE-ROLE
       server-group: rack1
       mac-addr: "8c:dc:d4:b5:cc:ac"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.16
       ilo-ip: 10.32.0.16
       ilo-user: admin
@@ -40,7 +39,7 @@
       role: MTRMON-ROLE
       server-group: rack1
       mac-addr: "8c:dc:d4:b5:ce:10"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.18
       ilo-ip: 10.32.0.17
       ilo-user: admin
@@ -51,7 +50,7 @@
       role: DBMQ-ROLE
       server-group: rack1
       mac-addr: "5c:b9:01:89:b7:20"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.21
       ilo-ip: 10.32.0.18
       ilo-user: admin
@@ -62,7 +61,7 @@
       role: SWPAC-ROLE
       server-group: rack1
       mac-addr: "8c:dc:d4:b5:cb:bc"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.24
       ilo-ip: 10.32.0.19
       ilo-user: admin
@@ -73,7 +72,7 @@
       role: NEUTRON-ROLE
       server-group: rack1
       mac-addr: "5c:b9:01:89:b6:18"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.26
       ilo-ip: 10.32.0.20
       ilo-user: admin
@@ -84,7 +83,7 @@
       role: SWOBJ-ROLE
       server-group: rack1
       mac-addr: "8c:dc:d4:b5:ca:e0"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.1.16
       ilo-ip: 10.32.0.21
       ilo-user: admin
@@ -95,7 +94,7 @@
       role: COMPUTE-ROLE
       server-group: rack1
       mac-addr: "8c:dc:d4:b5:78:c4"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-BL460-2PORT
       ip-addr: 10.6.3.16
       ilo-ip: 10.32.0.22
       ilo-user: admin
@@ -106,7 +105,7 @@
       role: VSA-ROLE
       server-group: rack1
       mac-addr: "8c:dc:d4:b5:78:c4"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.2.16
       ilo-ip: 10.32.0.23
       ilo-user: admin
@@ -117,7 +116,7 @@
       role: CORE-ROLE
       server-group: rack2
       mac-addr: "8c:dc:d4:af:92:c0"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.17
       ilo-ip: 10.32.0.24
       ilo-user: admin
@@ -128,7 +127,7 @@
       role: MTRMON-ROLE
       server-group: rack2
       mac-addr: "8c:dc:d4:b5:ce:10"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.19
       ilo-ip: 10.32.0.25
       ilo-user: admin
@@ -139,7 +138,7 @@
       role: DBMQ-ROLE
       server-group: rack2
       mac-addr: "5c:b9:01:89:b7:20"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.22
       ilo-ip: 10.32.0.26
       ilo-user: admin
@@ -150,7 +149,7 @@
       role: SWPAC-ROLE
       server-group: rack2
       mac-addr: "8c:dc:d4:b5:7e:08"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.24
       ilo-ip: 10.32.0.27
       ilo-user: admin
@@ -161,7 +160,7 @@
       role: NEUTRON-ROLE
       server-group: rack2
       mac-addr: "5c:b9:01:89:b6:18"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.26
       ilo-ip: 10.32.0.28
       ilo-user: admin
@@ -172,7 +171,7 @@
       role: SWOBJ-ROLE
       server-group: rack2
       mac-addr: "8c:dc:d4:b5:cd:00"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.1.17
       ilo-ip: 10.32.0.29
       ilo-user: admin
@@ -183,7 +182,7 @@
       role: COMPUTE-ROLE
       server-group: rack2
       mac-addr: "8c:dc:d4:b5:0f:48"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-BL460-2PORT
       ip-addr: 10.6.3.17
       ilo-ip: 10.32.0.30
       ilo-user: admin
@@ -194,7 +193,7 @@
       role: VSA-ROLE
       server-group: rack2
       mac-addr: "8c:dc:d4:b5:0f:48"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.2.17
       ilo-ip: 10.32.0.31
       ilo-user: admin
@@ -205,7 +204,7 @@
       role: MTRMON-ROLE
       server-group: rack3
       mac-addr: "8c:dc:d4:b5:ce:10"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.20
       ilo-ip: 10.32.0.32
       ilo-user: admin
@@ -216,7 +215,7 @@
       role: DBMQ-ROLE
       server-group: rack3
       mac-addr: "5c:b9:01:89:b7:20"
-      nic-mapping: HP-DL360-6PORT
+      nic-mapping: HP-DL360-2PORT
       ip-addr: 10.6.0.23
       ilo-ip: 10.32.0.33
       ilo-user: admin
