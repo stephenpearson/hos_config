@@ -1,0 +1,86 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+
+# When not held this is a noop
+- name:  FND-MDB | upgrade | UnHold the existing Percona Packages
+  command: aptitude unhold {{ item }}
+  with_items:
+     percona-xtradb-cluster-server-{{ percona_latest_installed_version }}
+     percona-xtradb-cluster-client-{{ percona_latest_installed_version }}
+
+- include: pre_major_upgrade.yml
+  when: ( mysql_is_major_upgrade | bool )
+
+- name: FND-MDB | upgrade| Print percona latest available version
+  debug: msg="percona_latest_avail_version {{ percona_latest_avail_version }}"
+
+- name: FND-MDB | upgrade | Install MDB packages
+  apt:
+    pkg: "{{ item }}"
+    force: yes
+  with_items:
+    - percona-xtradb-cluster-server-{{ percona_latest_avail_version }}
+    - python-mysqldb
+    - xinetd # for clustercheck
+    - curl
+  register: packages_installed
+
+- include: upgrade_configuration.yml
+  when: ( mysql_is_major_upgrade | bool )
+
+- include: stop.yml
+  when: packages_installed.changed or ( mysql_is_major_upgrade | bool )
+
+- include: post_major_upgrade.yml
+  when: ( mysql_is_major_upgrade | bool )
+
+- name: FND-MDB | upgrade | configure mysqlchk
+  include: configure_mysqlchk.yml
+
+- name: FND-MDB | upgrade| Enable MDB services
+  command: systemctl enable {{ item }}.service
+  with_items:
+    - mysql
+
+- name: FND-MDB | configure | Delete MDB OpenStack service user
+  mysql_user:
+    login_user: "{{ mysql_root_user }}"
+    login_password: "{{ mysql_root_pwd }}"
+    name: "openstack"
+    host: '%'
+    state: absent
+  run_once: true
+
+#  This is for V2->V3 upgrade.  As weve not yet provided an
+#  interface for services to remove their users/dbs we need
+#  to do this here for now.
+- name: FND-MDB | configure | Delete Sherpa service user
+  mysql_user:
+    login_user: "{{ mysql_root_user }}"
+    login_password: "{{ mysql_root_pwd }}"
+    name: "sherpa"
+    host: '%'
+    state: absent
+  run_once: true
+
+- name: FND-MDB | configure | Delete Sherpa service database
+  mysql_db:
+    login_user: "{{ mysql_root_user }}"
+    login_password: "{{ mysql_root_pwd }}"
+    name: "sherpa"
+    state: absent
+  run_once: true
+

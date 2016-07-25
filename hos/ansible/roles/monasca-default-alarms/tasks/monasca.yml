@@ -1,0 +1,72 @@
+#
+# (c) Copyright 2015,2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+- name: monasca-default-alarms | monasca | Create Monasca Alarm Definitions
+  monasca_alarm_definition:
+    name: "{{ item.name }}"
+    description: "{{ item.description | default('') }}"
+    expression: "{{ item.expression }}"
+    keystone_token: "{{ default_notification_result.keystone_token }}"
+    match_by: "{{ item.match_by | default(['hostname']) }}"
+    monasca_api_url: "{{ default_notification_result.monasca_api_url }}"
+    severity: "{{ item.severity | default('LOW') }}"
+    alarm_actions:
+      - "{{ default_notification_result.notification_method_id }}"
+    ok_actions:
+      - "{{ default_notification_result.notification_method_id }}"
+    undetermined_actions:
+      - "{{ default_notification_result.notification_method_id }}"
+  run_once: True
+  register: monasca_alarms_result
+  until: not monasca_alarms_result | failed
+  retries: "{{ monasca_client_retries }}"
+  delay: "{{ monasca_client_retry_delay }}"
+  with_items:
+    - name: "Kafka Persister Metric Consumer Lag"
+      description: "Alarms when the Persister consumer group is not keeping \
+                    up with the incoming messages on the metric topic"
+      severity: "MEDIUM"
+      expression:
+        "avg(kafka.consumer_lag{consumer_group=1_metrics}) > \
+        {{ monasca_kafka_persister_metrics_max_lag }} times 3"
+      match_by:
+        - "hostname"
+    - name: "Kafka Alarm Transition Consumer Lag"
+      description: "Alarms when the specified consumer group is not keeping \
+                    up with the incoming messages on the \
+                    alarm state transistion topic"
+      severity: "MEDIUM"
+      expression:
+        "avg(kafka.consumer_lag{topic=alarm-state-transitions}) > \
+        {{ monasca_kafka_alarms_max_lag }} times 3"
+      match_by:
+        - "consumer_group"
+        - "hostname"
+    - name: "Monasca Agent Collection Time"
+      description: "Alarms when the elapsed time the Monasca Agent takes to \
+                      collect metrics is high"
+      expression: >
+        avg(monasca.collection_time_sec) > {{ monasca_agent_check_frequency }}
+        times 3
+    - name: "Vertica Status"
+      description: "Alarms when the Vertica node is not up"
+      severity: "HIGH"
+      expression: "vertica.db.connection_status > 0"
+      match_by:
+        - "hostname"
+    - name: "ZooKeeper Latency"
+      description: "Alarms when the ZooKeeper latency is high"
+      expression: "avg(zookeeper.avg_latency_sec) > 1 times 3"

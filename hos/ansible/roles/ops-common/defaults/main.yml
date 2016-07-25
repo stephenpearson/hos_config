@@ -1,0 +1,108 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+# Ops Console Configuration
+
+# Configuration file/directory
+ops_console_config_dir: /etc/leia
+ops_console_config: "{{ ops_console_config_dir }}/config.py"
+ops_console_config_old: "{{ ops_console_config_dir }}/leia.conf"
+ops_console_cron_config: "{{ ops_console_config_dir }}/cron.json"
+
+# Log files
+ops_console_log_dir: /var/log/ops-console
+ops_console_error_log: "{{ ops_console_log_dir }}/error.log"
+ops_console_access_log: "{{ ops_console_log_dir }}/access.log"
+
+# Log level
+ops_console_loglevel: "{{ helion_loglevel | default('INFO') }}"
+
+# OS Account
+ops_console_os_user: opscon
+ops_console_os_group: opscon
+
+# Leia Monitor - this is only used when upgrading, in order to stop and disable the monitor
+leia_monitor_service_name: "ops-console-monitor"
+
+# Keystone configuration
+keystone_service_tenant: "{{ KEY_API.vars.keystone_service_tenant }}"
+keystone_private_url: "{{ KEY_API.advertises.vips.private[0].url }}"
+# Auth URL for command-line tools
+keystone_url: "{{ keystone_private_url }}/v3"
+
+
+keystone:
+  admin_user: "{{ KEY_API.vars.keystone_admin_user }}"
+  admin_password: "{{ KEY_API.vars.keystone_admin_pwd | quote }}"
+  default_domain_name: "{{ KEY_API.vars.keystone_default_domain }}"
+
+# urls
+opsconsole_url_path: "/api/v1/"
+opsconsole_region: "{{ OPS_WEB.advertises.vips.public[0].region_name }}"
+opsconsole_public_url: "{{ OPS_WEB.advertises.vips.public[0].url }}{{ opsconsole_url_path }}"
+opsconsole_private_url: "{{ OPS_WEB.advertises.vips.private[0].url }}{{ opsconsole_url_path }}"
+opsconsole_admin_url: "{{ OPS_WEB.advertises.vips.admin[0].url }}{{ opsconsole_url_path }}"
+
+# Virtual environment
+ops_console_venv: "{{ 'ops-console-web' | venv_dir }}"
+ops_console_site_packages: "{{ ops_console_venv }}/lib/python2.7/site-packages"
+
+# Opscon UI config
+kibana_vip_url: "{{ LOG_SVR.advertises.vips.private[0].url }}"
+
+# Points to Horizon UI, but there are cases in Cloudsystem, where
+# there are no Openstack components, such as Horizon
+tenant_console_vip_url: "{% if HZN_WEB is defined -%}
+                             {{ HZN_WEB.advertises.vips.private[0].url }}
+                         {%- endif %}"
+
+# Database configuration
+ops_console_schema_path: "{{ ops_console_site_packages }}/leia/schema.sql"
+ops_console_table_update_path: "{{ ops_console_site_packages }}/leia/update.sql"
+mysql:
+  host: >
+    {{ OPS_WEB | item('consumes_FND_MDB.vips.private[0].host',
+       default=( OPS_WEB | item('consumes_FND_MDB.vips.public[0].host') )) }}
+  port: 3306
+  ops_user: "{% if OPS_WEB.consumes_FND_MDB.vars.accounts.operations.username is defined -%}
+                 {{ OPS_WEB.consumes_FND_MDB.vars.accounts.operations.username }}
+             {%- else -%}
+                 {{ OPS_WEB.consumes_FND_MDB.vars.mysql_user }}
+             {%- endif %}"
+  ops_password: "{% if OPS_WEB.consumes_FND_MDB.vars.accounts.operations.password is defined -%}
+                     {{ OPS_WEB.consumes_FND_MDB.vars.accounts.operations.password }}
+                 {%- else -%}
+                     {{ OPS_WEB.consumes_FND_MDB.vars.mysql_password }}
+                 {%- endif %}"
+  ops_db: "{{ OPS_WEB.consumes_FND_MDB.vars.databases.operations.dbname }}"
+
+memcached_host: "{{ OPS_WEB | item('consumes_FND_MEM.members.private[0].host', default='localhost') }}"
+memcached_port: "{{ OPS_WEB | item('consumes_FND_MEM.members.private[0].port', default='11211') }}"
+memcached_url: "{{ memcached_host }}:{{ memcached_port }}"
+
+# detect and set install env
+opsconsole_install_env: "{% if global.pass_through.install_env is defined and global.pass_through.install_env == 'cs'-%}
+                            cs
+                         {%- else -%}
+                            hos
+                         {%- endif %}"
+
+install_env_version: "{% if global.pass_through.install_version is defined -%}
+                        {{ global.pass_through.install_version }}
+                      {%- else -%}
+                        hos
+                      {%- endif %}"

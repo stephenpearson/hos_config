@@ -1,0 +1,14 @@
+{# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP #}
+{
+  "consoleInstallPath": "{{ ops_console_web_root }}",
+  "venvPath": "{{ ops_console_venv }}",
+  "venvSitePackages": "{{ ops_console_site_packages }}",
+  "opsConsoleServiceName": "{{ leia_monitor_service_name }}",
+  "connection": {
+    "host": "{{ mysql.host }}",
+    "port": {{ mysql.port }},
+    "database": "{{ mysql.ops_db }}",
+    "user": "{{ mysql.ops_user }}",
+    "password": "{{ mysql.ops_password }}"
+  }
+}

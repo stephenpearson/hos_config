@@ -1,0 +1,13 @@
+#!/bin/bash
+intf=`ip addr | awk '/scope global/ { print $NF }'`
+cidr=`ip addr | awk '/scope global/ {print $2}'`
+gateway=`ip route | awk '/default/ {print $3}'`
+echo source "/etc/network/interfaces.d/*" > /etc/network/interfaces
+echo auto lo >> /etc/network/interfaces
+echo iface lo inet loopback >> /etc/network/interfaces
+echo auto ${intf}  > /etc/network/interfaces.d/${intf}
+echo iface ${intf} inet static >>  /etc/network/interfaces.d/${intf}
+echo address ${cidr} >>  /etc/network/interfaces.d/${intf}
+{% if enable_gateway %}
+echo gateway ${gateway} >> /etc/network/interfaces.d/${intf}
+{% endif %}

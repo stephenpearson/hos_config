@@ -1,0 +1,67 @@
+#
+# (c) Copyright 2015,2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+# The separate ops console monitor service is no longer used
+
+- name: OPS-MON | upgrade | Stop the Ops Console Monitor service
+  command: systemctl stop "{{ leia_monitor_service_name }}"
+  ignore_errors: yes
+
+- name: OPS-MON | upgrade | Uninstall Monitor Service
+  setup_systemd:
+   name: "{{ leia_monitor_service_name }}"
+   service: ops-console-mon
+   user: "{{ ops_console_os_user }}"
+   group: "{{ ops_console_os_group }}"
+   cmd: python
+   # Note, following is placed as text into a config file
+   args: "-m leia.leia_monitor"
+   enable: false
+
+
+# Cleanup monasca
+- name: OPS-MON | upgrade | Un-register monitor detection plugin
+  monasca_agent_plugin: name="LeiaDetect" state=absent
+  ignore_errors: yes
+
+- name: OPS-MON | upgrade | Remove monitor detection plugin file
+  file: path=/usr/lib/monasca/agent/custom_detect.d/{{ item }} state=absent
+  with_items:
+  - LeiaDetect.py
+  - LeiaDetect.pyc
+
+- name: OPS-MON | upgrade | Remove monasca alarms for leia monitor
+  shell: |
+    monasca --os-username {{ keystone.admin_user }} \
+            --os-project-name admin \
+            --os-password {{ keystone.admin_password }} \
+            --os-user-domain-name {{ keystone.default_domain_name }} \
+            --os-auth-url {{ keystone_url }} \
+            --os-endpoint-type internalURL \
+             alarm-list \
+            --metric-name process.pid_count \
+            --metric-dimensions process_name=leia.leia_monitor | \
+    cut -f2 -d'|' | \
+    sed -rne 's/ //g' -e '/^[0-9a-f-]+$/p' | \
+    xargs -r -n1 \
+       monasca --os-username {{ keystone.admin_user }} \
+            --os-project-name admin \
+            --os-password {{ keystone.admin_password }} \
+            --os-user-domain-name {{ keystone.default_domain_name }} \
+            --os-auth-url {{ keystone_url }} \
+            --os-endpoint-type internalURL \
+             alarm-delete
+  run_once: true

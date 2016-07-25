@@ -1,0 +1,40 @@
+#
+# (c) Copyright 2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+- include: ../../eon-common/tasks/_set_directories.yml
+  vars:
+    eon_install_package_result: "{{ eon_agent_install_result }}"
+
+- include: ../../eon-common/tasks/_write_conf.yml
+  src: "eon.conf.j2"
+  dest: "{{ eon_service_conf_dir }}/{{ eon_component }}.conf"
+
+- name: eon-agent | configure | notify on eon.conf change
+  shell: echo "notify change"
+  register: hlm_notify_eon_agent_restart_required
+  when: write_conf_result.changed
+  delegate_to: "{{ target_host }}"
+
+- name: eon-agent | configure | Create eon-agent-logging.conf
+  template:
+    src: "../../eon-common/templates/logging.conf.j2"
+    dest: "{{ eon_service_conf_dir }}/eon-agent-logging.conf"
+    owner: "{{ eon_user }}"
+    group: "{{ eon_group }}"
+    mode: 0444
+  register: hlm_notify_eon_agent_restart_required
+  delegate_to: "{{ target_host }}"

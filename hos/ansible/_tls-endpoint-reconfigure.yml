@@ -1,0 +1,148 @@
+#
+# (c) Copyright 2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+# Register endpoint using keystone client.
+- hosts: KEY-CLI
+  roles:
+    - role: keystone-post-configure
+      become: yes
+  tasks:
+    - include: roles/keystone-post-configure/tasks/keystone_conf.yml
+      ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'KEY-API' in groups ) and ( ( groups['KEY-API'] | length ) > 0 )
+      become: yes
+
+- hosts: KEY-CLI
+  sudo: yes
+  roles:
+    - swift-post-configure
+  # This task should be set to run-once
+  tasks:
+    - include: roles/swift-post-configure/tasks/keystone_conf.yml
+      ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'SWF-PRX' in groups ) and ( ( groups['SWF-PRX'] | length ) > 0 )
+
+- hosts: KEY-CLI
+  roles:
+    - freezer-post-configure
+  # Those tasks should be set to run-once
+  tasks:
+    - include: roles/freezer-post-configure/tasks/keystone_conf.yml
+      ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'FRE-API' in groups ) and ( ( groups['FRE-API'] | length ) > 0 )
+
+# Configure Designate keystone resources
+- hosts: KEY-CLI
+  sudo: yes
+  roles:
+    - designate-post-configure
+  # This task should be set to run-once
+  tasks:
+    - include: roles/designate-post-configure/tasks/keystone_conf.yml
+      ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'DES-API' in groups ) and ( ( groups['DES-API'] | length ) > 0 )
+
+- name: Set up Monasca keystone users
+  hosts: KEY-CLI[0]
+  sudo: yes
+  tags: [monasca-keystone]
+  vars_files:
+    - roles/monasca-variables/defaults/main.yml
+    - roles/hlm-monasca-keystone/defaults/main.yml
+  tasks:
+    - include: roles/hlm-monasca-keystone/tasks/main.yml
+      ansible_python_interpreter: "{{KEY_CLI.vars.keystone_client_python_interpreter}}"
+      when: ( 'MON-API' in groups ) and ( ( groups['MON-API'] | length ) > 0 )
+
+# Configure keystone
+- hosts: KEY-CLI
+  become: yes
+  roles:
+    - HZN-WEB
+  tasks:
+    - include: roles/HZN-WEB/tasks/_keystone_conf.yml
+      ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'HZN-WEB' in groups ) and ( ( groups['HZN-WEB'] | length ) > 0 )
+
+# Register necessary user, barbican roles, role assignment for api service.
+- hosts: KEY-CLI
+  roles:
+    - role: KEYMGR-API
+      become: yes
+  tasks:
+    - include: roles/KEYMGR-API/tasks/keystone_conf.yml
+      ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'KEYMGR-API' in groups ) and ( ( groups['KEYMGR-API'] | length ) > 0 )
+      become: yes
+
+- hosts: KEY-CLI
+  sudo: yes
+  roles:
+    - CND-API
+  tasks:
+    - include: roles/CND-API/tasks/keystone_conf.yml
+      ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'CND-API' in groups ) and ( ( groups['CND-API'] | length ) > 0 )
+
+- hosts: KEY-CLI
+  sudo: yes
+  roles:
+    - CEI-API
+  # This task should be set to run-once
+  tasks:
+    - include: roles/CEI-API/tasks/keystone_conf.yml
+      ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'CEI-API' in groups ) and ( ( groups['CEI-API'] | length )  > 0 )
+
+- hosts: KEY-CLI
+  sudo: yes
+  roles:
+    - heat-pre-configure
+  tasks:
+    - include: roles/heat-pre-configure/tasks/keystone_conf.yml
+      ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'HEA-API' in groups ) and ( ( groups['HEA-API'] | length ) > 0 )
+
+- hosts: KEY-CLI
+  roles:
+    - nova-post-configure
+  # This task should be set to run-once
+  tasks:
+    - include: roles/nova-post-configure/tasks/keystone_conf.yml
+      ansible_python_interpreter:
+        "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'NOV-API' in groups ) and ( ( groups['NOV-API'] | length ) > 0 )
+
+- hosts: KEY-CLI
+  sudo: yes
+  roles:
+    - glance-post-configure
+  tasks:
+    - include: roles/glance-post-configure/tasks/keystone_conf.yml
+      ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+      when: ( 'GLA_API' in verb_hosts ) and ( ( groups[verb_hosts.GLA_API] | length ) > 0 )
+
+- hosts: KEY-CLI
+  sudo: yes
+  roles:
+  - neutron-post-configure
+  tasks:
+  - include: roles/neutron-post-configure/tasks/keystone_conf.yml
+    ansible_python_interpreter: "{{ KEY_CLI.vars.keystone_client_python_interpreter }}"
+    when: ( 'NEU_SVR' in verb_hosts ) and ( ( groups[verb_hosts.NEU_SVR] | length ) > 0 )
+
+

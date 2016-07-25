@@ -1,0 +1,113 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+# Restart or start the nova-consoleauth service
+---
+
+- name: NOV-CAU | start | Activate the latest installed version
+  become: yes
+  install_package:
+    name: nova
+    service: nova-consoleauth
+    activate: act_on
+    version: "{{ hlm_notify_nova_consoleauth_install_result.version }}"
+  when: not (hlm_notify_nova_consoleauth_install_result is not defined)
+
+- name: NOV-CAU | start | register persistent fact of activate
+  command: /bin/true
+  register: hlm_notify_nova_consoleauth_restart_required
+  when: hlm_notify_nova_consoleauth_install_result is defined and
+        hlm_notify_nova_consoleauth_install_result.changed
+
+- include: _read_run_location.yml
+
+# consoleauth_host_index specifies the index of the host where consoleauth
+# should be running.
+# we match the consoleauth_host_index with the index of the inventory_host
+- name: NOV-CAU | start | Restart nova-consoleauth service
+  become: yes
+  service:
+    name: nova-consoleauth
+    state: restarted
+  when:
+    ({{ consoleauth_host_index }} ==
+    {{ groups[group.vars.network_address_prefix].index(inventory_hostname) }}
+    ) and (hlm_notify_nova_restart_required.changed or
+    (hlm_notify_nova_consoleauth_restart_required is defined and
+    hlm_notify_nova_consoleauth_restart_required.changed))
+
+# ignore errors as nova-api will not be able to service this
+# request during deploy
+- name: NOV-CAU | start | Enable consoleauth service
+  shell: |
+    nova \
+      --os-username {{ keystone.nova_admin_user }} \
+      --os-project-name {{ keystone.service_tenant }} \
+      --os-password {{ keystone.nova_admin_password }} \
+      --os-user-domain-name Default \
+      --os-project-domain-name Default \
+      --os-auth-url {{ keystone.url }}/v3 \
+      --os-endpoint-type internalURL \
+      service-enable {{ inventory_hostname }} nova-consoleauth
+  when:
+    ({{ consoleauth_host_index }} ==
+    {{ groups[group.vars.network_address_prefix].index(inventory_hostname) }})
+  ignore_errors: True
+
+- name: NOV-CAU | start | Ensure nova-consoleauth service started
+  become: yes
+  service:
+    name: nova-consoleauth
+    state: started
+  when:
+    ({{ consoleauth_host_index }} ==
+    {{ groups[group.vars.network_address_prefix].index(inventory_hostname) }})
+
+- name: NOV-CAU | start | Stop consoleauth where not needed
+  become: yes
+  service:
+    name: nova-consoleauth
+    state: stopped
+  when:
+    ({{ consoleauth_host_index }} !=
+    {{ groups[group.vars.network_address_prefix].index(inventory_hostname) }})
+
+# ignore errors as nova-api will not be able to service this
+# request during deploy
+- name: NOV-CAU | start | Disable consoleauth where not needed
+  shell: |
+    nova \
+      --os-username {{ keystone.nova_admin_user }} \
+      --os-project-name {{ keystone.service_tenant }} \
+      --os-password {{ keystone.nova_admin_password }} \
+      --os-user-domain-name Default \
+      --os-project-domain-name Default \
+      --os-auth-url {{ keystone.url }}/v3 \
+      --os-endpoint-type internalURL \
+      service-disable {{ inventory_hostname }} nova-consoleauth \
+      --reason "singleton running elsewhere"
+  when:
+    ({{ consoleauth_host_index }} !=
+    {{ groups[group.vars.network_address_prefix].index(inventory_hostname) }})
+  ignore_errors: True
+
+# write to deployer fact file where we started service
+- name: NOV-CAU | start | copy consoleauth_host_index to nova.fact on localhost
+  become: yes
+  delegate_to: 127.0.0.1
+  copy:
+    dest: "{{ run_loc_file }}"
+    content: "{{ consoleauth_host_index }}"
+    mode: 0644

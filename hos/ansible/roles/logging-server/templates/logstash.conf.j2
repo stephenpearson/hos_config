@@ -1,0 +1,113 @@
+{#
+#
+# (c) Copyright 2015,2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+#}
+# Configure RabbitMQ as input
+# http://www.logstash.net/docs/1.4.2/inputs/rabbitmq
+
+# Input configuration
+#----------------------------------------------------------------------------------------
+input {
+
+  # Kafka input source
+  # Primary input for all HOS components
+  kafka {
+    # Kafka topic to consume messages from
+    topic_id => "{{ kronos_kafka_topic }}"
+
+    # ZooKeeper comma delimeted connections strings
+    zk_connect => "{{ kronos_zookeeper_hosts }}"
+
+    # A string that uniquely identifies the group of consumer processes to which this consumer
+    # belongs. By setting the same group id multiple processes indicate that they are all part of
+    # the same consumer group.
+    group_id => "{{ kronos_kafka_consumer_group }}"
+
+    # Number of threads to read from the partitions. Ideally you should have as many threads as
+    # the number of partitions for a perfect balance.
+    consumer_threads => {{ logstash_num_workers }}
+
+    # Retry when an error is received
+    consumer_restart_on_error => true
+  }
+
+  # RabbitMQ input source
+  # Soon to be deprecated backwards compatibility path for HDP
+  rabbitmq {
+    codec => json {}
+    auto_delete => false
+    durable => true
+    exclusive => false
+    host => "{{ kronos_rabbit_host }}"
+    port => {{ kronos_rabbit_port }}
+    key => "{{ kronos_rabbit_key }}"
+    queue => "{{ kronos_rabbit_queue }}"
+    exchange => "{{ kronos_rabbit_exchange }}"
+    user => "{{ kronos_rabbit_user }}"
+    password => "{{ kronos_rabbit_pass }}"
+    threads => {{ kronos_rabbit_workers }}
+  }
+}
+
+# Filter out auth tokens
+#----------------------------------------------------------------------------------------
+filter {
+  if [auth_token]{
+    anonymize {
+      algorithm => 'SHA1'
+      fields    => ['auth_token']
+      key       => '{{ logstash_anonymize_salt }}'
+    }
+    mutate {
+      replace => [ 'auth_token', '{SHA1}%{auth_token}' ]
+    }
+  }
+
+  # Services like neutron may log a timestamp field that uses a format not normally
+  # recognized by Elasticsearch. This may cause ES to map the same field as string
+  # for one service and date for another service - resulting in a mapping conflict
+  # at Kibana. The following filter recognizes both formats and normalize them to
+  # ISO8601. If the timestamp field causes the date parsing to fail, the field is
+  # dropped silently.
+  if [timestamp]{
+    date {
+      match => ["timestamp", "ISO8601", "YYYY-MM-dd HH:mm:ss.SSSSSS"]
+      target => "timestamp"
+    }
+
+    if "_dateparsefailure" in [tags] {
+      mutate {
+       remove_field => "timestamp"
+       remove_tag => ["_dateparsefailure" ]
+      }
+    }
+  }
+}
+
+# Configure Elasticsearch as output
+# http://logstash.net/docs/1.4.2/outputs/elasticsearch
+# protocol "http" is just as performant up to 20,000 events/sec
+#----------------------------------------------------------------------------------------
+output {
+  elasticsearch {
+    protocol => "http"
+    host => "{{ elasticsearch_http_host }}"
+    port => {{ elasticsearch_http_port }}
+    flush_size => 5000
+    idle_flush_time => 5
+    workers => {{ logstash_num_workers }}
+  }
+}

@@ -1,0 +1,18 @@
+{# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP #}
+# This file has the HOS values that apply only to the Designate Pool
+# Manager service. You may make changes to this file by adding
+# sections/options below.
+
+[DEFAULT]
+# Logging
+log_config_append = "{{ designate_service_conf_dir }}/zone-manager-logging.conf"
+
+# End of [DEFAULT] section
+
+[coordination]
+backend_url = {{ designate_backend_url }}
+
+# End of [coordination] section
+
+### End of File ###
+## Do NOT put anything after this line ##

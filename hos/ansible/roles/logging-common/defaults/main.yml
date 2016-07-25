@@ -1,0 +1,268 @@
+#
+# (c) Copyright 2015,2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+# Select default tunings based on system RAM
+#----------------------------------------------------------------------------------------
+# RAM < 32GB, use demo
+# RAM < 64GB, use small
+# RAM < 128GB, use medium
+# RAM >= 128GB, use large
+threshold_small_mb: 31000
+threshold_medium_mb: 63000
+threshold_large_mb: 127000
+tuning_selector: "{% if ansible_memtotal_mb < threshold_small_mb|int %}demo{% elif ansible_memtotal_mb < threshold_medium_mb|int %}small{% elif ansible_memtotal_mb < threshold_large_mb|int %}medium{% else %}large{%endif %}"
+logging_possible_tunings:
+  demo:
+    elasticsearch_heap_size: 512m
+    logstash_heap_size: 512m
+    logstash_num_workers: 5
+    kronos_kafka_partitions: 15
+  small:
+    elasticsearch_heap_size: 8g
+    logstash_heap_size: 2g
+    logstash_num_workers: 10
+    kronos_kafka_partitions: 30
+  medium:
+    elasticsearch_heap_size: 16g
+    logstash_heap_size: 4g
+    logstash_num_workers: 20
+    kronos_kafka_partitions: 60
+  large:
+    elasticsearch_heap_size: 31g
+    logstash_heap_size: 8g
+    logstash_num_workers: 30
+    kronos_kafka_partitions: 90
+
+logging_tunings: "{{ logging_possible_tunings[tuning_selector] }}"
+
+# Kibana variables
+#----------------------------------------------------------------------------------------
+kibana_path: /opt/kibana
+kibana_host: 127.0.0.1
+kibana_internal_port: 5601
+kibana_tarball_ext: tar.gz
+kibana_log_path: /var/log/elasticsearch
+kibana_port: "{{ LOG_SVR | item('advertises.vips.private[0].port', default=5601) }}"
+kibana_user: "{{ LOG_SVR | item('vars.kibana_user', default='kibana') }}"
+kibana_pass: "{{ LOG_SVR.vars.logging_kibana_password }}"
+
+# Elasticsearch defaults
+elasticsearch_heap_size: "{{ logging_tunings.elasticsearch_heap_size }}"
+elasticsearch_http_host: 127.0.0.1
+elasticsearch_transport_host: "{{ inventory_hostname }}"
+elasticsearch_cluster_name: "{{ LOG_SVR | item('vars.elasticsearch_cluster_name', default='elasticsearch') }}"
+elasticsearch_http_port: "{{ LOG_SVR | item('vars.elasticsearch_http_port', default=9200) }}"
+elasticsearch_transport_port: "{{ LOG_SVR | item('vars.elasticsearch_transport_port', default=9300) }}"
+elasticsearch_indices_fielddata_cache_size: 15%
+elasticsearch_indices_breaker_fielddata_limit: 25%
+elasticsearch_indices_ttl_bulk_size: 100000
+elasticsearch_indices_cache_filter_size: 10%
+elasticsearch_indices_cache_filter_expire: 6h
+elasticsearch_indices_memory_index_buffer_size: 50%
+elasticsearch_indices_memory_min_index_buffer_size: 200mb
+elasticsearch_indices_memory_min_shard_index_buffer_size: 12mb
+elasticsearch_indices_store_throttle_type: merge
+elasticsearch_indices_store_throttle_max_bytes_per_sec: 80mb
+elasticsearch_index_refresh_interval: 30s
+elasticsearch_index_merge_scheduler_max_thread_count: 1
+elasticsearch_index_translog_flush_threshhold_ops: 150000
+elasticsearch_index_translog_flush_threshhold_size: 1gb
+elasticsearch_max_total_indices_size_in_bytes: 21474836480
+
+# Logstash defaults
+logstash_heap_size: "{{ logging_tunings.logstash_heap_size }}"
+logstash_num_workers: "{{ logging_tunings.logstash_num_workers }}"
+logstash_user: logstash
+logstash_group: logstash
+logstash_anonymize_salt: "{{ LOG_SVR | item('vars.logstash_anonymize_salt', default='7cd8yjqhdw') }}"
+
+# Curator variables
+#----------------------------------------------------------------------------------------
+curator_enable: "{{ LOG_SVR | item('vars.curator_enable', default=True) }}"
+curator_es_hostname: "{{ elasticsearch_http_host }}"
+curator_es_port: "{{ elasticsearch_http_port }}"
+curator_bin_path: /usr/bin/curator
+curator_indices_regex: ^logstash-.*$
+curator_num_of_indices_to_keep: "{{ LOG_SVR | item('vars.curator_num_of_indices_to_keep', default=7) }}"
+curator_log_path: /var/log/elasticsearch/curator.log
+curator_disable_bloom_filter_days: "{{ LOG_SVR | item('vars.curator_disable_bloom_filter_days', default=0) }}"
+curator_close_indices_after_days: "{{ LOG_SVR | item('vars.curator_close_indices_after_days', default=0) }}"
+
+# ES backup settings
+# Note: Enable this variable only after making sure you have setup a shared partition
+# that is accessible from all LOG-SVR nodes as described below by the curator_es_backup_partition variable.
+# If this variable is enabled without that, Elasticsearch will fail to start
+curator_enable_backup: false
+curator_backup_repo_name: "es_{{host.my_dimensions.cloud_name}}"
+# the partition where all ES snapshots will be stored
+# Note: this has to be a shared partition that is accessible from all the LOG-SVR ES nodes
+curator_es_backup_partition: /var/lib/esbackup
+
+# the default partition for Elasticsearch
+curator_es_partition: /var/lib/elasticsearch
+
+# The following low watermark will be used to trigger alarms if the ES partition size grows over it.
+# Tuning this to to a higher percent may not give sufficient time to backup old indices before they
+# are removed.
+curator_low_watermark_percent: 65
+
+# The following high watermark will be used to decide if it is time to delete old indices.
+# The following approach is taken:
+# An hourly cronjob checks to see if there are more indices than curator_num_of_indices_to_keep.
+# If there are, curator will be run to delete old indices per the curator_num_of_indices_to_keep setting.
+# Then, a check is made to see if the partition size is below the high watermark percent.
+# If it is still too high, curator will be run again to delete all indices older than
+# curator_num_of_indices_to_keep -1, then -2, then -3 until the partition
+# size is below the high watermark, or only the current index remains.
+# Finally, if the usage is still high, just an error message is written to the log
+# file but the current index is NOT deleted.
+curator_high_watermark_percent: 90
+
+# Beaver variables
+#----------------------------------------------------------------------------------------
+beaver_user: beaver
+beaver_group: adm
+beaver_conf_dir: /etc/beaver
+beaver_purge_config_files: false
+beaver_queue_timeout_secs: 7200 # 2 hours
+beaver_max_retries: 5
+beaver_transport: kafka
+
+# following settings are for the python-kafka client used by the Beaver kafka transport
+kronos_kafka_queue_put_timeout: 10 # seconds
+kronos_kafka_queue_maxsize: 100
+
+# tune these if the beaver producer is faster than the consumer
+beaver_max_queue_size: 10000
+beaver_number_of_consumer_processes: 1
+
+# Centralized Logging enablement
+enable_centralized_logging: "{{ LOG_SVR | item('vars.enable_centralized_logging', default=True) }}"
+
+# Rabbit defaults (this path is being deprecated)
+#----------------------------------------------------------------------------------------
+kronos_rabbit_workers: 1
+kronos_rabbit_key: logstash-key
+kronos_rabbit_queue: logstash-queue
+kronos_rabbit_exchange: logstash-exchange
+kronos_rabbit_user: "{{ LOG.consumes_FND_RMQ.vars.accounts.logging.username }}"
+kronos_rabbit_pass: "{{ LOG.consumes_FND_RMQ.vars.accounts.logging.password }}"
+kronos_rabbit_host: "{{ LOG_SVR.consumes_FND_RMQ.vips.private[0].host }}"
+kronos_rabbit_port: "{{ LOG_SVR.consumes_FND_RMQ.vips.private[0].port }}"
+
+# Logging average rates
+#----------------------------------------------------------------------------------------
+kronos_logging_rate_info_msg_sec: 1
+kronos_logging_rate_debug_msg_sec: 20
+
+# Kafka variables
+#----------------------------------------------------------------------------------------
+kronos_kafka_topic: logs
+kafka_segment_minutes: 15
+kafka_node_count: "{{ FND_KFK.members.private | length }}"
+kronos_kafka_replication_factor: "{% if kafka_node_count | int > 3 %}3{% else %}{{ kafka_node_count }}{% endif %}"
+kronos_kafka_consumer_group: kronos
+kronos_kafka_partitions: "{{ logging_tunings.kronos_kafka_partitions }}"
+kronos_kafka_nodes: "{{ LOG_SVR.consumes_FND_KFK.members.private }}"
+kronos_kafka_hosts: "{% for node in kronos_kafka_nodes %}{{ node.host }}:{{ node.port }}{% if not loop.last %},{% endif %}{% endfor %}"
+kronos_zookeeper_nodes: "{{ LOG_SVR.consumes_FND_ZOO.members.private }}"
+kronos_zookeeper_hosts: "{% for node in kronos_zookeeper_nodes %}{{ node.host }}:{{ node.port }}{% if not loop.last %},{% endif %}{% endfor %}"
+# kronos_kafka_max_lag = Rate (INFO: ~1 msg/sec) * 4x (padding) * # Producer Nodes (PRO) *
+#  commit rate (logstash idle_flush_time=1 sec)
+kronos_kafka_max_lag: "{{ kronos_logging_rate_info_msg_sec | int * 4 * ( groups['LOG-PRO'] | length ) | int }}"
+
+kronos_keystone:
+  admin_user: "{{ KEY_API.vars.keystone_admin_user }}"
+  admin_password: "{{ KEY_API.vars.keystone_admin_pwd | quote }}"
+  default_domain_name: "{{ KEY_API.vars.keystone_default_domain }}"
+
+# Log Monitoring
+#----------------------------------------------------------------------------------------
+kronos_monitoring_keystone_url: "{{ LOG_SVR.consumes_KEY_API.vips.private[0].url ~ '/v3' }}"
+kronos_monitoring_keystone_user: "{{ LOG_SVR | item('consumes_KEY_API.vars.logging_keystone_user', default='logging') }}"
+kronos_monitoring_keystone_password: "{{ LOG_SVR | item('consumes_KEY_API.vars.logging_keystone_password', default='logging') }}"
+kronos_monitoring_keystone_project: "{{ KEY_API.vars.keystone_admin_tenant }}"
+kronos_monitoring_keystone_role: "monasca-user"
+kronos_monitoring_keystone_project_domain_name: "Default"
+kronos_monitoring_keystone_user_domain_name: "Default"
+monasca_alarm_definition_api_url: "{{ MON_AGN.consumes_MON_API.vips.private[0].url ~ '/v2.0' }}"
+
+# The following low watermark will be used to trigger alarms if the /var/log partition size grows over it.
+# Tuning this to a higher percent may not give sufficient time to free disk space on /var/log before it
+# reaches 100% full, at wich time log rotate will not work.
+var_log_low_watermark_percent: 80
+
+# The following high watermark will be used to alert the user that when /var/log is 100% full,
+# log rotate will not work, and to free up space on /var/log.
+# Don't set it at 100%, as by then alarms may not fire properly
+var_log_high_watermark_percent: 95
+
+# This quota is in GB
+service_log_directory_size_quota: 2.5
+monasca_alarm_definition_api_url: "{{ MON_AGN.consumes_MON_API.vips.private[0].url ~ '/v2.0' }}"
+
+# Log rotate variables
+#----------------------------------------------------------------------------------------
+logrotate_conf_dir: /etc/logrotate.d
+logr_maxsize: 45M
+logr_rotate: 7
+logr_json_rotate: 5
+opt_kronos_dir: /opt/kronos
+var_kronos_dir: /var/log/kronos
+
+var_log_partition: /var/log
+logrotate_check_enable: true
+logrotate_check_sleep_minutes: 5
+logrotate_bin_path: /usr/sbin/logrotate
+logrotate_log_path: /var/log/kronos/logrotate_if_needed.log
+# sh script, but .sh removed to avoid cron issue
+logrotate_if_needed_path: /opt/kronos/logrotate_if_needed
+
+# Kronos variables
+#----------------------------------------------------------------------------------------
+kronos_user: kronos
+kronos_group: adm
+
+kronos_api_host: "{{ inventory_hostname }}"
+kronos_api_port: 8082
+kronos_api_workers: 1
+kronos_api_name: kronos
+kronos_api_proc_name: kronos
+
+kronos_monascalog_api_nodes: "{{ LOG_SVR.consumes_FND_KFK.members.private }}"
+kronos_monascalog_api_hosts: "{% for node in kronos_monascalog_api_nodes %}{{ node.host }}:{{ kronos_api_port }}{% if not loop.last %},{% endif %}{% endfor %}"
+
+kronos_api_debug: True
+kronos_api_log_file: kronos-api.log
+kronos_log_dir: /var/log/kronos
+
+kronos_api_dispatcher_logs: monasca_log_api.v2.reference.logs:Logs
+kronos_api_dispatcher_versions: monasca_log_api.v2.reference.versions:Versions
+kronos_api_dispatcher_driver: v2_reference
+
+kronos_api_service_region: region1
+
+kronos_keystone_user: "{{ KEY_API.vars.keystone_admin_user }}"
+kronos_keystone_password: "{{ KEY_API.vars.keystone_admin_pwd }}"
+kronos_keystone_project: "{{ KEY_API.vars.keystone_admin_tenant }}"
+kronos_keystone_domain: "{{ KEY_API.vars.keystone_default_domain }}"
+kronos_keystone_auth_uri: "{{ LOG_SVR.consumes_KEY_API.vips.private[0].url }}"
+kronos_keystone_identity_uri: "{{ LOG_SVR.consumes_KEY_API.vips.private[0].url }}"
+kronos_api_keystone_authtoken_cafile: ""
+kronos_api_keystone_authtoken_certfile: ""
+kronos_api_keystone_authtoken_keyfile: ""
+kronos_api_keystone_authtoken_insecure: false

@@ -1,0 +1,37 @@
+#
+# (c) Copyright 2015 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+- name: eon-monitoring | Monasca Configure | Copy Eon Custom plugin for HLM only
+  copy:
+    src: hlmeon_mon_plugin.py
+    dest: /usr/lib/monasca/agent/custom_detect.d/hlmeon_mon_plugin.py
+    owner: root
+    group: root
+    mode: 0440
+
+- name: eon-monitoring | monasca monitoring | Run monasca agent eon detection plugin
+  monasca_agent_plugin:
+    name="HLMEon"
+    args="service_api_url={{ eon_api_local_url }}"
+
+# Setup Monasca http check on eon local http url
+- name: eon-monitoring | monasca monitoring | Setup active check against local eon-api url
+  monasca_agent_plugin:
+    name: "httpcheck"
+    args: >
+      url={{ eon_api_local_url }}
+      match_pattern=.*resources.*resource_mgrs.*
+      dimensions=service:eon,component:eon-api,monitored_host_type:instance

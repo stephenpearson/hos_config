@@ -1,0 +1,28 @@
+#
+# (c) Copyright 2015-2016 Hewlett Packard Enterprise Development Company LP
+#
+# Licensed under the Apache License, Version 2.0 (the "License"); you may
+# not use this file except in compliance with the License. You may obtain
+# a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+# License for the specific language governing permissions and limitations
+# under the License.
+#
+---
+
+region_name: "{{ KEY_API.advertises.vips.public[0].region_name }}"
+swiftlm_global:
+   global:  "{{ global }}"
+
+builder_node: "{{ SWF_RNG.consumes_SWF_ACC.members.private[0].host }}"
+builder_backup_exists: "{{ SWF_RNG.consumes_SWF_ACC.members.private[1] is defined }}"
+builder_backup_node: "{% if SWF_RNG.consumes_SWF_ACC.members.private[1] is defined %}{{ SWF_RNG.consumes_SWF_ACC.members.private[1].host }}{% endif %}"
+
+optionally_pretend: "{% if pretend_min_part_hours_passed | default(0) | bool %}--pretend-min-part-hours-passed{% endif %}"
+optionally_limit_ring: "{% if limit_ring is defined %}--limit-ring {{ limit_ring }}{% endif %}"
+optionally_set_detail: "{% if drive_detail | default(0) | bool %}--detail full{% endif %}"
