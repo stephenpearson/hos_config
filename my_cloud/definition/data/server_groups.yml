@@ -33,7 +33,6 @@
         - EXTERNAL-VM-NET
         - INTERNAL-API-NET
         - ISCSI-NET
-        - CONF-NET
 
     #
     # Failure Zones

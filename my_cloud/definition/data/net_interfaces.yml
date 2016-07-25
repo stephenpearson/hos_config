@@ -19,25 +19,8 @@
     version: 2
 
   interface-models:
-      # These examples uses hed4 & hed5 as a bonded
-      # pair for the main networks on all three server roles
-      # a seperate network (CONF) is assigned to hed3 for
-      # OS install and configuration
-      #
-      # the names hed3, hed4 & hed5 are derived from the
-      # nic_mappings.yml definition
-      #
-      # Edit the device names and bond options
-      # to match your environment
-      #
     - name: CORE-INTERFACES
       network-interfaces:
-        - name: hed3
-          device:
-              name: hed3
-          network-groups:
-            - CONF
-
         - name: BOND0
           device:
               name: bond0
@@ -45,11 +28,11 @@
              options:
                  mode: active-backup
                  miimon: 200
-                 primary: hed4
+                 primary: hed3
              provider: linux
              devices:
+               - name: hed3
                - name: hed4
-               - name: hed5
           network-groups:
             - EXTERNAL-API
             - INTERNAL-API
@@ -59,12 +42,6 @@
 
     - name: NEUTRON-INTERFACES
       network-interfaces:
-        - name: hed3
-          device:
-              name: hed3
-          network-groups:
-            - CONF
-
         - name: BOND0
           device:
               name: bond0
@@ -72,11 +49,11 @@
              options:
                  mode: active-backup
                  miimon: 200
-                 primary: hed4
+                 primary: hed3
              provider: linux
              devices:
+               - name: hed3
                - name: hed4
-               - name: hed5
           network-groups:
             - EXTERNAL-VM
             - GUEST
@@ -84,12 +61,6 @@
 
     - name: COMPUTE-INTERFACES
       network-interfaces:
-        - name: hed3
-          device:
-              name: hed3
-          network-groups:
-            - CONF
-
         - name: BOND0
           device:
               name: bond0
@@ -97,11 +68,11 @@
              options:
                  mode: active-backup
                  miimon: 200
-                 primary: hed4
+                 primary: hed3
              provider: linux
              devices:
+               - name: hed3
                - name: hed4
-               - name: hed5
           network-groups:
             - EXTERNAL-VM
             - GUEST
@@ -111,12 +82,6 @@
 
     - name: VSA-INTERFACES
       network-interfaces:
-        - name: hed3
-          device:
-              name: hed3
-          network-groups:
-            - CONF
-
         - name: BOND0
           device:
               name: bond0
@@ -124,23 +89,17 @@
              options:
                  mode: active-backup
                  miimon: 200
-                 primary: hed4
+                 primary: hed3
              provider: linux
              devices:
+               - name: hed3
                - name: hed4
-               - name: hed5
           network-groups:
             - MANAGEMENT
             - ISCSI
 
     - name: SWOBJ-INTERFACES
       network-interfaces:
-        - name: hed3
-          device:
-              name: hed3
-          network-groups:
-            - CONF
-
         - name: BOND0
           device:
               name: bond0
@@ -148,23 +107,17 @@
              options:
                  mode: active-backup
                  miimon: 200
-                 primary: hed4
+                 primary: hed3
              provider: linux
              devices:
+               - name: hed3
                - name: hed4
-               - name: hed5
           network-groups:
             - MANAGEMENT
             - SWIFT
 
     - name: SWPAC-INTERFACES
       network-interfaces:
-        - name: hed3
-          device:
-              name: hed3
-          network-groups:
-            - CONF
-
         - name: BOND0
           device:
               name: bond0
@@ -172,23 +125,17 @@
              options:
                  mode: active-backup
                  miimon: 200
-                 primary: hed4
+                 primary: hed3
              provider: linux
              devices:
+               - name: hed3
                - name: hed4
-               - name: hed5
           network-groups:
             - MANAGEMENT
             - SWIFT
 
     - name: DBMQ-INTERFACES
       network-interfaces:
-        - name: hed3
-          device:
-              name: hed3
-          network-groups:
-            - CONF
-
         - name: BOND0
           device:
               name: bond0
@@ -196,22 +143,16 @@
              options:
                  mode: active-backup
                  miimon: 200
-                 primary: hed4
+                 primary: hed3
              provider: linux
              devices:
+               - name: hed3
                - name: hed4
-               - name: hed5
           network-groups:
             - MANAGEMENT
 
     - name: MTRMON-INTERFACES
       network-interfaces:
-        - name: hed3
-          device:
-              name: hed3
-          network-groups:
-            - CONF
-
         - name: BOND0
           device:
               name: bond0
@@ -219,10 +160,10 @@
              options:
                  mode: active-backup
                  miimon: 200
-                 primary: hed4
+                 primary: hed3
              provider: linux
              devices:
+               - name: hed3
                - name: hed4
-               - name: hed5
           network-groups:
             - MANAGEMENT

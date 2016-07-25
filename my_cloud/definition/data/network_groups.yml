@@ -170,6 +170,8 @@
         - barbican-api
       component-endpoints:
         - default
+        - lifecycle-manager
+        - lifecycle-manager-target
 
       routes:
         - INTERNAL-API
@@ -218,18 +220,3 @@
         - swift-account
         - swift-object
         - swift-rsync
-
-    #
-    # CONF
-    #
-    # This is the network group that will be used to
-    # provision the OS onto the ndoes and to perform
-    # the inital OS configuration
-    #
-    - name: CONF
-      hostname-suffix: conf
-
-      component-endpoints:
-        - lifecycle-manager
-        - lifecycle-manager-target
-
