@@ -46,9 +46,9 @@
           type: simple-port
           bus-address: "0000:02:00.1"
 
-   - name: HP-BL460-2PORT
+    - name: HP-BL460-2PORT
       physical-ports:
-       - logical-name: hed3
+        - logical-name: hed3
           type: simple-port
           bus-address: "0000:08:00.0"
 
